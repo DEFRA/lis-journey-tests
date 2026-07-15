@@ -1,6 +1,7 @@
 name: Run Journey Tests on GitHub
 
 permissions:
+  contents: read
   checks: write
   pull-requests: write
 
@@ -55,7 +56,7 @@ jobs:
     timeout-minutes: 45
     steps:
       - name: Checkout lis-dev referenced by branch-set input
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         id: lis-dev-checkout-branch
         continue-on-error: true
         with:
@@ -65,14 +66,14 @@ jobs:
 
       - name: Checkout lis-dev main branch if the previous checkout failed (e.g. branch doesn't exist in lis-dev repo)
         if: steps.lis-dev-checkout-branch.outcome == 'failure'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: DEFRA/lis-dev
           ref: main
           path: lis-dev
 
       - name: Checkout lis-journey-tests
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: DEFRA/lis-journey-tests
           ref: ${{ inputs.branch-set }}
