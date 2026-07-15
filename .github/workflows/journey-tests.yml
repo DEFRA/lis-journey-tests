@@ -46,31 +46,20 @@ on:
         required: false
         type: string
         default: ${{ github.ref_name }}
-      slack-webhook-url:
-        required: false
-        type: string
+
 jobs:
-  build:
+  journey-tests:
     name: Run Journey Tests
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - name: Checkout lis-dev referenced by branch-set input
-        uses: actions/checkout@v7
-        id: lis-dev-checkout-branch
-        continue-on-error: true
-        with:
-          repository: DEFRA/lis-dev
-          ref: ${{ inputs.branch-set }}
-          path: lis-dev
-
-      - name: Checkout lis-dev main branch if the previous checkout failed (e.g. branch doesn't exist in lis-dev repo)
-        if: steps.lis-dev-checkout-branch.outcome == 'failure'
+      - name: Checkout lis-dev
         uses: actions/checkout@v7
         with:
           repository: DEFRA/lis-dev
           ref: main
           path: lis-dev
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout lis-journey-tests
         uses: actions/checkout@v7
