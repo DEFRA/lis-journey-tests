@@ -59,7 +59,8 @@ jobs:
           repository: DEFRA/lis-dev
           ref: main
           path: lis-dev
-          token: ${{ secrets.GITHUB_TOKEN }}
+          ssh-key: ${{ secrets.LIS_DEV_DEPLOY_KEY }}
+          persist-credentials: false
 
       - name: Checkout lis-journey-tests
         uses: actions/checkout@v7
