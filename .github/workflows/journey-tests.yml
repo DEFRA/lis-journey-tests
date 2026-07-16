@@ -72,7 +72,7 @@ jobs:
       - name: Fix permissions for lis-dev and lis-journey-tests scripts
         shell: bash
         run: |
-          chmod -R +x lis-dev/**/*.sh || true
+          chmod -R +x lis-dev/.scripts/*.sh || true
           chmod -R +x lis-journey-tests/**/*.sh || true
 
       - name: Pull in all lis-dev submodules
@@ -80,6 +80,8 @@ jobs:
         shell: bash
         run: |
           ./.scripts/update-project.sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Add lis-dev hosts to /etc/hosts
         shell: bash
@@ -96,12 +98,16 @@ jobs:
         shell: bash
         run: |
           ./.scripts/setup-certs.sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish local repositories to local npm and nuget registries
         working-directory: lis-dev
         shell: bash
         run: |
           ./.scripts/publish.sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # FIX: Set ROOT_DIR so Localstack init scripts mount correctly
       - name: Set ROOT_DIR for compose mounts
