@@ -82,6 +82,7 @@ jobs:
           ./.scripts/update-project.sh
         env:
           GH_TOKEN: ${{ secrets.LIS_GITHUB_MONITOR_DEPLOY_KEY }}
+          GITHUB_TOKEN: ${{ secrets.LIS_GITHUB_MONITOR_DEPLOY_KEY }}
 
       - name: Add lis-dev hosts to /etc/hosts
         shell: bash
