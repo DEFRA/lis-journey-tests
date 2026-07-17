@@ -85,7 +85,7 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add - <<< "${{ secrets.LIS_SSH_KEY }}"
+          ssh-add - <<< "${{ secrets.LIS_GITHUB_MONITOR_PAT }}"
           ./.scripts/update-project.sh
 
       - name: Add lis-dev hosts to /etc/hosts
