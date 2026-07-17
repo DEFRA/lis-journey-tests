@@ -60,7 +60,7 @@ jobs:
           ref: main
           path: lis-dev
           ssh-key: ${{ secrets.LIS_DEV_DEPLOY_KEY }}
-          persist-credentials: true
+          persist-credentials: false
 
       - name: Checkout lis-journey-tests
         uses: actions/checkout@v7
@@ -80,7 +80,12 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.LIS_GITHUB_MONITOR_PAT }}
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.LIS_DEV_DEPLOY_KEY }}"
           ./.scripts/update-project.sh
 
       - name: Add lis-dev hosts to /etc/hosts
