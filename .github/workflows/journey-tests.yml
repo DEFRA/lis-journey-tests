@@ -79,7 +79,7 @@ jobs:
         working-directory: lis-dev
         shell: bash
         env:
-          GH_TOKEN: ${{ secrets.LIS_GITHUB_MONITOR_DEPLOY_KEY }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           ./.scripts/update-project.sh
 
