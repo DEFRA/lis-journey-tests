@@ -79,7 +79,7 @@ jobs:
         working-directory: lis-dev
         shell: bash
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.LIS_GITHUB_MONITOR_PAT }}
         run: |
           ./.scripts/update-project.sh
 
@@ -111,10 +111,11 @@ jobs:
         run: echo "ROOT_DIR=${{ github.workspace }}" >> $GITHUB_ENV
 
       - name: Start development platform (lis-dev) and wait for it to be ready
-        working-directory: lis-dev
+        working-directory: lis-journey-tests/bin
         shell: bash
         run: |
-          docker compose up --wait-timeout 300 -d --quiet-pull
+          chmod +x platform.sh
+          ./platform.sh up
 
       - name: Wait for platform to stabilise
         shell: bash
@@ -183,7 +184,7 @@ jobs:
 
       - name: Upload Allure results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: allure-results
           path: lis-journey-tests/allure-results
@@ -191,7 +192,7 @@ jobs:
 
       - name: Upload Playwright HTML report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-report
           path: lis-journey-tests/playwright-report/html
@@ -214,13 +215,13 @@ jobs:
 
       - name: Upload docker logs
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: docker-logs
           path: logs.txt
 
       - name: Publish Test Report with Insights
-        uses: ctrf-io/github-test-reporter@v1
+        uses: ctrf-io/github-test-reporter@v1.1.0
         with:
           fail-rate-report: true
           flaky-rate-report: true
