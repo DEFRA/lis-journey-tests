@@ -7,6 +7,8 @@ USER root
 RUN apt-get update -qq \
     && apt-get install -qqy \
     curl \
+    libnss3-tools \
+    mkcert \
     zip \
     openjdk-17-jre-headless
 
