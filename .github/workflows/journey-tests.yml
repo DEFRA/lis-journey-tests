@@ -80,6 +80,8 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.LIS_GITHUB_MONITOR_PAT }}
+          GITHUB_TOKEN: ${{ secrets.LIS_GITHUB_MONITOR_PAT }}
+
         run: |
           ./.scripts/update-project.sh
 
@@ -92,6 +94,12 @@ jobs:
           echo "127.0.0.1 mock-defra-ci.lis.defra" | sudo tee -a /etc/hosts
           echo "127.0.0.1 npm-local.lis.defra" | sudo tee -a /etc/hosts
           echo "127.0.0.1 nuget-local.lis.defra" | sudo tee -a /etc/hosts
+
+      - name: Install mkcert and dependencies
+        shell: bash
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -qqy libnss3-tools mkcert
 
       - name: Setup lis-dev certificates
         working-directory: lis-dev
