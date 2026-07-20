@@ -69,25 +69,6 @@ jobs:
           ref: ${{ inputs.branch-set }}
           path: lis-journey-tests
 
-      - name: Fix permissions for lis-dev and lis-journey-tests scripts
-        shell: bash
-        run: |
-          chmod -R +x lis-dev/.scripts/*.sh || true
-          chmod -R +x lis-journey-tests/**/*.sh || true
-
-      - name: Pull in all lis-dev submodules
-        working-directory: lis-dev
-        shell: bash
-        env:
-          GH_TOKEN: ${{ secrets.LIS_GITHUB_MONITOR_PAT }}
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add - <<< "${{ secrets.LIS_SSH_KEY }}"
-          ./.scripts/update-project.sh
-
       - name: Add lis-dev hosts to /etc/hosts
         shell: bash
         run: |
@@ -98,23 +79,17 @@ jobs:
           echo "127.0.0.1 npm-local.lis.defra" | sudo tee -a /etc/hosts
           echo "127.0.0.1 nuget-local.lis.defra" | sudo tee -a /etc/hosts
 
+      - name: Fix permissions for lis-dev and lis-journey-tests scripts
+        shell: bash
+        run: |
+          chmod -R +x lis-dev/.scripts/*.sh || true
+          chmod -R +x lis-journey-tests/**/*.sh || true
+
       - name: Install mkcert and dependencies
         shell: bash
         run: |
           sudo apt-get update -qq
           sudo apt-get install -qqy libnss3-tools mkcert
-
-      - name: Setup lis-dev certificates
-        working-directory: lis-dev
-        shell: bash
-        run: |
-          ./.scripts/setup-certs.sh
-
-      - name: Publish local repositories to local npm and nuget registries
-        working-directory: lis-dev
-        shell: bash
-        run: |
-          ./.scripts/publish.sh
 
       # FIX: Set ROOT_DIR so Localstack init scripts mount correctly
       - name: Set ROOT_DIR for compose mounts
@@ -124,7 +99,14 @@ jobs:
       - name: Start development platform (lis-dev) and wait for it to be ready
         working-directory: lis-journey-tests/bin
         shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.LIS_GITHUB_MONITOR_PAT }}
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.LIS_SSH_KEY }}"
           chmod +x platform.sh
           ./platform.sh up
 
