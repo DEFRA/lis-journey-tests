@@ -82,6 +82,7 @@ jobs:
       - name: Fix permissions for lis-dev and lis-journey-tests scripts
         shell: bash
         run: |
+          sudo chown -R 10001:65533 /verdaccio || true
           sudo chown -R 10001:65533 lis-dev/.tools/verdaccio || true
           chmod -R +x lis-dev/.scripts/*.sh || true
           chmod -R +x lis-journey-tests/**/*.sh || true
@@ -110,6 +111,13 @@ jobs:
           ssh-add - <<< "${{ secrets.LIS_SSH_KEY }}"
           chmod +x platform.sh
           ./platform.sh up
+
+      - name: Archive npm failure logs
+        uses: actions/upload-artifact@v7
+        if: failure() # Only runs if the step above fails
+        with:
+            name: npm-logs
+            path: ~/.npm/_logs/
 
       - name: Wait for platform to stabilise
         shell: bash
@@ -171,10 +179,10 @@ jobs:
               sh -c "npm ci && npx playwright test --grep='$FILTER'"
           fi
 
-      - name: Debug Inspect identity-services network
+      - name: Debug Inspect lis-dev network
         if: always()
         shell: bash
-        run: docker network inspect lis-dev || true
+        run: docker network inspect lis-dev_default || true
 
       - name: Upload Allure results
         if: always()
