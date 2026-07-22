@@ -82,7 +82,7 @@ jobs:
       - name: Fix permissions for lis-dev and lis-journey-tests scripts
         shell: bash
         run: |
-          chmod -R a+rw lis-dev/.tools || true
+          sudo chown -R 10001:65533 lis-dev/.tools || true
           chmod -R +x lis-dev/.scripts/*.sh || true
           chmod -R +x lis-journey-tests/**/*.sh || true
 
