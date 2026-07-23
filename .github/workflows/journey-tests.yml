@@ -79,11 +79,16 @@ jobs:
           echo "127.0.0.1 npm-local.lis.defra" | sudo tee -a /etc/hosts
           echo "127.0.0.1 nuget-local.lis.defra" | sudo tee -a /etc/hosts
 
+      - name: Create storage directories for verdaccio and set permissions
+        shell: bash
+        run: |
+          mkdir -p lis-dev/.tools/verdaccio/verdaccio_storage
+          mkdir -p lis-dev/.tools/verdaccio/verdaccio_plugins
+          sudo chown -R 10001:65533 lis-dev/.tools/verdaccio || true
+
       - name: Fix permissions for lis-dev and lis-journey-tests scripts
         shell: bash
         run: |
-          sudo chown -R 10001:65533 /verdaccio || true
-          sudo chown -R 10001:65533 lis-dev/.tools/verdaccio || true
           chmod -R +x lis-dev/.scripts/*.sh || true
           chmod -R +x lis-journey-tests/**/*.sh || true
 
