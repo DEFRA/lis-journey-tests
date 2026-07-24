@@ -84,13 +84,13 @@ jobs:
         run: |
           mkdir -p lis-dev/.tools/verdaccio/verdaccio_storage
           mkdir -p lis-dev/.tools/verdaccio/verdaccio_plugins
-          sudo chown -R 10001:65533 lis-dev/.tools/verdaccio || true
+          sudo chown -R 10001:65533 lis-dev/.tools/verdaccio
 
       - name: Fix permissions for lis-dev and lis-journey-tests scripts
         shell: bash
         run: |
-          chmod -R +x lis-dev/.scripts/*.sh || true
-          chmod -R +x lis-journey-tests/**/*.sh || true
+          chmod -R +x lis-dev/.scripts/*.sh
+          chmod -R +x lis-journey-tests/**/*.sh
 
       - name: Install mkcert and dependencies
         shell: bash
