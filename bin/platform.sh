@@ -63,6 +63,8 @@ setup_tls_certificates() {
 publish_local_packages() {
     echo "[platform] Publishing local packages to local Verdaccio instance"
     ./.scripts/publish.sh
+    echo "[platform] Local packages published to local Verdaccio instance"
+    cat  "$LIS_DEV_DIR/.tools/verdaccio/verdaccio_storage/.verdaccio-db.json"
     return $?
 }
 
