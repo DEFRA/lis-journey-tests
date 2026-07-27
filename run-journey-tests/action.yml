@@ -1,56 +1,221 @@
 name: Run Journey Tests on GitHub
+description: 'Run journet tests for lis front and back office projects'
 
 inputs:
-  example-node-backend:
+  lis-front-office:
     required: false
     type: string
-  example-node-frontend:
+  lis-back-office:
     required: false
     type: string
+  test:
+    description: 'Choose test suite'
+    type: choice
+    required: false
+    default: ''
+    options:
+      - '@api'
+      - '@ui'
+  branch-set:
+    required: false
+    type: string
+    default: ${{ github.ref_name }}
 
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v4
+    - name: Checkout lis-dev referenced by branch-set input
+      uses: actions/checkout@v4
+      id: lis-dev-checkout-branch
+      continue-on-error: true
       with:
-        repository: DEFRA/cdp-node-journey-test-suite-template
+        repository: DEFRA/lis-dev
+        ref: ${{ inputs.branch-set }}
+        path: lis-dev
 
-    - name: Docker Login
-      uses: DEFRA/cdp-build-action/docker-login@main
-
-    - uses: actions/setup-node@v4
+    - name: Checkout lis-dev main branch if the previous checkout failed (e.g. branch doesn't exist in lis-dev repo)
+      if: steps.lis-dev-checkout-branch.outcome == 'failure'
+      uses: actions/checkout@v4
       with:
-        node-version: 20
-        cache: npm
-    - name: Setup the tests
-      run: npm i
-      shell: bash
-    - name: Start docker compose
+        repository: DEFRA/lis-dev
+        ref: main
+        path: lis-dev
+
+    - name: Checkout lis-journey-tests
+      uses: actions/checkout@v4
+      with:
+        repository: DEFRA/lis-journey-tests
+        ref: ${{ inputs.branch-set }}
+        path: lis-journey-tests
+
+    - name: Fix permissions for lis-dev and lis-journey-tests scripts
       shell: bash
       run: |
-          CDP_EXAMPLE_NODE_FRONTEND=${{inputs.example-node-frontend}} \
-          CDP_EXAMPLE_NODE_BACKEND=${{inputs.example-node-backend}} \
-          docker compose up --wait-timeout 300 -d --quiet-pull
-    - name: Run the tests
+        chmod -R +x lis-dev/**/*.sh || true
+        chmod -R +x lis-journey-tests/**/*.sh || true
+
+    - name: Pull in all lis-dev submodules
+      working-directory: lis-dev
       shell: bash
       run: |
-        npm run test:github
-        npm run report
-    - name: debug
+        ./.scripts/update-project.sh
+
+    - name: Add lis-dev hosts to /etc/hosts
+      shell: bash
+      run: |
+        echo "127.0.0.1 front-office.lis.defra" | sudo tee -a /etc/hosts
+        echo "127.0.0.1 back-office.lis.defra" | sudo tee -a /etc/hosts
+        echo "127.0.0.1 mock-entra-id.lis.defra" | sudo tee -a /etc/hosts
+        echo "127.0.0.1 mock-defra-ci.lis.defra" | sudo tee -a /etc/hosts
+        echo "127.0.0.1 npm-local.lis.defra" | sudo tee -a /etc/hosts
+        echo "127.0.0.1 nuget-local.lis.defra" | sudo tee -a /etc/hosts
+
+    - name: Setup lis-dev certificates
+      working-directory: lis-dev
+      shell: bash
+      run: |
+        ./.scripts/setup-certs.sh
+
+    - name: Publish local repositories to local npm and nuget registries
+      working-directory: lis-dev
+      shell: bash
+      run: |
+        ./.scripts/publish.sh
+
+    # FIX: Set ROOT_DIR so Localstack init scripts mount correctly
+    - name: Set ROOT_DIR for compose mounts
+      shell: bash
+      run: echo "ROOT_DIR=${{ github.workspace }}" >> $GITHUB_ENV
+
+    - name: Start development platform (lis-dev) and wait for it to be ready
+      working-directory: lis-dev
+      shell: bash
+      run: |
+        docker compose up --wait-timeout 300 -d --quiet-pull
+
+    - name: Wait for platform to stabilise
+      shell: bash
+      run: sleep 15
+
+    - name: List running containers
+      shell: bash
+      run: docker ps -a
+
+    - name: Debug back-office logs
+      shell: bash
+      run: docker logs lis-dev-back-office-hub-1 || true
+    - name: Debug back-office health endpoint
+      shell: bash
+      run: docker compose -p lis-dev exec -T lis-dev-back-office-hub-1 curl -v https://back-office.lis.defra/health
+
+    - name: Debug front-office logs
+      shell: bash
+      run: docker logs lis-dev-front-office-hub-1 || true
+
+    - name: Debug front-office health endpoint
+      shell: bash
+      run: docker compose -p lis-dev exec -T lis-dev-front-office-hub-1 curl -v https://front-office.lis.defra/health
+
+    - name: Ensure report directories exist
+      shell: bash
+      run: |
+        mkdir -p lis-journey-tests/allure-report
+        mkdir -p lis-journey-tests/playwright-report
+
+    - name: Run journey-tests inside Docker
+      working-directory: lis-journey-tests
+      shell: bash
+      env:
+        TEST_INPUT: ${{ inputs.test }}
+        TAG_INPUT: ${{ inputs.tag }}
+      run: |
+        FILTER=""
+
+        if [[ -n "$TEST_INPUT" ]]; then
+          FILTER="$TEST_INPUT"
+        fi
+
+        if [[ -n "$TAG_INPUT" ]]; then
+          if [[ -n "$FILTER" ]]; then
+            FILTER="$FILTER|$TAG_INPUT"
+          else
+            FILTER="$TAG_INPUT"
+          fi
+        fi
+
+        echo "Running tests with filter: $FILTER"
+
+        if [[ -z "$FILTER" ]]; then
+          docker compose -p lis-dev -f compose.yml up --build --abort-on-container-exit
+        else
+          docker compose -p lis-dev -f compose.yml run --rm --build journey-tests \
+            sh -c "npm ci && npx playwright test --grep='$FILTER'"
+        fi
+
+    - name: Debug Inspect identity-services network
       if: always()
-      run: |
-        docker compose logs > logs.txt
-        docker ps
       shell: bash
-    - name: Upload allure report
+      run: docker network inspect lis-dev || true
+
+    - name: Upload Allure results
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: allure-report
-        path: ./allure-report
-    - name: Upload docker compose logs
+        name: allure-results
+        path: lis-journey-tests/allure-results
+        if-no-files-found: ignore
+
+    - name: Upload Playwright HTML report
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: docker-compose-logs
-        path: ./logs.txt
+        name: playwright-report
+        path: lis-journey-tests/playwright-report/html
+        if-no-files-found: ignore
+
+    - name: Collect Docker logs
+      if: always()
+      shell: bash
+      run: |
+        echo "Docker container logs" > logs.txt
+        echo "=====================" >> logs.txt
+        docker ps -a >> logs.txt
+
+        for c in $(docker ps -a --format "{{.Names}}"); do
+          echo "=====================" >> logs.txt
+          echo "CONTAINER: $c" >> logs.txt
+          echo "=====================" >> logs.txt
+          docker logs $c >> logs.txt 2>&1 || true
+        done
+
+    - name: Upload docker logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: docker-logs
+        path: logs.txt
+
+    - name: Publish Test Report with Insights
+      uses: ctrf-io/github-test-reporter@v1
+      with:
+        fail-rate-report: true
+        flaky-rate-report: true
+        github-report: true
+        insights-report: true
+        pull-request-report: true
+        report-path: lis-journey-tests/playwright-report/*.json
+        slowest-report: true
+        summary-delta-report: true
+        upload-artifact: true
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+      if: always()
+
+    # Stop platform (UI + backend)
+    - name: Stop platform
+      if: always()
+      working-directory: lis-journey-tests/bin
+      shell: bash
+      run: ./platform.sh frontend down && ./platform.sh backend down
+
+    # Slack reporting is covered by CDP notification integration and is setup for DEV, Test and Ext-Test environments

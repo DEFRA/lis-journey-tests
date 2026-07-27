@@ -1,15 +1,253 @@
 name: Run Journey Tests on GitHub
 
 permissions:
+  contents: write
   checks: write
   pull-requests: write
 
 on:
   workflow_dispatch:
+    inputs:
+      test:
+        description: 'Choose test suite'
+        type: choice
+        required: false
+        default: ''
+        options:
+          - ''
+          - 'api'
+          - 'ui'
+      tag:
+        description: 'Choose test group'
+        type: choice
+        required: false
+        default: ''
+        options:
+          - ''
+          - 'smoke'
+          - 'e2e'
+      branch-set:
+        description: 'Which branch to test (branch names must match across all repos)'
+        type: string
+        required: false
+        default: main
+
   workflow_call:
+    inputs:
+      test:
+        required: false
+        type: string
+        default: ''
+      tag:
+        required: false
+        type: string
+        default: ''
+      branch-set:
+        required: false
+        type: string
+        default: ${{ github.ref_name }}
+
 jobs:
-  build:
+  journey-tests:
     name: Run Journey Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
-      - uses: DEFRA/cdp-node-journey-test-suite-template/run-journey-tests@main
+      - name: Checkout lis-dev
+        uses: actions/checkout@v7
+        with:
+          repository: DEFRA/lis-dev
+          ref: main
+          path: lis-dev
+          ssh-key: ${{ secrets.LIS_DEV_DEPLOY_KEY }}
+          persist-credentials: false
+
+      - name: Checkout lis-journey-tests
+        uses: actions/checkout@v7
+        with:
+          repository: DEFRA/lis-journey-tests
+          ref: ${{ inputs.branch-set }}
+          path: lis-journey-tests
+
+      - name: Add lis-dev hosts to /etc/hosts
+        shell: bash
+        run: |
+          echo "127.0.0.1 front-office.lis.defra" | sudo tee -a /etc/hosts
+          echo "127.0.0.1 back-office.lis.defra" | sudo tee -a /etc/hosts
+          echo "127.0.0.1 mock-entra-id.lis.defra" | sudo tee -a /etc/hosts
+          echo "127.0.0.1 mock-defra-ci.lis.defra" | sudo tee -a /etc/hosts
+          echo "127.0.0.1 npm-local.lis.defra" | sudo tee -a /etc/hosts
+          echo "127.0.0.1 nuget-local.lis.defra" | sudo tee -a /etc/hosts
+
+      - name: Create storage directories for verdaccio and set permissions
+        shell: bash
+        run: |
+          mkdir -p lis-dev/.tools/verdaccio/verdaccio_storage
+          mkdir -p lis-dev/.tools/verdaccio/verdaccio_plugins
+          sudo chown -R 10001:65533 lis-dev/.tools/verdaccio
+
+      - name: Fix permissions for lis-dev and lis-journey-tests scripts
+        shell: bash
+        run: |
+          chmod -R +x lis-dev/.scripts/*.sh
+          chmod -R +x lis-journey-tests/**/*.sh
+
+      - name: Install mkcert and dependencies
+        shell: bash
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -qqy libnss3-tools mkcert
+
+      # FIX: Set ROOT_DIR so Localstack init scripts mount correctly
+      - name: Set ROOT_DIR for compose mounts
+        shell: bash
+        run: echo "ROOT_DIR=${{ github.workspace }}" >> $GITHUB_ENV
+
+      - name: Start development platform (lis-dev) and wait for it to be ready
+        working-directory: lis-journey-tests/bin
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.LIS_GITHUB_MONITOR_PAT }}
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.LIS_SSH_KEY }}"
+          chmod +x platform.sh
+          ./platform.sh up
+
+      - name: Archive npm failure logs
+        uses: actions/upload-artifact@v7
+        if: failure() # Only runs if the step above fails
+        with:
+            name: npm-logs
+            path: ~/.npm/_logs/
+
+      - name: Wait for platform to stabilise
+        shell: bash
+        run: sleep 15
+
+      - name: List running containers
+        shell: bash
+        run: docker ps -a
+
+      - name: Debug back-office logs
+        shell: bash
+        run: docker logs lis-dev-back-office-hub-1 || true
+
+      - name: Debug back-office health endpoint
+        shell: bash
+        run: curl -v https://back-office.lis.defra/health
+
+      - name: Debug front-office logs
+        shell: bash
+        run: docker logs lis-dev-front-office-hub-1 || true
+
+      - name: Debug front-office health endpoint
+        shell: bash
+        run: curl -v https://front-office.lis.defra/health
+
+      - name: Ensure report directories exist
+        shell: bash
+        run: |
+          mkdir -p lis-journey-tests/allure-report
+          mkdir -p lis-journey-tests/playwright-report
+
+      - name: Run journey-tests inside Docker
+        working-directory: lis-journey-tests
+        shell: bash
+        env:
+          TEST_INPUT: ${{ inputs.test }}
+          TAG_INPUT: ${{ inputs.tag }}
+        run: |
+          FILTER=""
+
+          if [[ -n "$TEST_INPUT" ]]; then
+          FILTER="$TEST_INPUT"
+          fi
+
+          if [[ -n "$TAG_INPUT" ]]; then
+          if [[ -n "$FILTER" ]]; then
+              FILTER="$FILTER|$TAG_INPUT"
+          else
+              FILTER="$TAG_INPUT"
+          fi
+          fi
+
+          echo "Running tests with filter: $FILTER"
+
+          if [[ -z "$FILTER" ]]; then
+          docker compose -p lis-dev -f compose.yml up --build --abort-on-container-exit
+          else
+          docker compose -p lis-dev -f compose.yml run --rm --build journey-tests \
+              sh -c "npm ci && npx playwright test --grep='$FILTER'"
+          fi
+
+      - name: Debug Inspect lis-dev network
+        if: always()
+        shell: bash
+        run: docker network inspect lis-dev_default || true
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: allure-results
+          path: lis-journey-tests/allure-results
+          if-no-files-found: ignore
+
+      - name: Upload Playwright HTML report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: lis-journey-tests/playwright-report/html
+          if-no-files-found: ignore
+
+      - name: Collect Docker logs
+        if: always()
+        shell: bash
+        run: |
+          echo "Docker container logs" > logs.txt
+          echo "=====================" >> logs.txt
+          docker ps -a >> logs.txt
+
+          for c in $(docker ps -a --format "{{.Names}}"); do
+          echo "=====================" >> logs.txt
+          echo "CONTAINER: $c" >> logs.txt
+          echo "=====================" >> logs.txt
+          docker logs $c >> logs.txt 2>&1 || true
+          done
+
+      - name: Upload docker logs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: docker-logs
+          path: logs.txt
+
+      - name: Publish Test Report with Insights
+        uses: ctrf-io/github-test-reporter@v1.1.0
+        with:
+          fail-rate-report: true
+          flaky-rate-report: true
+          github-report: true
+          insights-report: true
+          pull-request-report: true
+          report-path: lis-journey-tests/playwright-report/*.json
+          slowest-report: true
+          summary-delta-report: true
+          upload-artifact: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: always()
+
+      # Stop platform (UI + backend)
+      - name: Stop platform
+        if: always()
+        working-directory: lis-journey-tests/bin
+        shell: bash
+        run: ./platform.sh down
+
+      # Slack reporting is covered by CDP notification integration and is setup for DEV, Test and Ext-Test environments
