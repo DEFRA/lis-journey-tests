@@ -4,7 +4,7 @@ import { defineConfig, devices } from '@playwright/test'
 import { defineBddConfig } from 'playwright-bdd'
 import { ReporterDescription } from 'playwright/test'
 
-const serverTimeout = 2 * 60 * 1000
+const serverTimeout = 5 * 60 * 1000
 // Set Environment
 const ENV = process.env.ENVIRONMENT ?? 'local'
 const isLocal = ENV === 'local'
