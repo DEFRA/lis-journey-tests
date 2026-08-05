@@ -4,13 +4,25 @@ import { LisFrontOfficeClient } from '../features/support/api/lis.front.office.c
 import { LisBackOfficeClient } from '../features/support/api/lis.back.office.client'
 import { LisFrontOfficeHomePage } from '../features/support/page-objects/front-office/home.page'
 import { LisBackOfficeHomePage } from '../features/support/page-objects/back-office/home.page'
+import AxeBuilder from '@axe-core/playwright'
 
 export const test = base.extend<{
   lisFrontOfficeClient: LisFrontOfficeClient
   lisBackOfficeClient: LisBackOfficeClient
   lisFrontOfficeHomePage: LisFrontOfficeHomePage
   lisBackOfficeHomePage: LisBackOfficeHomePage
+  axeBuilder: AxeBuilder
 }>({
+  axeBuilder: async ({ page }, use) => {
+    const axeBuilder = new AxeBuilder({ page }).withTags([
+      'wcag2a',
+      'wcag2aa',
+      'wcag21a',
+      'wcag21aa'
+    ])
+
+    await use(axeBuilder)
+  },
   // eslint-disable-next-line no-empty-pattern
   lisBackOfficeClient: async ({}, use) => {
     const apiContext = await request.newContext({
