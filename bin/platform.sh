@@ -61,22 +61,12 @@ setup_tls_certificates() {
     return $?
 }
 
-# This is a stopgap until real package publishing (a private registry, CI-published versions, etc.) is in place
-publish_local_packages() {
-    echo "[platform] Publishing local packages to local Verdaccio instance"
-    ./.scripts/publish.sh
-    return $?
-}
-
 start_platform() {
     cd "$LIS_DEV_DIR"
 
     pull_and_update_submodules
     verify_etc_hosts_entry
     setup_tls_certificates
-
-    # This is a stopgap until real package publishing (a private registry, CI-published versions, etc.) is in place
-    publish_local_packages
 
 	echo "[platform] Starting lis-dev platform..."
 
