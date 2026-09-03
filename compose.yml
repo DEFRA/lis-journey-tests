@@ -22,6 +22,8 @@ services:
       - "mock-defra-ci.lis.defra:host-gateway"
       - "npm-local.lis.defra:host-gateway"
       - "nuget-local.lis.defra:host-gateway"
+      - "fake-idp.lis.defra:host-gateway"
+      - "fake-service.lis.defra:host-gateway"
     networks:
       - lis-dev_default
 

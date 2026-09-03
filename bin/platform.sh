@@ -38,6 +38,8 @@ verify_etc_hosts_entry() {
         "127.0.0.1 mock-defra-ci.lis.defra"
         "127.0.0.1 npm-local.lis.defra"
         "127.0.0.1 nuget-local.lis.defra"
+        "127.0.0.1 fake-idp.lis.defra"
+        "127.0.0.1 fake-service.lis.defra"
     )
     for i in "${hosts[@]}"; do
         echo "[platform] Checking /etc/hosts entry: $i"
@@ -59,22 +61,12 @@ setup_tls_certificates() {
     return $?
 }
 
-# This is a stopgap until real package publishing (a private registry, CI-published versions, etc.) is in place
-publish_local_packages() {
-    echo "[platform] Publishing local packages to local Verdaccio instance"
-    ./.scripts/publish.sh
-    return $?
-}
-
 start_platform() {
     cd "$LIS_DEV_DIR"
 
     pull_and_update_submodules
     verify_etc_hosts_entry
     setup_tls_certificates
-
-    # This is a stopgap until real package publishing (a private registry, CI-published versions, etc.) is in place
-    publish_local_packages
 
 	echo "[platform] Starting lis-dev platform..."
 
