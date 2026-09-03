@@ -38,6 +38,8 @@ verify_etc_hosts_entry() {
         "127.0.0.1 mock-defra-ci.lis.defra"
         "127.0.0.1 npm-local.lis.defra"
         "127.0.0.1 nuget-local.lis.defra"
+        "127.0.0.1 fake-idp.lis.defra"
+        "127.0.0.1 fake-service.lis.defra"
     )
     for i in "${hosts[@]}"; do
         echo "[platform] Checking /etc/hosts entry: $i"

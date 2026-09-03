@@ -78,6 +78,8 @@ jobs:
           echo "127.0.0.1 mock-defra-ci.lis.defra" | sudo tee -a /etc/hosts
           echo "127.0.0.1 npm-local.lis.defra" | sudo tee -a /etc/hosts
           echo "127.0.0.1 nuget-local.lis.defra" | sudo tee -a /etc/hosts
+          echo "127.0.0.1 fake-idp.lis.defra" | sudo tee -a /etc/hosts
+          echo "127.0.0.1 fake-service.lis.defra" | sudo tee -a /etc/hosts
 
       - name: Create storage directories for verdaccio and set permissions
         shell: bash
