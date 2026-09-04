@@ -28,8 +28,8 @@ Given(
 Then(
   'the LIS Back Office home page should be loaded correctly',
   async function ({ lisBackOfficeHomePage }) {
-    await expect(lisBackOfficeHomePage.heading).toBeVisible()
-    await expect(lisBackOfficeHomePage.heading).toHaveText(
+    await expect(lisBackOfficeHomePage.headingCaption).toBeVisible()
+    await expect(lisBackOfficeHomePage.headingCaption).toHaveText(
       'Livestock back office'
     )
   }

@@ -1,9 +1,10 @@
-import { request } from '@playwright/test'
+import { request, Page } from '@playwright/test'
 import { test as base, createBdd } from 'playwright-bdd'
 import { LisFrontOfficeClient } from '../features/support/api/lis.front.office.client'
 import { LisBackOfficeClient } from '../features/support/api/lis.back.office.client'
 import { LisFrontOfficeHomePage } from '../features/support/page-objects/front-office/home.page'
 import { LisBackOfficeHomePage } from '../features/support/page-objects/back-office/home.page'
+import { LisBackOfficeIdentityPage } from '../features/support/page-objects/back-office/identity.page'
 import AxeBuilder from '@axe-core/playwright'
 
 export const test = base.extend<{
@@ -11,10 +12,40 @@ export const test = base.extend<{
   lisBackOfficeClient: LisBackOfficeClient
   lisFrontOfficeHomePage: LisFrontOfficeHomePage
   lisBackOfficeHomePage: LisBackOfficeHomePage
-  axeBuilder: AxeBuilder
+  lisBackOfficeIdentityPage: LisBackOfficeIdentityPage
+  axeFrontOfficeBuilder: AxeBuilder
+  axeBackOfficeBuilder: AxeBuilder
+  frontOfficePage: Page
+  backOfficePage: Page
 }>({
-  axeBuilder: async ({ page }, use) => {
-    const axeBuilder = new AxeBuilder({ page }).withTags([
+  frontOfficePage: async ({ browser }, use) => {
+    const context = await browser.newContext({})
+    await use(await context.newPage())
+  },
+
+  backOfficePage: async ({ browser }, use) => {
+    const context = await browser.newContext({
+      baseURL:
+        process.env.CDP === undefined && process.env.ENVIRONMENT === 'dev'
+          ? process.env.apiURLExt
+          : process.env.apiURL
+    })
+    await use(await context.newPage())
+  },
+
+  axeFrontOfficeBuilder: async ({ frontOfficePage }, use) => {
+    const axeBuilder = new AxeBuilder({ page: frontOfficePage }).withTags([
+      'wcag2a',
+      'wcag2aa',
+      'wcag21a',
+      'wcag21aa'
+    ])
+
+    await use(axeBuilder)
+  },
+
+  axeBackOfficeBuilder: async ({ backOfficePage }, use) => {
+    const axeBuilder = new AxeBuilder({ page: backOfficePage }).withTags([
       'wcag2a',
       'wcag2aa',
       'wcag21a',
@@ -49,22 +80,21 @@ export const test = base.extend<{
     await use(lisFrontOfficeClient)
   },
 
-  lisFrontOfficeHomePage: async ({ page }, use) => {
-    const lisFrontOfficeHomePage = new LisFrontOfficeHomePage(page)
+  lisFrontOfficeHomePage: async ({ frontOfficePage }, use) => {
+    const lisFrontOfficeHomePage = new LisFrontOfficeHomePage(frontOfficePage)
     await use(lisFrontOfficeHomePage)
   },
 
-  lisBackOfficeHomePage: async ({ browser }, use) => {
-    const context = await browser.newContext({
-      baseURL:
-        process.env.CDP === undefined && process.env.ENVIRONMENT === 'dev'
-          ? process.env.apiURLExt
-          : process.env.apiURL
-    })
-    const lisBackOfficeHomePage = new LisBackOfficeHomePage(
-      await context.newPage()
-    )
+  lisBackOfficeHomePage: async ({ backOfficePage }, use) => {
+    const lisBackOfficeHomePage = new LisBackOfficeHomePage(backOfficePage)
     await use(lisBackOfficeHomePage)
+  },
+
+  lisBackOfficeIdentityPage: async ({ backOfficePage }, use) => {
+    const lisBackOfficeIdentityPage = new LisBackOfficeIdentityPage(
+      backOfficePage
+    )
+    await use(lisBackOfficeIdentityPage)
   }
 })
 
