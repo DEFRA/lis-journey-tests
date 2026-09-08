@@ -19,6 +19,10 @@ echo "CI:                       ${CI:-<not set>}"
 echo "CDP:                      ${CDP:-<not set>}"
 echo ""
 
+echo "LIS_FRONTOFFICE_BASE_URL:         ${LIS_FRONTOFFICE_BASE_URL:-<not set>}"
+echo "LIS_BACKOFFICE_BASE_URL:          ${LIS_BACKOFFICE_BASE_URL:-<not set>}"
+echo ""
+
 echo "GITHUB_ACTIONS:           ${GITHUB_ACTIONS:-<not set>}"
 echo "RUN_ID:                   ${RUN_ID:-<not set>}"
 echo ""
