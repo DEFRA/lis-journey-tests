@@ -25,10 +25,7 @@ export const test = base.extend<{
 
   backOfficePage: async ({ browser }, use) => {
     const context = await browser.newContext({
-      baseURL:
-        process.env.CDP === undefined && process.env.ENVIRONMENT === 'dev'
-          ? process.env.apiURLExt
-          : process.env.apiURL
+      baseURL: process.env.backOfficeUrl
     })
     await use(await context.newPage())
   },
@@ -57,10 +54,7 @@ export const test = base.extend<{
   // eslint-disable-next-line no-empty-pattern
   lisBackOfficeClient: async ({}, use) => {
     const apiContext = await request.newContext({
-      baseURL:
-        process.env.CDP === undefined && process.env.ENVIRONMENT === 'dev'
-          ? process.env.apiURLExt
-          : process.env.apiURL
+      baseURL: process.env.backOfficeUrl
     })
     const lisBackOfficeClient = new LisBackOfficeClient(
       apiContext,
@@ -70,9 +64,7 @@ export const test = base.extend<{
   },
   // eslint-disable-next-line no-empty-pattern
   lisFrontOfficeClient: async ({}, use) => {
-    const apiContext = await request.newContext({
-      baseURL: process.env.uiURL
-    })
+    const apiContext = await request.newContext({})
     const lisFrontOfficeClient = new LisFrontOfficeClient(
       apiContext,
       'lis-front-office'
