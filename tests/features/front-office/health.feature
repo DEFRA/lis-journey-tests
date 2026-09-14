@@ -1,4 +1,4 @@
-@api @frontoffice @health
+@api @frontoffice @health @dev
 Feature: LIS Front Office - Health Checks
 
   Background: Ensure the front office application is running

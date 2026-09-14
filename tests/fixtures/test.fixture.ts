@@ -5,6 +5,7 @@ import { LisBackOfficeClient } from '../features/support/api/lis.back.office.cli
 import { LisFrontOfficeHomePage } from '../features/support/page-objects/front-office/home.page'
 import { LisBackOfficeHomePage } from '../features/support/page-objects/back-office/home.page'
 import { LisBackOfficeIdentityPage } from '../features/support/page-objects/back-office/identity.page'
+import { LisFrontOfficeIdentityPage } from '../features/support/page-objects/front-office/identity.page'
 import AxeBuilder from '@axe-core/playwright'
 
 export const test = base.extend<{
@@ -13,6 +14,7 @@ export const test = base.extend<{
   lisFrontOfficeHomePage: LisFrontOfficeHomePage
   lisBackOfficeHomePage: LisBackOfficeHomePage
   lisBackOfficeIdentityPage: LisBackOfficeIdentityPage
+  lisFrontOfficeIdentityPage: LisFrontOfficeIdentityPage
   axeFrontOfficeBuilder: AxeBuilder
   axeBackOfficeBuilder: AxeBuilder
   frontOfficePage: Page
@@ -87,6 +89,13 @@ export const test = base.extend<{
       backOfficePage
     )
     await use(lisBackOfficeIdentityPage)
+  },
+
+  lisFrontOfficeIdentityPage: async ({ frontOfficePage }, use) => {
+    const lisFrontOfficeIdentityPage = new LisFrontOfficeIdentityPage(
+      frontOfficePage
+    )
+    await use(lisFrontOfficeIdentityPage)
   }
 })
 

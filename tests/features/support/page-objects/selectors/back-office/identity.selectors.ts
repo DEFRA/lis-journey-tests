@@ -1,4 +1,4 @@
-import type { TestEnv } from '../../../../../configs/env'
+import type { TestEnv } from '../../../../../../configs/env'
 
 type IdentitySelectors = {
   userDescriptionLabel: string
