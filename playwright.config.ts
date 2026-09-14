@@ -20,13 +20,15 @@ if (envFile && fs.existsSync(envFile)) {
 }
 
 // Read values from environment variables
-const ui = process.env.LIS_FRONTEND_BASE_URL || 'https://front-office.lis.defra'
-const api = process.env.LIS_BACKEND_BASE_URL || 'https://back-office.lis.defra'
+const frontOfficeUrl =
+  process.env.LIS_FRONTOFFICE_BASE_URL || 'https://front-office.lis.defra'
+const backOfficeUrl =
+  process.env.LIS_BACKOFFICE_BASE_URL || 'https://back-office.lis.defra'
 const isCDPEnvironment = ENV === 'dev' || ENV === 'test'
 
 process.env.isLocal = isLocal.toString()
-process.env.uiURL = ui
-process.env.apiURL = api
+process.env.frontOfficeUrl = frontOfficeUrl
+process.env.backOfficeUrl = backOfficeUrl
 process.env.isCDPEnvironment = isCDPEnvironment.toString()
 
 const reporters: ReporterDescription[] = [
@@ -78,7 +80,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-    baseURL: ui,
+    baseURL: frontOfficeUrl,
     screenshot: 'only-on-failure',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'retain-on-failure',

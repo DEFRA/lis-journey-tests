@@ -9,12 +9,21 @@ Given(
 )
 
 Then(
-  'the LIS Front Office home page should be loaded correctly',
-  async function ({ lisFrontOfficeHomePage }) {
+  /^the (unauthenticated|authenticated) LIS Front Office home page should be loaded correctly$/,
+  async function ({ lisFrontOfficeHomePage }, authState: string) {
     await expect(lisFrontOfficeHomePage.heading).toBeVisible()
-    await expect(lisFrontOfficeHomePage.heading).toHaveText(
-      'Livestock Information'
-    )
+    if (authState === 'unauthenticated') {
+      await expect(lisFrontOfficeHomePage.heading).toHaveText(
+        'Livestock Information'
+      )
+      await expect(lisFrontOfficeHomePage.startNowLink).toBeVisible()
+    } else {
+      await expect(lisFrontOfficeHomePage.heading).toHaveText(
+        'Livestock Information Service'
+      )
+      await expect(lisFrontOfficeHomePage.profileMenuLink).toBeVisible()
+      await expect(lisFrontOfficeHomePage.cattleMenuLink).toBeVisible()
+    }
   }
 )
 
@@ -26,11 +35,22 @@ Given(
 )
 
 Then(
-  'the LIS Back Office home page should be loaded correctly',
-  async function ({ lisBackOfficeHomePage }) {
+  /^the (unauthenticated|authenticated) LIS Back Office home page should be loaded correctly$/,
+  async function (
+    { lisBackOfficeHomePage, lisBackOfficeIdentityPage },
+    authState: string
+  ) {
     await expect(lisBackOfficeHomePage.headingCaption).toBeVisible()
-    await expect(lisBackOfficeHomePage.headingCaption).toHaveText(
-      'Livestock back office'
-    )
+    if (authState === 'unauthenticated') {
+      await expect(lisBackOfficeIdentityPage.subHeading).toHaveText('Sign in')
+      await expect(lisBackOfficeIdentityPage.signInButton).toBeVisible()
+    } else {
+      await expect(lisBackOfficeHomePage.headingCaption).toHaveText(
+        'Livestock back office'
+      )
+      await expect(lisBackOfficeHomePage.cattleMenuLink).toBeVisible()
+      await expect(lisBackOfficeHomePage.profileMenuLink).toBeVisible()
+      await expect(lisBackOfficeHomePage.signOutLink).toBeVisible()
+    }
   }
 )

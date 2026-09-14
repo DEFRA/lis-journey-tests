@@ -1,10 +1,10 @@
 import { Locator, Page } from '@playwright/test'
 import { BasePage } from '../base.page'
-import { getIdentitySelectors } from '../selectors/back-office/identity.selectors'
+import { getIdentitySelectors } from '../selectors/front-office/identity.selectors'
 import { getEnv } from '../../../../../configs/env'
 import { fakeUsers } from '../../../../utils/fake.users'
 
-export class LisBackOfficeIdentityPage extends BasePage {
+export class LisFrontOfficeIdentityPage extends BasePage {
   public readonly signInButton: Locator
 
   constructor(page: Page) {
@@ -17,6 +17,9 @@ export class LisBackOfficeIdentityPage extends BasePage {
   }
 
   public async authenticate(userRole: string) {
+    // Append "Cph" to the userRole for front office users
+    await this.signInButton.waitFor({ state: 'visible' })
+    userRole = `${userRole.toLowerCase().trim()}Cph`
     const user = fakeUsers[userRole as keyof typeof fakeUsers]
     if (!user) {
       throw new Error(`User role "${userRole}" not found in fakeUsers`)

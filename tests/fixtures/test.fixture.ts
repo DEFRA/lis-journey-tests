@@ -5,6 +5,7 @@ import { LisBackOfficeClient } from '../features/support/api/lis.back.office.cli
 import { LisFrontOfficeHomePage } from '../features/support/page-objects/front-office/home.page'
 import { LisBackOfficeHomePage } from '../features/support/page-objects/back-office/home.page'
 import { LisBackOfficeIdentityPage } from '../features/support/page-objects/back-office/identity.page'
+import { LisFrontOfficeIdentityPage } from '../features/support/page-objects/front-office/identity.page'
 import AxeBuilder from '@axe-core/playwright'
 
 export const test = base.extend<{
@@ -13,6 +14,7 @@ export const test = base.extend<{
   lisFrontOfficeHomePage: LisFrontOfficeHomePage
   lisBackOfficeHomePage: LisBackOfficeHomePage
   lisBackOfficeIdentityPage: LisBackOfficeIdentityPage
+  lisFrontOfficeIdentityPage: LisFrontOfficeIdentityPage
   axeFrontOfficeBuilder: AxeBuilder
   axeBackOfficeBuilder: AxeBuilder
   frontOfficePage: Page
@@ -25,10 +27,7 @@ export const test = base.extend<{
 
   backOfficePage: async ({ browser }, use) => {
     const context = await browser.newContext({
-      baseURL:
-        process.env.CDP === undefined && process.env.ENVIRONMENT === 'dev'
-          ? process.env.apiURLExt
-          : process.env.apiURL
+      baseURL: process.env.backOfficeUrl
     })
     await use(await context.newPage())
   },
@@ -57,10 +56,7 @@ export const test = base.extend<{
   // eslint-disable-next-line no-empty-pattern
   lisBackOfficeClient: async ({}, use) => {
     const apiContext = await request.newContext({
-      baseURL:
-        process.env.CDP === undefined && process.env.ENVIRONMENT === 'dev'
-          ? process.env.apiURLExt
-          : process.env.apiURL
+      baseURL: process.env.backOfficeUrl
     })
     const lisBackOfficeClient = new LisBackOfficeClient(
       apiContext,
@@ -70,9 +66,7 @@ export const test = base.extend<{
   },
   // eslint-disable-next-line no-empty-pattern
   lisFrontOfficeClient: async ({}, use) => {
-    const apiContext = await request.newContext({
-      baseURL: process.env.uiURL
-    })
+    const apiContext = await request.newContext({})
     const lisFrontOfficeClient = new LisFrontOfficeClient(
       apiContext,
       'lis-front-office'
@@ -95,6 +89,13 @@ export const test = base.extend<{
       backOfficePage
     )
     await use(lisBackOfficeIdentityPage)
+  },
+
+  lisFrontOfficeIdentityPage: async ({ frontOfficePage }, use) => {
+    const lisFrontOfficeIdentityPage = new LisFrontOfficeIdentityPage(
+      frontOfficePage
+    )
+    await use(lisFrontOfficeIdentityPage)
   }
 })
 
