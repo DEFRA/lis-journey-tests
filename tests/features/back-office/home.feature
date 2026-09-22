@@ -2,7 +2,5 @@
 Feature: LIS Back Office Home Page
 
   Scenario: Home Page
-    Given I am on the LIS Back Office home page
-    When I sign in as a standard user
-    Then the back office user should be signed in successfully
+    Given I am authenticated as a back office standard user
     And the authenticated LIS Back Office home page should be loaded correctly

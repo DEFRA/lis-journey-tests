@@ -1,9 +1,12 @@
-import { expect, Page } from '@playwright/test'
+import { expect, Locator, Page } from '@playwright/test'
 import { BasePage } from '../base.page'
 
 export class LisBackOfficeHomePage extends BasePage {
+  public readonly headingCaption: Locator
+
   constructor(page: Page) {
     super(page)
+    this.headingCaption = page.locator('.govuk-caption-xl')
   }
 
   public async navigateToHomePage() {

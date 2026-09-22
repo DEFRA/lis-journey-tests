@@ -21,7 +21,7 @@ export class BasePage {
     this.page = page
     this.heading = page.locator('.govuk-heading-xl')
     this.subHeading = page.locator('.govuk-heading-l')
-    this.headingCaption = page.locator('.govuk-caption-xl')
+    this.headingCaption = page.locator('.govuk-caption-l')
     this.backButton = page.locator('.govuk-back-link')
     this.errorTitle = page.locator(
       '.govuk-error-summary .govuk-error-summary__title'
@@ -51,5 +51,9 @@ export class BasePage {
     for (const message of messages) {
       await expect(this.errorMessages).toContainText(message)
     }
+  }
+
+  async navigateToHoldingDetails(species: string, cphNumber: string) {
+    await this.page.goto(`/${species}/holdings/${cphNumber}`)
   }
 }
