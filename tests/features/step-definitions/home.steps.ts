@@ -54,3 +54,10 @@ Then(
     }
   }
 )
+
+Given(
+  /^I select the (.*) species option from the species list$/,
+  async ({ lisFrontOfficeHomePage }, species: string) => {
+    await lisFrontOfficeHomePage.selectSpecies(species)
+  }
+)
