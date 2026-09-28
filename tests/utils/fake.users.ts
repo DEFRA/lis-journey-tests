@@ -15,17 +15,17 @@ export const fakeUsers = {
     hint: 'Internal test role'
   },
   singleCph: {
-    email: 'oakfield.farmer@oakhill-farms.co.uk',
+    email: 'defralivestock+oakfield@gmail.com',
     name: 'Oakfield Farmer',
     hint: 'User with a single holding'
   },
   multipleCph: {
-    email: 'fairfield.farmer@fairfield-farms.co.uk',
+    email: 'defralivestock+fairfield@gmail.com',
     name: 'Fairfield Farmer',
     hint: 'User with multiple holdings'
   },
   noCph: {
-    email: 'farmer@example.com',
+    email: 'defralivestock+noholdings@gmail.com',
     name: 'Test Farmer',
     hint: 'User with no linked holdings'
   }
