@@ -31,6 +31,11 @@ on:
         type: string
         required: false
         default: main
+      lis-dev-ref:
+        description: 'Which lis-dev branch or commit to run the platform from'
+        type: string
+        required: false
+        default: main
 
   workflow_call:
     inputs:
@@ -46,6 +51,10 @@ on:
         required: false
         type: string
         default: ${{ github.ref_name }}
+      lis-dev-ref:
+        required: false
+        type: string
+        default: main
 
 jobs:
   journey-tests:
@@ -57,7 +66,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: DEFRA/lis-dev
-          ref: main
+          ref: ${{ inputs.lis-dev-ref }}
           path: lis-dev
           ssh-key: ${{ secrets.LIS_DEV_DEPLOY_KEY }}
           persist-credentials: false
@@ -136,7 +145,7 @@ jobs:
 
       - name: Debug back-office logs
         shell: bash
-        run: docker logs lis-dev-back-office-hub-1 || true
+        run: docker logs lis-dev-lis-hubs-back-office-1 || true
 
       - name: Debug back-office health endpoint
         shell: bash
@@ -144,7 +153,7 @@ jobs:
 
       - name: Debug front-office logs
         shell: bash
-        run: docker logs lis-dev-front-office-hub-1 || true
+        run: docker logs lis-dev-lis-hubs-front-office-1 || true
 
       - name: Debug front-office health endpoint
         shell: bash
