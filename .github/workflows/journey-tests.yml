@@ -1,6 +1,7 @@
 name: Run Journey Tests on GitHub
 
 permissions:
+  id-token: write
   contents: write
   checks: write
   pull-requests: write
@@ -55,6 +56,11 @@ on:
         required: false
         type: string
         default: main
+      image-version:
+        description: 'Published lis-journey-tests image to run; builds from source when empty'
+        required: false
+        type: string
+        default: ''
 
 jobs:
   journey-tests:
@@ -159,6 +165,28 @@ jobs:
         shell: bash
         run: curl -v https://front-office.lis.defra/health
 
+      - name: Configure AWS credentials
+        if: inputs.image-version != ''
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-region: eu-west-2
+          role-to-assume: arn:aws:iam::094954420758:role/github-lis-journey-tests-build-role
+
+      - name: Log in to Amazon ECR
+        if: inputs.image-version != ''
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          mask-password: 'true'
+
+      - name: Pull the published journey-tests image
+        if: inputs.image-version != ''
+        env:
+          IMAGE: ${{ steps.ecr.outputs.registry }}/lis-journey-tests:${{ inputs.image-version }}
+        run: |
+          docker pull "$IMAGE"
+          echo "JOURNEY_TESTS_IMAGE=$IMAGE" >> "$GITHUB_ENV"
+
       - name: Ensure report directories exist
         shell: bash
         run: |
@@ -188,10 +216,16 @@ jobs:
 
           echo "Running tests with filter: $FILTER"
 
+          # Run the published image when one was pulled, otherwise build it.
+          BUILD=()
+          if [[ -z "${JOURNEY_TESTS_IMAGE:-}" ]]; then
+          BUILD=(--build)
+          fi
+
           if [[ -z "$FILTER" ]]; then
-          docker compose -p lis-dev -f compose.yml up --build --abort-on-container-exit
+          docker compose -p lis-dev -f compose.yml up "${BUILD[@]}" --abort-on-container-exit
           else
-          docker compose -p lis-dev -f compose.yml run --rm --build journey-tests \
+          docker compose -p lis-dev -f compose.yml run --rm "${BUILD[@]}" journey-tests \
               sh -c "npm ci && npx playwright test --grep='$FILTER'"
           fi
 
