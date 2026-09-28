@@ -25,3 +25,11 @@ Feature: LIS Front Office Home Page
         And I should see the following holding details for the CPH:
             | CPH number  | Holding name | Business name | Address                                                        | Herd mark |
             | 22/003/0003 | Not supplied | Not supplied  | Meadow View FarmMill LaneLavendonBuckinghamshireMK1 1ABEngland | UK 324788 |
+
+    @LREG-530
+    Scenario: Cattle Home - View Animals on Holding
+        Given I am authenticated as a front office user with a single CPH holding
+        And I select the Cattle species option from the species list
+        When I select the "Animals on holding" navigation link
+        Then the "Animals on holding" navigation link should be active
+        And the "Animals on holding" page heading should display "Animals on holding"
