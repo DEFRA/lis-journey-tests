@@ -1,5 +1,6 @@
 services:
   journey-tests:
+    image: ${JOURNEY_TESTS_IMAGE:-lis-dev-journey-tests}
     build:
       context: .
       dockerfile: Dockerfile

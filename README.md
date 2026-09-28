@@ -213,8 +213,8 @@ The test suite includes a helper script located at:
 This script provides a consistent way to start and stop the **local/docker LIS platform**, including:
 
 - shared infrastructure (LocalStack, Redis, PostgreSQL, etc.)
-- back office service (`back-office-hub`)
-- front office service (`front-office-hub`)
+- back office service (`lis-hubs-back-office`)
+- front office service (`lis-hubs-front-office`)
 
 It is used in **local development**, **GitHub Actions CI**, and **CDP‑style local simulation**.
 
@@ -280,8 +280,8 @@ The script starts:
 - Caddy
 - Back and front office Redis
 - Local NPM server
-- Back Office (back-office-hub-1)
-- Front Office (front-office-hub-1)
+- Back Office (lis-hubs-back-office-1)
+- Front Office (lis-hubs-front-office-1)
 
 Uses `docker-compose.yml` unless an override is provided.
 
