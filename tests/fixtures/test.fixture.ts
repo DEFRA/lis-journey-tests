@@ -7,6 +7,7 @@ import { LisBackOfficeHomePage } from '../features/support/page-objects/back-off
 import { LisBackOfficeIdentityPage } from '../features/support/page-objects/back-office/identity.page'
 import { LisFrontOfficeIdentityPage } from '../features/support/page-objects/front-office/identity.page'
 import { LisFrontOfficeHoldingsPage } from '../features/support/page-objects/front-office/holdings.page'
+import { LisFrontOfficeAnimalsOnHoldingPage } from '../features/support/page-objects/front-office/animals.on.holding.page'
 import AxeBuilder from '@axe-core/playwright'
 
 export const test = base.extend<{
@@ -17,6 +18,7 @@ export const test = base.extend<{
   lisBackOfficeIdentityPage: LisBackOfficeIdentityPage
   lisFrontOfficeIdentityPage: LisFrontOfficeIdentityPage
   lisFrontOfficeHoldingDetailsPage: LisFrontOfficeHoldingsPage
+  lisFrontOfficeAnimalsOnHoldingPage: LisFrontOfficeAnimalsOnHoldingPage
   axeFrontOfficeBuilder: AxeBuilder
   axeBackOfficeBuilder: AxeBuilder
   frontOfficePage: Page
@@ -105,6 +107,12 @@ export const test = base.extend<{
       frontOfficePage
     )
     await use(lisFrontOfficeHoldingDetailsPage)
+  },
+
+  lisFrontOfficeAnimalsOnHoldingPage: async ({ frontOfficePage }, use) => {
+    const lisFrontOfficeAnimalsOnHoldingPage =
+      new LisFrontOfficeAnimalsOnHoldingPage(frontOfficePage)
+    await use(lisFrontOfficeAnimalsOnHoldingPage)
   }
 })
 

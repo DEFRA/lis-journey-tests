@@ -13,7 +13,7 @@ Given(
 )
 
 Given(
-  /^I am authenticated as a front office user with(?: a)? (.*) CPH holding$/,
+  /^I am authenticated as a front office user with(?: a)? (.*) CPH holding(?:s)?$/,
   async function (
     { lisFrontOfficeHomePage, lisFrontOfficeIdentityPage },
     userRole: string

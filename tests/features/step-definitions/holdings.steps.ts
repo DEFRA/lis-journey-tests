@@ -35,7 +35,7 @@ Then(
 )
 
 Then(
-  /^the "([^"]*)" navigation link should be active$/,
+  /^the "([^"]*)" navigation link (?:should be|is) active$/,
   async function ({ lisFrontOfficeHoldingDetailsPage }, tabName: string) {
     await expect(lisFrontOfficeHoldingDetailsPage.verifyTabIsSelected(tabName))
   }
