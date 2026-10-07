@@ -16,7 +16,7 @@ const identitySelectorsByEnv: Record<TestEnv, IdentitySelectors> = {
     signInButton: 'button:text("Sign in")',
     emailInput: '#email',
     passwordInput: '#password',
-    continueButton: 'Continue'
+    continueButton: 'button:text("Continue")'
   },
   local: {
     userDescriptionLabel: 'label[for="email"]',
@@ -29,7 +29,7 @@ const identitySelectorsByEnv: Record<TestEnv, IdentitySelectors> = {
     signInButton: 'button:text("Sign in")',
     emailInput: '#email',
     passwordInput: '#password',
-    continueButton: 'Continue'
+    continueButton: 'button:text("Continue")'
   },
   test: {
     userDescriptionLabel: 'label[for="email"]',
@@ -37,7 +37,7 @@ const identitySelectorsByEnv: Record<TestEnv, IdentitySelectors> = {
     signInButton: 'button:text("Sign in")',
     emailInput: '#email',
     passwordInput: '#password',
-    continueButton: 'Continue'
+    continueButton: 'button:text("Continue")'
   }
 }
 
