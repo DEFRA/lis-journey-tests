@@ -30,28 +30,9 @@ pull_and_update_submodules() {
     return $?
 }
 
-verify_etc_hosts_entry() {
-    declare -a hosts=(
-        "127.0.0.1 front-office.lis.defra"
-        "127.0.0.1 back-office.lis.defra"
-        "127.0.0.1 mock-entra-id.lis.defra"
-        "127.0.0.1 mock-defra-ci.lis.defra"
-        "127.0.0.1 npm-local.lis.defra"
-        "127.0.0.1 nuget-local.lis.defra"
-        "127.0.0.1 fake-idp.lis.defra"
-        "127.0.0.1 fake-service.lis.defra"
-    )
-    for i in "${hosts[@]}"; do
-        echo "[platform] Checking /etc/hosts entry: $i"
-        if ! grep -q "$i" /etc/hosts; then
-            echo "[platform] ERROR: Missing /etc/hosts entry: $i"
-            echo "[platform] Please add the following entries to your /etc/hosts file:"
-            for j in "${hosts[@]}"; do
-                echo "$j"
-            done
-            exit 1
-        fi
-    done
+setup_etc_hosts() {
+    echo "[platform] Setting up /etc/hosts entries..."
+    ./.scripts/setup-hosts.sh
     return $?
 }
 
@@ -65,7 +46,7 @@ start_platform() {
     cd "$LIS_DEV_DIR"
 
     pull_and_update_submodules
-    verify_etc_hosts_entry
+    setup_etc_hosts
     setup_tls_certificates
 
 	echo "[platform] Starting lis-dev platform..."
