@@ -1,5 +1,5 @@
 import { DataTable } from 'playwright-bdd'
-import { Then } from '../../fixtures/test.fixture'
+import { Then, When } from '../../fixtures/test.fixture'
 import { expect } from '@playwright/test'
 
 Then(
@@ -35,8 +35,15 @@ Then(
 )
 
 Then(
-  /^the "([^"]*)" navigation link should be active$/,
+  /^the "([^"]*)" navigation link (?:should be|is) active$/,
   async function ({ lisFrontOfficeHoldingDetailsPage }, tabName: string) {
     await expect(lisFrontOfficeHoldingDetailsPage.verifyTabIsSelected(tabName))
+  }
+)
+
+When(
+  /^I select the "([^"]*)" navigation link$/,
+  async function ({ lisFrontOfficeHoldingDetailsPage }, tabName: string) {
+    await lisFrontOfficeHoldingDetailsPage.selectTab(tabName)
   }
 )

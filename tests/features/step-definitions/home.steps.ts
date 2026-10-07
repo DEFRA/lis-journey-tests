@@ -1,3 +1,4 @@
+import { DataTable } from 'playwright-bdd'
 import { Given, Then } from '../../fixtures/test.fixture'
 import { expect } from '@playwright/test'
 
@@ -59,5 +60,30 @@ Given(
   /^I select the (.*) species option from the species list$/,
   async ({ lisFrontOfficeHomePage }, species: string) => {
     await lisFrontOfficeHomePage.selectSpecies(species)
+  }
+)
+
+Then(
+  'I should be informed I have no holdings associated to my account',
+  async function ({ lisFrontOfficeHomePage }) {
+    await expect(lisFrontOfficeHomePage.heading).toHaveText('My holdings')
+    await expect(lisFrontOfficeHomePage.body).toHaveText(
+      'No holdings are currently linked to this account.'
+    )
+  }
+)
+
+Then(
+  'I should see the following CPH holdings:',
+  async function ({ lisFrontOfficeHomePage }, dataTable: DataTable) {
+    const expectedCphs = dataTable.rows()
+    await lisFrontOfficeHomePage.verifyCphs(expectedCphs)
+  }
+)
+
+Then(
+  'I should not be able to view the CPH holding',
+  async function ({ lisFrontOfficeHomePage }) {
+    lisFrontOfficeHomePage.verifyPageNotFound()
   }
 )
