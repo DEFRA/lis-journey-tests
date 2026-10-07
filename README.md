@@ -228,10 +228,10 @@ The script:
    - `lis-dev` (infra, back-office and front-office)
 2. Ensures the shared Docker network `lis-dev` exists
 3. Updates the project sub modules and dependencies
-4. Ensures certificates are setup for TLS
-5. Ensures all /etc/host entries are present for local domain name useage
-6. Publishes all local nuget and NPM package dependencies
-5. Starts or stops:
+4. Adds the /etc/hosts entries for the local domain names (lis-dev's `.scripts/setup-hosts.sh`;
+   prompts for sudo when the entries need changing)
+5. Ensures certificates are setup for TLS
+6. Starts or stops:
    - shared infra
    - back-office
    - front-office
