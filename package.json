@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "4.12.1",
-    "@commitlint/config-conventional": "20.5.0",
+    "@commitlint/config-conventional": "21.2.3",
     "@eslint/js": "10.0.1",
     "@playwright/test": "1.60.0",
     "@types/node": "25.6.0",
@@ -51,7 +51,7 @@
     "@typescript-eslint/parser": "8.58.2",
     "allure-commandline": "2.40.0",
     "allure-playwright": "3.7.1",
-    "commitlint": "20.5.0",
+    "commitlint": "21.2.3",
     "dotenv": "17.4.2",
     "eslint": "10.2.0",
     "eslint-config-prettier": "10.1.8",
