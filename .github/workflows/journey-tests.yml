@@ -84,25 +84,6 @@ jobs:
           ref: ${{ inputs.branch-set }}
           path: lis-journey-tests
 
-      - name: Add lis-dev hosts to /etc/hosts
-        shell: bash
-        run: |
-          echo "127.0.0.1 front-office.lis.defra" | sudo tee -a /etc/hosts
-          echo "127.0.0.1 back-office.lis.defra" | sudo tee -a /etc/hosts
-          echo "127.0.0.1 mock-entra-id.lis.defra" | sudo tee -a /etc/hosts
-          echo "127.0.0.1 mock-defra-ci.lis.defra" | sudo tee -a /etc/hosts
-          echo "127.0.0.1 npm-local.lis.defra" | sudo tee -a /etc/hosts
-          echo "127.0.0.1 nuget-local.lis.defra" | sudo tee -a /etc/hosts
-          echo "127.0.0.1 fake-idp.lis.defra" | sudo tee -a /etc/hosts
-          echo "127.0.0.1 fake-service.lis.defra" | sudo tee -a /etc/hosts
-
-      - name: Create storage directories for verdaccio and set permissions
-        shell: bash
-        run: |
-          mkdir -p lis-dev/.tools/verdaccio/verdaccio_storage
-          mkdir -p lis-dev/.tools/verdaccio/verdaccio_plugins
-          sudo chown -R 10001:65533 lis-dev/.tools/verdaccio
-
       - name: Fix permissions for lis-dev and lis-journey-tests scripts
         shell: bash
         run: |
