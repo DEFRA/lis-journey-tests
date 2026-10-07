@@ -40,6 +40,7 @@ export class LisFrontOfficeIdentityPage extends BasePage {
       await this.signInButton.click()
     } else {
       const user = await fetchDefraUserCredentials(userRole, 'frontoffice')
+      await this.page.waitForURL('**/registration/oidc/authorize/**')
       await this.page.waitForURL('**/sign-in-or-create')
       await this.signInButton.click()
       await this.page.waitForURL('**/enter-email')
