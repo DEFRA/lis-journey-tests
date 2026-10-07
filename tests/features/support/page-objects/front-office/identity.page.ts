@@ -28,7 +28,6 @@ export class LisFrontOfficeIdentityPage extends BasePage {
     if (this.env === 'local') {
       // Append "Cph" to the userRole for front office users
       await this.signInButton.waitFor({ state: 'visible' })
-      userRole = `${userRole.toLowerCase().trim()}Cph`
       const user = fakeUsers[userRole as keyof typeof fakeUsers]
       if (!user) {
         throw new Error(`User role "${userRole}" not found in fakeUsers`)
