@@ -169,7 +169,7 @@ Feature: LIS Front Office Home Page
             | ma le      |
 
     @LREG-530
-    Scenario: Cattle Home - Search Animals on holding using sex matches full sex not partial
+    Scenario: Cattle Home - Search Animals on Holding using sex matches full sex not partial
         Given I am authenticated as a front office user with a single CPH holding
         When I select the "Animals on holding" navigation link
         And I search using search term 'male'
