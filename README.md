@@ -102,10 +102,6 @@ $env:ENVIRONMENT = 'local'
 npm run test
 ```
 
-If you manually configured URL overrides in the terminal or VS Code's
-`playwright.env`, remove or update them before a local run. Otherwise, selecting
-`local` is sufficient.
-
 For Bash, select the environment explicitly for each run:
 
 ```bash
