@@ -2,12 +2,12 @@ import { request, Page } from '@playwright/test'
 import { test as base, createBdd } from 'playwright-bdd'
 import { LisFrontOfficeClient } from '../features/support/api/lis.front.office.client'
 import { LisBackOfficeClient } from '../features/support/api/lis.back.office.client'
-import { LisFrontOfficeHomePage } from '../features/support/page-objects/front-office/home.page'
-import { LisBackOfficeHomePage } from '../features/support/page-objects/back-office/home.page'
-import { LisBackOfficeIdentityPage } from '../features/support/page-objects/back-office/identity.page'
-import { LisFrontOfficeIdentityPage } from '../features/support/page-objects/front-office/identity.page'
-import { LisFrontOfficeHoldingsPage } from '../features/support/page-objects/front-office/holdings.page'
-import { LisFrontOfficeAnimalsOnHoldingPage } from '../features/support/page-objects/front-office/animals.on.holding.page'
+import { LisFrontOfficeHomePage } from '../page-objects/front-office/home.page'
+import { LisBackOfficeHomePage } from '../page-objects/back-office/home.page'
+import { LisBackOfficeIdentityPage } from '../page-objects/back-office/identity.page'
+import { LisFrontOfficeIdentityPage } from '../page-objects/front-office/identity.page'
+import { LisFrontOfficeHoldingsPage } from '../page-objects/front-office/holdings.page'
+import { LisFrontOfficeAnimalsOnHoldingPage } from '../page-objects/front-office/animals.on.holding.page'
 import AxeBuilder from '@axe-core/playwright'
 
 export const test = base.extend<{
@@ -24,16 +24,12 @@ export const test = base.extend<{
   frontOfficePage: Page
   backOfficePage: Page
 }>({
-  frontOfficePage: async ({ browser }, use) => {
-    const context = await browser.newContext({})
-    await use(await context.newPage())
+  frontOfficePage: async ({ page }, use) => {
+    await use(page)
   },
 
-  backOfficePage: async ({ browser }, use) => {
-    const context = await browser.newContext({
-      baseURL: process.env.backOfficeUrl
-    })
-    await use(await context.newPage())
+  backOfficePage: async ({ page }, use) => {
+    await use(page)
   },
 
   axeFrontOfficeBuilder: async ({ frontOfficePage }, use) => {
@@ -114,12 +110,6 @@ export const test = base.extend<{
       new LisFrontOfficeAnimalsOnHoldingPage(frontOfficePage)
     await use(lisFrontOfficeAnimalsOnHoldingPage)
   }
-})
-
-const { AfterScenario } = createBdd(test)
-
-AfterScenario(async ({ page }) => {
-  await page.close()
 })
 
 export const { Given, When, Then } = createBdd(test)

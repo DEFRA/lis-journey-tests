@@ -1,4 +1,4 @@
-import { Given } from '../../fixtures/test.fixture'
+import { Given } from '../fixtures/test.fixture'
 import { expect } from '@playwright/test'
 
 Given(

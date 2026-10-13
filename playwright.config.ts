@@ -60,7 +60,7 @@ if (process.env.GITHUB_ACTIONS === 'true') {
 const testDir = defineBddConfig({
   features: 'tests/features/**/*.feature',
   steps: [
-    'tests/features/step-definitions/**/*.ts',
+    'tests/step-definitions/**/*.ts',
     'tests/fixtures/**/*.fixture.ts'
   ]
 })

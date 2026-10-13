@@ -10,7 +10,11 @@ export class LisBackOfficeHomePage extends BasePage {
   }
 
   public async navigateToHomePage() {
-    await this.goto('/')
+    const backOfficeUrl = process.env.backOfficeUrl
+    if (!backOfficeUrl) {
+      throw new Error('backOfficeUrl has not been configured')
+    }
+    await this.goto(backOfficeUrl)
   }
 
   public async verifySignedIn() {

@@ -1,4 +1,4 @@
-import { Given } from '../../fixtures/test.fixture'
+import { Given } from '../fixtures/test.fixture'
 
 Given(
   /^I am authenticated as a back office (.*) user$/,

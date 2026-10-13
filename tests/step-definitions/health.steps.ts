@@ -1,10 +1,10 @@
 import { expect } from '@playwright/test'
-import { HealthResponse } from '../../types/responses/healthResponse.type'
+import { HealthResponse } from '../types/responses/healthResponse.type'
 import { StatusCodes } from 'http-status-codes'
-import { EndPoints } from '../../utils/enums'
-import { Given, When, Then } from '../../fixtures/test.fixture'
-import { LisBackOfficeClient } from '../support/api/lis.back.office.client'
-import { LisFrontOfficeClient } from '../support/api/lis.front.office.client'
+import { EndPoints } from '../utils/enums'
+import { Given, When, Then } from '../fixtures/test.fixture'
+import { LisBackOfficeClient } from '../features/support/api/lis.back.office.client'
+import { LisFrontOfficeClient } from '../features/support/api/lis.front.office.client'
 
 let client: LisBackOfficeClient | LisFrontOfficeClient
 let response: HealthResponse

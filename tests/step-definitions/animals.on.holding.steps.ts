@@ -1,9 +1,9 @@
-import { Then, When } from '../../fixtures/test.fixture'
+import { Then, When } from '../fixtures/test.fixture'
 import { expect } from '@playwright/test'
 import { DataTable } from 'playwright-bdd'
 
 Then(
-  /^the animals on holding caption should display "([^"]*)"$/,
+  /^the Animals on Holding caption should display "([^"]*)"$/i,
   async function (
     { lisFrontOfficeAnimalsOnHoldingPage },
     expectedCaption: string
@@ -15,7 +15,7 @@ Then(
 )
 
 Then(
-  /^the animals on holding heading should display "([^"]*)"$/,
+  /^the Animals on Holding heading should display "([^"]*)"$/i,
   async function (
     { lisFrontOfficeAnimalsOnHoldingPage },
     expectedHeading: string
@@ -34,7 +34,7 @@ Then(
 )
 
 Then(
-  'I should see the following animals on holding:',
+  /^I should see the following Animals on Holding:$/i,
   async function (
     { lisFrontOfficeAnimalsOnHoldingPage },
     dataTable: DataTable

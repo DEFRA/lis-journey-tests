@@ -1,8 +1,7 @@
 import { Locator, Page } from '@playwright/test'
 import { BasePage } from '../base.page'
-import { getIdentitySelectors } from '../selectors/back-office/identity.selectors'
-import { getEnv, TestEnv } from '../../../../../configs/env'
-import { fakeUsers } from '../../../../utils/fake.users'
+import { getEnv, TestEnv } from '../../../configs/env'
+import { fakeUsers } from '../../utils/fake.users'
 
 export class LisBackOfficeIdentityPage extends BasePage {
   public readonly signInButton: Locator
@@ -14,11 +13,10 @@ export class LisBackOfficeIdentityPage extends BasePage {
   constructor(page: Page) {
     super(page)
     this.env = getEnv()
-    const selectors = getIdentitySelectors(this.env)
-    this.signInButton = page.locator(selectors.signInButton)
-    this.emailInput = page.locator(selectors.emailInput || '')
-    this.passwordInput = page.locator(selectors.passwordInput || '')
-    this.nextButton = page.locator(selectors.nextButton || '')
+    this.signInButton = page.getByRole('button', { name: 'Sign in' })
+    this.emailInput = page.getByRole('textbox', { name: /email/i })
+    this.passwordInput = page.getByLabel(/password/i)
+    this.nextButton = page.getByRole('button', { name: 'Next' })
   }
 
   public async authenticate(

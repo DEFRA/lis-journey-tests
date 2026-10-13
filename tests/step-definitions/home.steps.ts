@@ -1,26 +1,34 @@
 import { DataTable } from 'playwright-bdd'
-import { Given, Then } from '../../fixtures/test.fixture'
+import { Given, Then } from '../fixtures/test.fixture'
 import { expect } from '@playwright/test'
 
 Given(
   'I am on the LIS Front Office home page',
-  async ({ lisFrontOfficeHomePage }) => {
+  async ({ lisFrontOfficeHomePage, lisFrontOfficeIdentityPage }) => {
     await lisFrontOfficeHomePage.navigateToHomePage()
+
+    if (process.env.isCDPEnvironment === 'true') {
+      await lisFrontOfficeHomePage.clickStartNowLink()
+      await lisFrontOfficeIdentityPage.authenticate('no')
+      await lisFrontOfficeHomePage.verifySignedIn()
+    }
   }
 )
 
 Then(
-  /^the (unauthenticated|authenticated) LIS Front Office home page should be loaded correctly$/,
-  async function ({ lisFrontOfficeHomePage }, authState: string) {
+  'the LIS Front Office home page should be loaded correctly',
+  async function ({ lisFrontOfficeHomePage }) {
+    const isCDPEnvironment = process.env.isCDPEnvironment === 'true'
     await expect(lisFrontOfficeHomePage.heading).toBeVisible()
-    if (authState === 'unauthenticated') {
+
+    if (!isCDPEnvironment) {
       await expect(lisFrontOfficeHomePage.heading).toHaveText(
         'Livestock Information'
       )
       await expect(lisFrontOfficeHomePage.startNowLink).toBeVisible()
     } else {
       await expect(lisFrontOfficeHomePage.heading).toHaveText(
-        'Livestock Information Service'
+        'Livestock Information Service (LIS) for cattle'
       )
       await expect(lisFrontOfficeHomePage.profileMenuLink).toBeVisible()
       await expect(lisFrontOfficeHomePage.cattleMenuLink).toBeVisible()

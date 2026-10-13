@@ -58,32 +58,46 @@ npm run test
 
 Run tests for a specific environment:
 
-```bash
-npx playwright test --ENV=local
-npx playwright test --ENV=dev
+```powershell
+$env:ENVIRONMENT = 'dev'
+npm run test
 ```
 
 Run tests in UI mode (interactive):
 
 ```bash
+npx bddgen
 npx playwright test --ui
 ```
 
-Run a specific test file:
+Run a specific feature or scenario:
 
 ```bash
-npx playwright test tests/features/backend/health.feature
+npx bddgen
+npx playwright test --grep "No CPH holdings"
 ```
+
+### Running tests from VS Code
+
+Install the recommended Microsoft Playwright Test for VS Code extension and use its Testing view. This project uses the Playwright Test runner; `playwright-bdd` generates Playwright test files from the Gherkin feature files.
+
+Generate the Playwright tests before opening the Testing view, and regenerate them after changing feature files or step definitions. Refresh the Testing view after regenerating:
+
+```bash
+npx bddgen
+```
+
+The generated tests are under `.features-gen/` and are ignored by Git. The VS Code Playwright extension discovers and runs those generated tests using `playwright.config.ts`. The CLI test script runs `bddgen` before starting Playwright.
 
 ### Environment Configuration
 
-The test environment is configured via the `ENV` environment variable in `playwright.config.ts`:
+The test environment is configured via the `ENVIRONMENT` environment variable in `playwright.config.ts`:
 
 - `local` (default): Runs against `https://front-office.lis.defra` (UI) and `https://back-office.lis.defra` (API)
 - `docker`: Used when running inside the journey-tests Docker container
 - `dev`: Runs against development environment URLs
 
-When `ENV=local`, Playwright will automatically start the lis-dev environment before running tests.
+When `ENVIRONMENT=local`, Playwright will automatically start the lis-dev environment before running tests. For VS Code runs, environment variables can be provided through the Playwright extension's `playwright.env` setting or the local `.env` file.
 
 ### Debugging tests
 
@@ -154,7 +168,8 @@ The CDP Platform runs the published Docker image of this test suite.
   - PROFILE (optional test filter)
   - ENVIRONMENT (dev/test/perf-test)
 - The container runs `entrypoint.sh`, which:
-  - executes Playwright Cucumber-js tests
+  - generates Playwright tests from Gherkin feature files with `playwright-bdd`
+  - executes the generated tests with the Playwright Test runner
   - generates `allure-results/`
   - builds the Allure HTML report (`allure-report/`)
   - publishes the report via `./bin/publish-tests.sh` to S3.
