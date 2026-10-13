@@ -4,35 +4,19 @@ import { expect } from '@playwright/test'
 
 Given(
   'I am on the LIS Front Office home page',
-  async ({ lisFrontOfficeHomePage, lisFrontOfficeIdentityPage }) => {
+  async ({ lisFrontOfficeHomePage }) => {
     await lisFrontOfficeHomePage.navigateToHomePage()
-
-    if (process.env.isCDPEnvironment === 'true') {
-      await lisFrontOfficeHomePage.clickStartNowLink()
-      await lisFrontOfficeIdentityPage.authenticate('no')
-      await lisFrontOfficeHomePage.verifySignedIn()
-    }
   }
 )
 
 Then(
   'the LIS Front Office home page should be loaded correctly',
   async function ({ lisFrontOfficeHomePage }) {
-    const isCDPEnvironment = process.env.isCDPEnvironment === 'true'
     await expect(lisFrontOfficeHomePage.heading).toBeVisible()
-
-    if (!isCDPEnvironment) {
-      await expect(lisFrontOfficeHomePage.heading).toHaveText(
-        'Livestock Information'
-      )
-      await expect(lisFrontOfficeHomePage.startNowLink).toBeVisible()
-    } else {
-      await expect(lisFrontOfficeHomePage.heading).toHaveText(
-        'Livestock Information Service (LIS) for cattle'
-      )
-      await expect(lisFrontOfficeHomePage.profileMenuLink).toBeVisible()
-      await expect(lisFrontOfficeHomePage.cattleMenuLink).toBeVisible()
-    }
+    await expect(lisFrontOfficeHomePage.heading).toHaveText(
+      'Livestock Information Service (LIS) for cattle'
+    )
+    await expect(lisFrontOfficeHomePage.startNowLink).toBeVisible()
   }
 )
 
