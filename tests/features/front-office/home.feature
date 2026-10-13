@@ -55,10 +55,10 @@ Feature: LIS Front Office Home Page
         And the "Holding details" navigation link is active
         When I select the "Animals on holding" navigation link
         Then the "Animals on holding" navigation link should be active
-        And the animals on holding caption should display "Oakfield Farm"
-        And the animals on holding heading should display "Animals on holding"
+        And the Animals on Holding caption should display "Oakfield Farm"
+        And the Animals on Holding heading should display "Animals on holding"
         And I should be able to search for an animal using ear tag, sex or breed
-        And I should see the following animals on holding:
+        And I should see the following Animals on Holding:
             | Ear tag number   | Date of birth | Age                             | Date on holding | Sex    | Breed                        |
             | UK 200000 000001 | 1 Feb 2023    | formatDateYearMonth:1 Feb 2023  | 1 Feb 2023      | Male   | AA, Aberdeen Angus           |
             | UK 200000 000002 | 8 Feb 2023    | formatDateYearMonth:8 Feb 2023  | 8 Feb 2023      | Male   | HE, Hereford                 |
@@ -155,7 +155,7 @@ Feature: LIS Front Office Home Page
             | UK200000000001   |
 
     @LREG-530
-    Scenario Outline: Cattle Home - Search animals on holding using search term <searchTerm> - no result returned
+    Scenario Outline: Cattle Home - Search Animals on Holding using search term <searchTerm> - no result returned
         Given I am authenticated as a front office user with a single CPH holding
         When I select the "Animals on holding" navigation link
         And I search using search term '<searchTerm>'
@@ -169,7 +169,7 @@ Feature: LIS Front Office Home Page
             | ma le      |
 
     @LREG-530
-    Scenario: Cattle Home - Search animales on holding using sex matches full sex not partial
+    Scenario: Cattle Home - Search Animals on holding using sex matches full sex not partial
         Given I am authenticated as a front office user with a single CPH holding
         When I select the "Animals on holding" navigation link
         And I search using search term 'male'
