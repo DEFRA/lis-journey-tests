@@ -50,17 +50,74 @@ npx playwright install
 
 ### Running tests
 
-Run all tests (Default ENV=local, HEADLESS=true):
+Run all tests locally (default `ENVIRONMENT=local`):
 
 ```bash
 npm run test
 ```
 
-Run tests for a specific environment:
+For local runs, Playwright starts the `lis-dev` platform and uses the local
+hostnames `front-office.lis.defra` and `back-office.lis.defra`. Do not set
+`LIS_FRONTOFFICE_BASE_URL` or `LIS_BACKOFFICE_BASE_URL` to a CDP URL for a local
+run: those variables override the local hostnames independently of
+`ENVIRONMENT`.
+
+Run tests against a deployed CDP development environment from PowerShell:
 
 ```powershell
 $env:ENVIRONMENT = 'dev'
+$env:LIS_FRONTOFFICE_BASE_URL = 'https://lis-hubs-front-office.dev.cdp-int.defra.cloud/'
+$env:LIS_BACKOFFICE_BASE_URL = '<your dev back-office URL>'
+
+# Set the required LIS_FRONTOFFICE_USER_*_EMAIL and
+# LIS_FRONTOFFICE_USER_*_PASSWORD variables using your approved secret store.
+npx playwright test
+```
+
+Replace the back-office URL placeholder with the URL for your dev environment.
+The `LIS_*_BASE_URL` variables select the target hosts; setting
+`ENVIRONMENT=dev` selects the dev authentication flow. Both are needed for a
+direct CDP run. `npm run test` can also be used after setting these variables;
+it additionally installs browsers, cleans report output, and regenerates the
+BDD tests before running Playwright.
+
+Environment variables set in a terminal remain set in that terminal after a
+test run. Before switching back to local, clear the URL overrides (and any
+dev-only credentials) as well as setting `ENVIRONMENT`:
+
+```powershell
+$env:ENVIRONMENT = 'local'
+Remove-Item Env:LIS_FRONTOFFICE_BASE_URL -ErrorAction SilentlyContinue
+Remove-Item Env:LIS_BACKOFFICE_BASE_URL -ErrorAction SilentlyContinue
+Remove-Item Env:LIS_FRONTOFFICE_USER_SINGLECPH_EMAIL -ErrorAction SilentlyContinue
+Remove-Item Env:LIS_FRONTOFFICE_USER_SINGLECPH_PASSWORD -ErrorAction SilentlyContinue
+Remove-Item Env:LIS_FRONTOFFICE_USER_NOCPH_EMAIL -ErrorAction SilentlyContinue
+Remove-Item Env:LIS_FRONTOFFICE_USER_NOCPH_PASSWORD -ErrorAction SilentlyContinue
+Remove-Item Env:LIS_FRONTOFFICE_USER_MULTIPLECPH_EMAIL -ErrorAction SilentlyContinue
+Remove-Item Env:LIS_FRONTOFFICE_USER_MULTIPLECPH_PASSWORD -ErrorAction SilentlyContinue
 npm run test
+```
+
+If an override is set in `.env` or VS Code's `playwright.env` setting, remove it
+there too; clearing PowerShell variables does not change either of those
+settings.
+
+For Bash, set the variables before a single command, or unset the overrides
+before a local run:
+
+```bash
+ENVIRONMENT=dev \
+LIS_FRONTOFFICE_BASE_URL='https://lis-hubs-front-office.dev.cdp-int.defra.cloud/' \
+LIS_BACKOFFICE_BASE_URL='<your dev back-office URL>' \
+npx playwright test
+```
+
+```bash
+unset LIS_FRONTOFFICE_BASE_URL LIS_BACKOFFICE_BASE_URL
+unset LIS_FRONTOFFICE_USER_SINGLECPH_EMAIL LIS_FRONTOFFICE_USER_SINGLECPH_PASSWORD
+unset LIS_FRONTOFFICE_USER_NOCPH_EMAIL LIS_FRONTOFFICE_USER_NOCPH_PASSWORD
+unset LIS_FRONTOFFICE_USER_MULTIPLECPH_EMAIL LIS_FRONTOFFICE_USER_MULTIPLECPH_PASSWORD
+ENVIRONMENT=local npm run test
 ```
 
 Run tests in UI mode (interactive):
@@ -91,13 +148,13 @@ The generated tests are under `.features-gen/` and are ignored by Git. The VS Co
 
 ### Environment Configuration
 
-The test environment is configured via the `ENVIRONMENT` environment variable in `playwright.config.ts`:
+The test environment is configured via the `ENVIRONMENT` environment variable in `playwright.config.ts`. It is a shell environment variable, not a Playwright CLI option: `npx playwright test --ENV=dev` does not select dev.
 
-- `local` (default): Runs against `https://front-office.lis.defra` (UI) and `https://back-office.lis.defra` (API)
-- `docker`: Used when running inside the journey-tests Docker container
-- `dev`: Runs against development environment URLs
+- `local` (default): Starts the `lis-dev` platform and runs against its local hostnames.
+- `docker`: Used by the journey-tests Docker container to run against the `lis-dev` platform on the shared Docker network. This is the mode used by the GitHub Actions journey-test workflow; it does not mean the deployed CDP dev environment.
+- `dev`: Uses the dev authentication flow. Set `LIS_FRONTOFFICE_BASE_URL` and `LIS_BACKOFFICE_BASE_URL` to the deployed dev URLs to target CDP directly.
 
-When `ENVIRONMENT=local`, Playwright will automatically start the lis-dev environment before running tests. For VS Code runs, environment variables can be provided through the Playwright extension's `playwright.env` setting or the local `.env` file.
+For VS Code runs, environment variables can be provided through the Playwright extension's `playwright.env` setting or the local `.env` file. These VS Code settings are not automatically inherited by commands run in a separate terminal; set the variables in that terminal when using the CLI.
 
 ### Debugging tests
 
