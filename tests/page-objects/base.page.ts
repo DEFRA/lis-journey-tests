@@ -51,7 +51,9 @@ export class BasePage {
 
   async verifyError(messages: string[]) {
     await Promise.all(
-      messages.map(message => expect(this.errorMessages).toContainText(message))
+      messages.map((message) =>
+        expect(this.errorMessages).toContainText(message)
+      )
     )
   }
 

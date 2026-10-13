@@ -16,7 +16,9 @@ export class LisFrontOfficeIdentityPage extends BasePage {
     this.env = getEnv()
     this.signInButton = page.getByRole('button', { name: 'Sign in' })
     this.emailInput = page.getByRole('textbox', { name: /email/i })
-    this.passwordInput = page.getByRole('textbox', { name: 'Enter your password' })
+    this.passwordInput = page.getByRole('textbox', {
+      name: 'Enter your password'
+    })
     this.continueButton = page.getByRole('button', { name: 'Continue' })
   }
 

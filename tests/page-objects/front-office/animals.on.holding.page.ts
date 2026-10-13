@@ -69,7 +69,10 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
       offset,
       totalNumberOfItems
     )
-    for (const [animalIndex, expectedAnimal] of expectedAnimalsOnHolding.entries()) {
+    for (const [
+      animalIndex,
+      expectedAnimal
+    ] of expectedAnimalsOnHolding.entries()) {
       if (itemCounter === 25) {
         await this.nextPaginationLink.scrollIntoViewIfNeeded()
         await this.nextPaginationLink.click()
@@ -104,7 +107,9 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
       for (const [columnIndex, column] of columns.entries()) {
         const expectedValue = values[columnIndex]
         if (expectedValue === undefined) {
-          throw new Error(`Expected value missing for animal column ${columnIndex + 1}`)
+          throw new Error(
+            `Expected value missing for animal column ${columnIndex + 1}`
+          )
         }
         const actualValue = (await column.textContent())?.trim()
         if (expectedValue.includes('formatDateYearMonth')) {
@@ -127,7 +132,9 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
     expect(tableHeaders).toHaveLength(expectedHeaders.length)
 
     const actualHeaders = await Promise.all(
-      tableHeaders.map(async (tableHeader) => (await tableHeader.textContent())?.trim())
+      tableHeaders.map(async (tableHeader) =>
+        (await tableHeader.textContent())?.trim()
+      )
     )
 
     for (const [index, expectedHeader] of expectedHeaders.entries()) {
@@ -179,7 +186,9 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
   ) {
     const expectedSearchResultHint = `${expectedSearchResults.length} result${expectedSearchResults.length > 1 ? 's' : ''} for '${searchTerm}'`
     await expect(this.page.getByText(expectedSearchResultHint)).toBeVisible()
-    await expect(this.page.getByRole('link', { name: 'Clear search' })).toBeVisible()
+    await expect(
+      this.page.getByRole('link', { name: 'Clear search' })
+    ).toBeVisible()
     await this.verifyAnimalsOnHolding(expectedSearchResults)
   }
 

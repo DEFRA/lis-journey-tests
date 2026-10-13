@@ -9,14 +9,11 @@ const serverTimeout = 5 * 60 * 1000
 const ENV = process.env.ENVIRONMENT ?? 'local'
 const isLocal = ENV === 'local'
 
-// Only load env files for local + docker
-let envFile: string | null = null
+const envFile =
+  ENV === 'docker' ? '.env.docker' : ENV === 'dev' ? '.env.dev' : '.env'
 
-if (ENV === 'local') envFile = '.env'
-if (ENV === 'docker') envFile = '.env.docker'
-
-if (envFile && fs.existsSync(envFile)) {
-  dotenv.config({ path: envFile })
+if (fs.existsSync(envFile)) {
+  dotenv.config({ path: envFile, override: ENV === 'dev' })
 }
 
 // Read values from environment variables
@@ -59,10 +56,7 @@ if (process.env.GITHUB_ACTIONS === 'true') {
 
 const testDir = defineBddConfig({
   features: 'tests/features/**/*.feature',
-  steps: [
-    'tests/step-definitions/**/*.ts',
-    'tests/fixtures/**/*.fixture.ts'
-  ]
+  steps: ['tests/step-definitions/**/*.ts', 'tests/fixtures/**/*.fixture.ts']
 })
 
 export default defineConfig({

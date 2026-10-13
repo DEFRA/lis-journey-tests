@@ -50,11 +50,24 @@ npx playwright install
 
 ### Running tests
 
-Run all tests locally (default `ENVIRONMENT=local`):
+Run the full test script for the local environment:
 
-```bash
+```powershell
+$env:ENVIRONMENT = 'local'
 npm run test
 ```
+
+Run the full test script against CDP dev:
+
+```powershell
+$env:ENVIRONMENT = 'dev'
+npm run test
+```
+
+Set `ENVIRONMENT` explicitly before each run, especially when reusing a
+terminal: PowerShell keeps the value set for later commands. `npm run test`
+installs Playwright browsers, cleans previous reports, regenerates the BDD
+tests, then runs Playwright.
 
 For local runs, Playwright starts the `lis-dev` platform and uses the local
 hostnames `front-office.lis.defra` and `back-office.lis.defra`. Do not set
@@ -62,61 +75,44 @@ hostnames `front-office.lis.defra` and `back-office.lis.defra`. Do not set
 run: those variables override the local hostnames independently of
 `ENVIRONMENT`.
 
-Run tests against a deployed CDP development environment from PowerShell:
+For direct CDP runs, keep credentials in a local `.env.dev` file rather than
+entering them in the terminal. Create it from the example and fill in the
+Front Office user credentials and dev base URLs:
 
 ```powershell
-$env:ENVIRONMENT = 'dev'
-$env:LIS_FRONTOFFICE_BASE_URL = 'https://lis-hubs-front-office.dev.cdp-int.defra.cloud/'
-$env:LIS_BACKOFFICE_BASE_URL = '<your dev back-office URL>'
-
-# Set the required LIS_FRONTOFFICE_USER_*_EMAIL and
-# LIS_FRONTOFFICE_USER_*_PASSWORD variables using your approved secret store.
-npx playwright test
+Copy-Item .env.dev.example .env.dev
 ```
 
-Replace the back-office URL placeholder with the URL for your dev environment.
-The `LIS_*_BASE_URL` variables select the target hosts; setting
-`ENVIRONMENT=dev` selects the dev authentication flow. Both are needed for a
-direct CDP run. `npm run test` can also be used after setting these variables;
-it additionally installs browsers, cleans report output, and regenerates the
-BDD tests before running Playwright.
+`.env.dev` is ignored by Git. The example file contains blank credential
+entries; add your dev Back Office URL if needed. Do not put real credentials in
+`.env.dev.example` or commit `.env.dev`.
 
-Environment variables set in a terminal remain set in that terminal after a
-test run. Before switching back to local, clear the URL overrides (and any
-dev-only credentials) as well as setting `ENVIRONMENT`:
+The dev URLs and Front Office credentials are loaded from `.env.dev`.
+`ENVIRONMENT=dev` selects that file and the dev authentication flow. In dev
+mode, values in `.env.dev` take precedence over existing terminal variables,
+so there is no need to clear old URL overrides before a dev run.
+
+Set `ENVIRONMENT` to `local` when switching back to local. Values loaded from
+`.env.dev` apply only to that test process and do not persist in the terminal.
+Credentials in `.env.dev` can remain there; the local fake-user authentication
+flow does not use them.
 
 ```powershell
 $env:ENVIRONMENT = 'local'
-Remove-Item Env:LIS_FRONTOFFICE_BASE_URL -ErrorAction SilentlyContinue
-Remove-Item Env:LIS_BACKOFFICE_BASE_URL -ErrorAction SilentlyContinue
-Remove-Item Env:LIS_FRONTOFFICE_USER_SINGLECPH_EMAIL -ErrorAction SilentlyContinue
-Remove-Item Env:LIS_FRONTOFFICE_USER_SINGLECPH_PASSWORD -ErrorAction SilentlyContinue
-Remove-Item Env:LIS_FRONTOFFICE_USER_NOCPH_EMAIL -ErrorAction SilentlyContinue
-Remove-Item Env:LIS_FRONTOFFICE_USER_NOCPH_PASSWORD -ErrorAction SilentlyContinue
-Remove-Item Env:LIS_FRONTOFFICE_USER_MULTIPLECPH_EMAIL -ErrorAction SilentlyContinue
-Remove-Item Env:LIS_FRONTOFFICE_USER_MULTIPLECPH_PASSWORD -ErrorAction SilentlyContinue
 npm run test
 ```
 
-If an override is set in `.env` or VS Code's `playwright.env` setting, remove it
-there too; clearing PowerShell variables does not change either of those
-settings.
+If you manually configured URL overrides in the terminal or VS Code's
+`playwright.env`, remove or update them before a local run. Otherwise, selecting
+`local` is sufficient.
 
-For Bash, set the variables before a single command, or unset the overrides
-before a local run:
+For Bash, select the environment explicitly for each run:
 
 ```bash
-ENVIRONMENT=dev \
-LIS_FRONTOFFICE_BASE_URL='https://lis-hubs-front-office.dev.cdp-int.defra.cloud/' \
-LIS_BACKOFFICE_BASE_URL='<your dev back-office URL>' \
-npx playwright test
+ENVIRONMENT=dev npm run test
 ```
 
 ```bash
-unset LIS_FRONTOFFICE_BASE_URL LIS_BACKOFFICE_BASE_URL
-unset LIS_FRONTOFFICE_USER_SINGLECPH_EMAIL LIS_FRONTOFFICE_USER_SINGLECPH_PASSWORD
-unset LIS_FRONTOFFICE_USER_NOCPH_EMAIL LIS_FRONTOFFICE_USER_NOCPH_PASSWORD
-unset LIS_FRONTOFFICE_USER_MULTIPLECPH_EMAIL LIS_FRONTOFFICE_USER_MULTIPLECPH_PASSWORD
 ENVIRONMENT=local npm run test
 ```
 
@@ -152,9 +148,9 @@ The test environment is configured via the `ENVIRONMENT` environment variable in
 
 - `local` (default): Starts the `lis-dev` platform and runs against its local hostnames.
 - `docker`: Used by the journey-tests Docker container to run against the `lis-dev` platform on the shared Docker network. This is the mode used by the GitHub Actions journey-test workflow; it does not mean the deployed CDP dev environment.
-- `dev`: Uses the dev authentication flow. Set `LIS_FRONTOFFICE_BASE_URL` and `LIS_BACKOFFICE_BASE_URL` to the deployed dev URLs to target CDP directly.
+- `dev`: Loads `.env.dev` and uses the dev authentication flow to target CDP. The local `.env.dev` file supplies the Front Office URL and credentials; provide the Back Office URL there if needed.
 
-For VS Code runs, environment variables can be provided through the Playwright extension's `playwright.env` setting or the local `.env` file. These VS Code settings are not automatically inherited by commands run in a separate terminal; set the variables in that terminal when using the CLI.
+For VS Code runs, environment variables can be provided through the Playwright extension's `playwright.env` setting or the relevant local env file. VS Code settings are not automatically inherited by commands run in a separate terminal; set `ENVIRONMENT` in that terminal when using the CLI.
 
 ### Debugging tests
 
