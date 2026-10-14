@@ -24,19 +24,14 @@ export class LisFrontOfficeHomePage extends BasePage {
 
   public async verifyCphs(expectedCphs: string[][]) {
     const rows = await this.page.locator('.govuk-table tbody tr').all()
-    for (const index in rows) {
-      const expectedCph = expectedCphs[index]
-      const columns = await rows[index].locator('td').all()
-      for (const colIndex in columns) {
-        await expect(expectedCph[colIndex]).toEqual(
-          (await columns[colIndex].textContent())?.trim()
-        )
+    const actualCphs = await Promise.all(
+      rows.map((row) => row.locator('td').allTextContents())
+    )
+
+    for (const [rowIndex, actualColumns] of actualCphs.entries()) {
+      for (const [columnIndex, actualCph] of actualColumns.entries()) {
+        expect(expectedCphs[rowIndex][columnIndex]).toEqual(actualCph.trim())
       }
     }
-  }
-
-  public async verifyPageNotFound() {
-    await expect(await this.heading.textContent()).toEqual('404')
-    await expect(await this.page.getByText('Page not found')).toBeVisible()
   }
 }

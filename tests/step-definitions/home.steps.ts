@@ -75,7 +75,7 @@ Then(
 
 Then(
   'I should not be able to view the CPH holding',
-  async function ({ lisFrontOfficeHomePage }) {
-    lisFrontOfficeHomePage.verifyPageNotFound()
+  async function ({ page }) {
+    await expect(page.getByText('Page not found')).toBeVisible()
   }
 )
