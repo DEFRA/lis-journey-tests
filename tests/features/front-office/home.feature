@@ -16,13 +16,13 @@ Feature: LIS Front Office Home Page
     Scenario: Cattle Home - View Holding Details - Multiple CPH holdings
         Given I am authenticated as a front office user with multiple CPH holdings
         Then I should see the following CPH holdings:
-            | CPH         | Holding name   | Postcode     | Role  |
-            | 22/002/0002 | Fairfield Farm | Not supplied | Owner |
-            | 22/003/0003 | Not supplied   | Not supplied | Owner |
-            | 22/004/0004 | Hilltop Farm   | Not supplied | Owner |
-            | 22/005/0005 | Riverside Farm | Not supplied | Owner |
-            | 22/006/0006 | Long Acre Farm | Not supplied | Owner |
-            | 22/007/0007 | Orchard Farm   | Not supplied | Owner |
+            | CPH         | Holding name   | Postcode     | Role          |
+            | 22/002/0002 | Fairfield Farm | Not supplied | Owner, keeper |
+            | 22/003/0003 | Not supplied   | Not supplied | Owner, keeper |
+            | 22/004/0004 | Hilltop Farm   | Not supplied | Owner, keeper |
+            | 22/005/0005 | Riverside Farm | Not supplied | Owner, keeper |
+            | 22/006/0006 | Long Acre Farm | Not supplied | Owner, keeper |
+            | 22/007/0007 | Orchard Farm   | Not supplied | Owner, keeper |
 
     @LREG-531
     Scenario: Cattle Home - View Holding Details - Single CPH holding
