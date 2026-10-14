@@ -73,9 +73,6 @@ Then(
   }
 )
 
-Then(
-  'I should not be able to view the CPH holding',
-  async function ({ page }) {
-    await expect(page.getByText('Page not found')).toBeVisible()
-  }
-)
+Then('I should not be able to view the CPH holding', async function ({ page }) {
+  await expect(page.getByText('Page not found')).toBeVisible()
+})
