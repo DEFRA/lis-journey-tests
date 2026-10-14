@@ -1,11 +1,11 @@
 import { StatusCodes } from 'http-status-codes'
-import { BaseClient } from './base.client'
+import { ApiRequestOptions, BaseClient } from './base.client'
 
 export class LisBackOfficeClient extends BaseClient {
   async get<T>(
     url: string,
     statusCode: StatusCodes,
-    options?: object
+    options?: ApiRequestOptions
   ): Promise<T> {
     return await super.get<T>(url, statusCode, options)
   }
@@ -13,7 +13,7 @@ export class LisBackOfficeClient extends BaseClient {
   async post<T>(
     url: string,
     statusCode: StatusCodes,
-    options?: object
+    options?: ApiRequestOptions
   ): Promise<T> {
     return await super.post<T>(url, statusCode, options)
   }

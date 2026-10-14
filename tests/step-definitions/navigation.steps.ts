@@ -1,7 +1,7 @@
 import { When } from '../fixtures/test.fixture'
 
 When(
-  /^I navigate to the "([^"]*)" holdings detail page for the CPH "([^"]*)"$/,
+  'I navigate to the {string} holdings detail page for the CPH {string}',
   async function (
     { lisFrontOfficeHomePage },
     species: string,
