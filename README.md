@@ -50,40 +50,103 @@ npx playwright install
 
 ### Running tests
 
-Run all tests (Default ENV=local, HEADLESS=true):
+Run the full test script for the local environment:
 
-```bash
+```powershell
+$env:ENVIRONMENT = 'local'
 npm run test
 ```
 
-Run tests for a specific environment:
+Run the full test script against CDP dev:
+
+```powershell
+$env:ENVIRONMENT = 'dev'
+npm run test
+```
+
+Set `ENVIRONMENT` explicitly before each run, especially when reusing a
+terminal: PowerShell keeps the value set for later commands. `npm run test`
+installs Playwright browsers, cleans previous reports, regenerates the BDD
+tests, then runs Playwright.
+
+For local runs, Playwright starts the `lis-dev` platform and uses the local
+hostnames `front-office.lis.defra` and `back-office.lis.defra`. Do not set
+`LIS_FRONTOFFICE_BASE_URL` or `LIS_BACKOFFICE_BASE_URL` to a CDP URL for a local
+run: those variables override the local hostnames independently of
+`ENVIRONMENT`.
+
+For direct CDP runs, keep credentials in a local `.env.dev` file rather than
+entering them in the terminal. Create it from the example and fill in the
+Front Office user credentials and dev base URLs:
+
+```powershell
+Copy-Item .env.dev.example .env.dev
+```
+
+`.env.dev` is ignored by Git. The example file contains blank credential
+entries; add your dev Back Office URL if needed. Do not put real credentials in
+`.env.dev.example` or commit `.env.dev`.
+
+The dev URLs and Front Office credentials are loaded from `.env.dev`.
+`ENVIRONMENT=dev` selects that file and the dev authentication flow. In dev
+mode, values in `.env.dev` take precedence over existing terminal variables,
+so there is no need to clear old URL overrides before a dev run.
+
+Set `ENVIRONMENT` to `local` when switching back to local. Values loaded from
+`.env.dev` apply only to that test process and do not persist in the terminal.
+Credentials in `.env.dev` can remain there; the local fake-user authentication
+flow does not use them.
+
+```powershell
+$env:ENVIRONMENT = 'local'
+npm run test
+```
+
+For Bash, select the environment explicitly for each run:
 
 ```bash
-npx playwright test --ENV=local
-npx playwright test --ENV=dev
+ENVIRONMENT=dev npm run test
+```
+
+```bash
+ENVIRONMENT=local npm run test
 ```
 
 Run tests in UI mode (interactive):
 
 ```bash
+npx bddgen
 npx playwright test --ui
 ```
 
-Run a specific test file:
+Run a specific feature or scenario:
 
 ```bash
-npx playwright test tests/features/backend/health.feature
+npx bddgen
+npx playwright test --grep "No CPH holdings"
 ```
+
+### Running tests from VS Code
+
+Install the recommended Microsoft Playwright Test for VS Code extension and use its Testing view. This project uses the Playwright Test runner; `playwright-bdd` generates Playwright test files from the Gherkin feature files.
+
+Generate the Playwright tests before opening the Testing view, and regenerate them after changing feature files or step definitions. Refresh the Testing view after regenerating:
+
+```bash
+npx bddgen
+```
+
+The generated tests are under `.features-gen/` and are ignored by Git. The VS Code Playwright extension discovers and runs those generated tests using `playwright.config.ts`. The CLI test script runs `bddgen` before starting Playwright.
 
 ### Environment Configuration
 
-The test environment is configured via the `ENV` environment variable in `playwright.config.ts`:
+The test environment is configured via the `ENVIRONMENT` environment variable in `playwright.config.ts`. It is a shell environment variable, not a Playwright CLI option: `npx playwright test --ENV=dev` does not select dev.
 
-- `local` (default): Runs against `https://front-office.lis.defra` (UI) and `https://back-office.lis.defra` (API)
-- `docker`: Used when running inside the journey-tests Docker container
-- `dev`: Runs against development environment URLs
+- `local` (default): Starts the `lis-dev` platform and runs against its local hostnames.
+- `docker`: Used by the journey-tests Docker container to run against the `lis-dev` platform on the shared Docker network. This is the mode used by the GitHub Actions journey-test workflow; it does not mean the deployed CDP dev environment.
+- `dev`: Loads `.env.dev` and uses the dev authentication flow to target CDP. The local `.env.dev` file supplies the Front Office URL and credentials; provide the Back Office URL there if needed.
 
-When `ENV=local`, Playwright will automatically start the lis-dev environment before running tests.
+For VS Code runs, environment variables can be provided through the Playwright extension's `playwright.env` setting or the relevant local env file. VS Code settings are not automatically inherited by commands run in a separate terminal; set `ENVIRONMENT` in that terminal when using the CLI.
 
 ### Debugging tests
 
@@ -154,7 +217,8 @@ The CDP Platform runs the published Docker image of this test suite.
   - PROFILE (optional test filter)
   - ENVIRONMENT (dev/test/perf-test)
 - The container runs `entrypoint.sh`, which:
-  - executes Playwright Cucumber-js tests
+  - generates Playwright tests from Gherkin feature files with `playwright-bdd`
+  - executes the generated tests with the Playwright Test runner
   - generates `allure-results/`
   - builds the Allure HTML report (`allure-report/`)
   - publishes the report via `./bin/publish-tests.sh` to S3.

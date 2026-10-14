@@ -1,5 +1,5 @@
 import { DataTable } from 'playwright-bdd'
-import { Given, Then } from '../../fixtures/test.fixture'
+import { Given, Then } from '../fixtures/test.fixture'
 import { expect } from '@playwright/test'
 
 Given(
@@ -10,21 +10,13 @@ Given(
 )
 
 Then(
-  /^the (unauthenticated|authenticated) LIS Front Office home page should be loaded correctly$/,
-  async function ({ lisFrontOfficeHomePage }, authState: string) {
+  'the LIS Front Office home page should be loaded correctly',
+  async function ({ lisFrontOfficeHomePage }) {
     await expect(lisFrontOfficeHomePage.heading).toBeVisible()
-    if (authState === 'unauthenticated') {
-      await expect(lisFrontOfficeHomePage.heading).toHaveText(
-        'Livestock Information'
-      )
-      await expect(lisFrontOfficeHomePage.startNowLink).toBeVisible()
-    } else {
-      await expect(lisFrontOfficeHomePage.heading).toHaveText(
-        'Livestock Information Service'
-      )
-      await expect(lisFrontOfficeHomePage.profileMenuLink).toBeVisible()
-      await expect(lisFrontOfficeHomePage.cattleMenuLink).toBeVisible()
-    }
+    await expect(lisFrontOfficeHomePage.heading).toHaveText(
+      'Livestock Information Service (LIS) for cattle'
+    )
+    await expect(lisFrontOfficeHomePage.startNowLink).toBeVisible()
   }
 )
 
@@ -81,9 +73,6 @@ Then(
   }
 )
 
-Then(
-  'I should not be able to view the CPH holding',
-  async function ({ lisFrontOfficeHomePage }) {
-    lisFrontOfficeHomePage.verifyPageNotFound()
-  }
-)
+Then('I should not be able to view the CPH holding', async function ({ page }) {
+  await expect(page.getByText('Page not found')).toBeVisible()
+})

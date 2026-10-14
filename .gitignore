@@ -1,7 +1,9 @@
 # Project-specific ignores
 .DS_Store
 .npm/
-.vscode
+.vscode/*
+!.vscode/
+!.vscode/extensions.json
 .idea
 .server
 .png
@@ -219,6 +221,7 @@ web_modules/
 .env
 .env.*
 !.env.example
+!.env.dev.example
 !.env.docker
 
 # parcel-bundler cache (https://parceljs.org/)

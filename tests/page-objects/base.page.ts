@@ -50,17 +50,19 @@ export class BasePage {
   }
 
   async verifyError(messages: string[]) {
-    for (const message of messages) {
-      await expect(this.errorMessages).toContainText(message)
-    }
+    await Promise.all(
+      messages.map((message) =>
+        expect(this.errorMessages).toContainText(message)
+      )
+    )
   }
 
   async navigateToHoldingDetails(species: string, cphNumber: string) {
     await this.page.goto(`/${species}/holdings/${cphNumber}`)
   }
 
-  async formatDateYearMonth(startDate: string) {
-    const result = await this.calculateTimeDifference(startDate)
+  formatDateYearMonth(startDate: string) {
+    const result = this.calculateTimeDifference(startDate)
     let yearString = `${result.years} year${result.years > 1 ? 's' : ''}`
     let monthString = `${result.months} month${result.months > 1 ? 's' : ''}`
     if (result.years === 0) {
@@ -72,7 +74,7 @@ export class BasePage {
     return `${yearString}, ${monthString}`
   }
 
-  async calculateTimeDifference(startDateStr: string) {
+  calculateTimeDifference(startDateStr: string) {
     const start = new Date(startDateStr)
     const end = new Date()
 

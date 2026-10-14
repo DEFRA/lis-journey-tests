@@ -1,9 +1,8 @@
 import { Locator, Page } from '@playwright/test'
 import { BasePage } from '../base.page'
-import { getIdentitySelectors } from '../selectors/front-office/identity.selectors'
-import { getEnv, TestEnv } from '../../../../../configs/env'
-import { fakeUsers } from '../../../../utils/fake.users'
-import { fetchDefraUserCredentials } from '../../../../utils/defra.users'
+import { getEnv, TestEnv } from '../../../configs/env'
+import { fakeUsers } from '../../utils/fake.users'
+import { fetchDefraUserCredentials } from '../../utils/defra.users'
 
 export class LisFrontOfficeIdentityPage extends BasePage {
   public readonly signInButton: Locator
@@ -15,11 +14,12 @@ export class LisFrontOfficeIdentityPage extends BasePage {
   constructor(page: Page) {
     super(page)
     this.env = getEnv()
-    const selectors = getIdentitySelectors(this.env)
-    this.signInButton = page.locator(selectors.signInButton)
-    this.emailInput = page.locator(selectors.emailInput || '')
-    this.passwordInput = page.locator(selectors.passwordInput || '')
-    this.continueButton = page.locator(selectors.continueButton || '')
+    this.signInButton = page.getByRole('button', { name: 'Sign in' })
+    this.emailInput = page.getByRole('textbox', { name: /email/i })
+    this.passwordInput = page.getByRole('textbox', {
+      name: 'Enter your password'
+    })
+    this.continueButton = page.getByRole('button', { name: 'Continue' })
   }
 
   public async authenticate(userRole: string) {
