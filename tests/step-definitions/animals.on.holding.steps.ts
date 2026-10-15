@@ -3,7 +3,7 @@ import { expect } from '@playwright/test'
 import { DataTable } from 'playwright-bdd'
 
 Then(
-  /^the Animals on Holding caption should display "([^"]*)"$/i,
+  'the Animals on Holding caption should display {string}',
   async function (
     { lisFrontOfficeAnimalsOnHoldingPage },
     expectedCaption: string
@@ -15,7 +15,7 @@ Then(
 )
 
 Then(
-  /^the Animals on Holding heading should display "([^"]*)"$/i,
+  'the Animals on Holding heading should display {string}',
   async function (
     { lisFrontOfficeAnimalsOnHoldingPage },
     expectedHeading: string
@@ -34,7 +34,7 @@ Then(
 )
 
 Then(
-  /^I should see the following Animals on Holding:$/i,
+  'I should see the following Animals on Holding:',
   async function (
     { lisFrontOfficeAnimalsOnHoldingPage },
     dataTable: DataTable

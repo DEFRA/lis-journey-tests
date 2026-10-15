@@ -24,13 +24,18 @@ export class LisFrontOfficeHoldingsPage extends BasePage {
   }
 
   public async verifyHoldingDetails(expectedDetails: Record<string, string>[]) {
+    const assertions: Promise<void>[] = []
+
     for (const detail of expectedDetails) {
       for (const [key, value] of Object.entries(detail)) {
         const detailLocator = this.page.locator(
           `//dl[contains(@class, 'govuk-summary-list')]//dt[contains(text(), '${key}')]/following-sibling::dd`
         )
-        await expect(detailLocator).toHaveText(value)
+
+        assertions.push(expect(detailLocator).toHaveText(value))
       }
     }
+
+    await Promise.all(assertions)
   }
 }

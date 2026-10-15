@@ -3,7 +3,7 @@ import { Then, When } from '../fixtures/test.fixture'
 import { expect } from '@playwright/test'
 
 Then(
-  /^the holding details caption should display "([^"]*)"$/,
+  'the holding details caption should display {string}',
   async function (
     { lisFrontOfficeHoldingDetailsPage },
     expectedCaption: string
@@ -23,7 +23,7 @@ Then(
 )
 
 Then(
-  /^the holding details heading should display "([^"]*)"$/,
+  'the holding details heading should display {string}',
   async function (
     { lisFrontOfficeHoldingDetailsPage },
     expectedHeading: string
@@ -35,14 +35,21 @@ Then(
 )
 
 Then(
-  /^the "([^"]*)" navigation link (?:should be|is) active$/,
+  'the {string} navigation link should be active',
+  function ({ lisFrontOfficeHoldingDetailsPage }, tabName: string) {
+    expect(lisFrontOfficeHoldingDetailsPage.verifyTabIsSelected(tabName))
+  }
+)
+
+Then(
+  'the {string} navigation link is active',
   function ({ lisFrontOfficeHoldingDetailsPage }, tabName: string) {
     expect(lisFrontOfficeHoldingDetailsPage.verifyTabIsSelected(tabName))
   }
 )
 
 When(
-  /^I select the "([^"]*)" navigation link$/,
+  'I select the {string} navigation link',
   async function ({ lisFrontOfficeHoldingDetailsPage }, tabName: string) {
     await lisFrontOfficeHoldingDetailsPage.selectTab(tabName)
   }

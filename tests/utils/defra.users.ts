@@ -1,4 +1,4 @@
-export async function fetchDefraUserCredentials(
+export function fetchDefraUserCredentials(
   userRole: string,
   applicationType: 'frontoffice' | 'backoffice'
 ) {

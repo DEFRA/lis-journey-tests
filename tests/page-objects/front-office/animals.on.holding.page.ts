@@ -1,5 +1,13 @@
 import { expect, Locator, Page } from '@playwright/test'
 import { BasePage } from '../base.page'
+import { parseExpectedAnimalValue } from '../../utils/expected-animal-value'
+
+type PaginationState = {
+  itemCounter: number
+  pageNumber: number
+  paginationStart: number
+  offset: number
+}
 
 export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
   public readonly heading: Locator
@@ -55,79 +63,133 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
   public async verifyAnimalsOnHolding(
     expectedAnimalsOnHolding: Record<string, string>[]
   ) {
+    if (expectedAnimalsOnHolding.length === 0) {
+      throw new Error('Expected animals on holding list cannot be empty')
+    }
+
     await this.verifyAnimalsOnHoldingHeaders(
       Object.keys(expectedAnimalsOnHolding[0])
     )
-    let itemCounter = 0
-    let pageNumber = 1
-    let paginationStart = 1
-    let offset = 25
+
+    const paginationState = {
+      itemCounter: 0,
+      pageNumber: 1,
+      paginationStart: 1,
+      offset: Math.min(25, expectedAnimalsOnHolding.length)
+    }
     const totalNumberOfItems = expectedAnimalsOnHolding.length
 
     await this.verifyPaginationInformation(
-      paginationStart,
-      offset,
+      paginationState.paginationStart,
+      paginationState.offset,
       totalNumberOfItems
     )
-    for (const [
-      animalIndex,
-      expectedAnimal
-    ] of expectedAnimalsOnHolding.entries()) {
-      if (itemCounter === 25) {
-        await this.nextPaginationLink.scrollIntoViewIfNeeded()
-        await this.nextPaginationLink.click()
 
-        itemCounter = 0
-        pageNumber += 1
-        await this.page.waitForURL(
-          `**sort=ear_tag&direction=asc&page=${pageNumber}`
-        )
-        paginationStart = animalIndex + 1
-        offset = Math.min(paginationStart + 24, totalNumberOfItems)
-        await this.verifyPaginationInformation(
-          paginationStart,
-          offset,
-          totalNumberOfItems
-        )
-      }
-      const rows = await this.page.locator('table tbody tr').all()
-      await this.verifyNextAndPreviousLinkBehavior(
-        paginationStart,
-        rows.length,
-        totalNumberOfItems
+    await expectedAnimalsOnHolding.reduce(
+      (verification, expectedAnimal, animalIndex) =>
+        verification.then(async () => {
+          await this.moveToNextPageIfNeeded(
+            animalIndex,
+            paginationState,
+            totalNumberOfItems
+          )
+          await this.verifyAnimalRow(
+            expectedAnimal,
+            paginationState,
+            totalNumberOfItems
+          )
+        }),
+      Promise.resolve()
+    )
+  }
+
+  private async moveToNextPageIfNeeded(
+    animalIndex: number,
+    paginationState: PaginationState,
+    totalNumberOfItems: number
+  ) {
+    if (paginationState.itemCounter !== 25) {
+      return
+    }
+
+    await this.nextPaginationLink.scrollIntoViewIfNeeded()
+    await this.nextPaginationLink.click()
+
+    paginationState.itemCounter = 0
+    paginationState.pageNumber += 1
+    await this.page.waitForURL(
+      `**sort=ear_tag&direction=asc&page=${paginationState.pageNumber}`
+    )
+    paginationState.paginationStart = animalIndex + 1
+    paginationState.offset = Math.min(
+      paginationState.paginationStart + 24,
+      totalNumberOfItems
+    )
+    await this.verifyPaginationInformation(
+      paginationState.paginationStart,
+      paginationState.offset,
+      totalNumberOfItems
+    )
+  }
+
+  private async verifyAnimalRow(
+    expectedAnimal: Record<string, string>,
+    paginationState: PaginationState,
+    totalNumberOfItems: number
+  ) {
+    const rows = await this.page.locator('table tbody tr').all()
+    await this.verifyNextAndPreviousLinkBehavior(
+      paginationState.paginationStart,
+      rows.length,
+      totalNumberOfItems
+    )
+
+    const row = rows[paginationState.itemCounter]
+    if (!row) {
+      throw new Error(
+        `Expected animal row ${paginationState.itemCounter + 1} on the page`
       )
-      const row = rows[itemCounter]
-      if (!row) {
-        throw new Error(`Expected animal row ${itemCounter + 1} on the page`)
-      }
-      await row.scrollIntoViewIfNeeded()
-      const columns = await row.locator('td').all()
-      const values = Object.values(expectedAnimal)
-      expect(columns).toHaveLength(values.length)
-      for (const [columnIndex, column] of columns.entries()) {
+    }
+
+    await row.scrollIntoViewIfNeeded()
+    const columns = await row.locator('td').all()
+    const values = Object.values(expectedAnimal)
+    expect(columns).toHaveLength(values.length)
+
+    await Promise.all(
+      columns.map(async (column, columnIndex) => {
         const expectedValue = values[columnIndex]
         if (expectedValue === undefined) {
           throw new Error(
             `Expected value missing for animal column ${columnIndex + 1}`
           )
         }
-        const actualValue = (await column.textContent())?.trim()
-        if (expectedValue.includes('formatDateYearMonth')) {
-          const birthDate = expectedValue.split(':')[1]
-          if (!birthDate) {
-            throw new Error(`Invalid date format: ${expectedValue}`)
-          }
-          const birthDateYearMonth = await this.formatDateYearMonth(birthDate)
-          expect(birthDateYearMonth).toEqual(actualValue)
-        } else {
-          expect(expectedValue).toEqual(actualValue)
-        }
-      }
-      itemCounter += 1
-    }
+
+        await this.verifyAnimalColumnValue(column, expectedValue)
+      })
+    )
+
+    paginationState.itemCounter += 1
   }
 
-  public async verifyAnimalsOnHoldingHeaders(expectedHeaders: string[]) {
+  private async verifyAnimalColumnValue(
+    column: Locator,
+    expectedValue: string
+  ) {
+    const actualValue = (await column.textContent())?.trim()
+    const parsedExpectedValue = parseExpectedAnimalValue(expectedValue)
+    if (parsedExpectedValue.type === 'date') {
+      const birthDateYearMonth = this.formatDateYearMonth(
+        parsedExpectedValue.value
+      )
+      expect(birthDateYearMonth).toEqual(actualValue)
+      return
+    }
+
+    expect(parsedExpectedValue.value).toEqual(actualValue)
+  }
+
+  private async verifyAnimalsOnHoldingHeaders(expectedHeaders: string[]) {
     const tableHeaders = await this.page.locator('table thead tr th').all()
     expect(tableHeaders).toHaveLength(expectedHeaders.length)
 
@@ -142,7 +204,7 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
     }
   }
 
-  public async verifyPaginationInformation(
+  private async verifyPaginationInformation(
     start: number,
     offSet: number,
     totalNoOfItems: number
@@ -156,7 +218,7 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
     await expect(paginationInfo).toBeVisible()
   }
 
-  public async verifyNextAndPreviousLinkBehavior(
+  private async verifyNextAndPreviousLinkBehavior(
     startCounter: number,
     rowCount: number,
     totalNumberOfItems: number
