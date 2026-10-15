@@ -22,6 +22,13 @@ Then(
   }
 )
 
+When(
+  'I click the {string} CPH number link',
+  async function ({ lisFrontOfficeHoldingDetailsPage }, cphNumber: string) {
+    await lisFrontOfficeHoldingDetailsPage.clickOnCphNumberLink(cphNumber)
+  }
+)
+
 Then(
   'the holding details heading should display {string}',
   async function (

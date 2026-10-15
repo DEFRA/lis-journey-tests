@@ -25,7 +25,7 @@ export class LisFrontOfficeHomePage extends BasePage {
   async verifyCphs(expectedCphs: string[][]) {
     const rows = await this.page.locator('.govuk-table tbody tr').all()
     const actualCphs = await Promise.all(
-      rows.map((row) => row.locator('td').allTextContents())
+      rows.map((row) => row.locator('th, td').allTextContents())
     )
 
     for (const [rowIndex, actualColumns] of actualCphs.entries()) {

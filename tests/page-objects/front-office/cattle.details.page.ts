@@ -11,26 +11,29 @@ export class LisFrontOfficeCattleDetailsPage extends BasePage {
     })
   }
 
-  async selectTab(tabName: string) {
-    const tabToSelect = this.page.getByRole('link', { name: tabName })
-    await tabToSelect.waitFor({ state: 'visible' })
-    await tabToSelect.click()
-  }
-
-  async verifyTabIsSelected(tabName: string) {
-    await expect(
-      this.page.getByRole('link', { name: tabName })
-    ).toHaveAttribute('aria-current', 'page')
-  }
-
   async verifyCattleDetails(expectedDetails: Record<string, string>[]) {
+    const assertions: Promise<void>[] = []
+
     for (const detail of expectedDetails) {
       for (const [key, value] of Object.entries(detail)) {
-        const detailLocator = this.page.locator(
-          `//dl[contains(@class, 'govuk-summary-list')]//dt[contains(text(), '${key}')]/following-sibling::dd`
-        )
-        await expect(detailLocator).toHaveText(value)
+        if (key === 'Sire details') {
+          const sireDetailsMessage = this.page.getByText(value, {
+            exact: true
+          })
+          assertions.push(expect(sireDetailsMessage).toHaveText(value))
+          continue
+        }
+
+        const detailRow = this.page.locator('.govuk-summary-list__row').filter({
+          has: this.page
+            .locator('.govuk-summary-list__key')
+            .getByText(key, { exact: true })
+        })
+        const detailLocator = detailRow.locator('.govuk-summary-list__value')
+        assertions.push(expect(detailLocator).toHaveText(value))
       }
     }
+
+    await Promise.all(assertions)
   }
 }
