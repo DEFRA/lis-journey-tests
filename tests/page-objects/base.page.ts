@@ -1,22 +1,22 @@
 import { Locator, Page, expect } from '@playwright/test'
 
 export class BasePage {
-  public page: Page
-  public readonly heading: Locator
-  public readonly body: Locator
-  public readonly subHeading: Locator
-  public readonly headingCaption: Locator
-  public readonly backButton: Locator
-  public readonly errorTitle: Locator
-  public readonly errorMessages: Locator
-  public readonly alert: Locator
-  public readonly alertHeading: Locator
-  public readonly alertMessage: Locator
-  public readonly signOutLink: Locator
-  public readonly menuBar: Locator
-  public readonly startNowLink: Locator
-  public readonly profileMenuLink: Locator
-  public readonly cattleMenuLink: Locator
+  page: Page
+  readonly heading: Locator
+  readonly body: Locator
+  readonly subHeading: Locator
+  readonly headingCaption: Locator
+  readonly backButton: Locator
+  readonly errorTitle: Locator
+  readonly errorMessages: Locator
+  readonly alert: Locator
+  readonly alertHeading: Locator
+  readonly alertMessage: Locator
+  readonly signOutLink: Locator
+  readonly menuBar: Locator
+  readonly startNowLink: Locator
+  readonly profileMenuLink: Locator
+  readonly cattleMenuLink: Locator
 
   constructor(page: Page) {
     this.page = page
