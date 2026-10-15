@@ -8,6 +8,8 @@ import { LisBackOfficeIdentityPage } from '../page-objects/back-office/identity.
 import { LisFrontOfficeIdentityPage } from '../page-objects/front-office/identity.page'
 import { LisFrontOfficeHoldingsPage } from '../page-objects/front-office/holdings.page'
 import { LisFrontOfficeAnimalsOnHoldingPage } from '../page-objects/front-office/animals.on.holding.page'
+import { LisFrontOfficeCattleHoldingOverviewPage } from '../page-objects/front-office/cattle.holding.overview.page'
+import { LisFrontOfficeMyProfilePage } from '../page-objects/front-office/my.profile.page'
 import AxeBuilder from '@axe-core/playwright'
 
 const accessibilityTags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
@@ -21,6 +23,8 @@ export const test = base.extend<{
   lisFrontOfficeIdentityPage: LisFrontOfficeIdentityPage
   lisFrontOfficeHoldingDetailsPage: LisFrontOfficeHoldingsPage
   lisFrontOfficeAnimalsOnHoldingPage: LisFrontOfficeAnimalsOnHoldingPage
+  lisFrontOfficeCattleHoldingOverviewPage: LisFrontOfficeCattleHoldingOverviewPage
+  lisFrontOfficeMyProfilePage: LisFrontOfficeMyProfilePage
   axeFrontOfficeBuilder: AxeBuilder
   axeBackOfficeBuilder: AxeBuilder
   frontOfficePage: Page
@@ -101,6 +105,19 @@ export const test = base.extend<{
     const lisFrontOfficeAnimalsOnHoldingPage =
       new LisFrontOfficeAnimalsOnHoldingPage(frontOfficePage)
     await use(lisFrontOfficeAnimalsOnHoldingPage)
+  },
+
+  lisFrontOfficeCattleHoldingOverviewPage: async ({ frontOfficePage }, use) => {
+    const lisFrontOfficeCattleHoldingOverviewPage =
+      new LisFrontOfficeCattleHoldingOverviewPage(frontOfficePage)
+    await use(lisFrontOfficeCattleHoldingOverviewPage)
+  },
+
+  lisFrontOfficeMyProfilePage: async ({ frontOfficePage }, use) => {
+    const lisFrontOfficeMyProfilePage = new LisFrontOfficeMyProfilePage(
+      frontOfficePage
+    )
+    await use(lisFrontOfficeMyProfilePage)
   }
 })
 
