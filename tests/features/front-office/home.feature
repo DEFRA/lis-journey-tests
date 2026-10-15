@@ -96,6 +96,24 @@ Feature: LIS Front Office Home Page
             | UK 300000 000023 | 6 Feb 2025    | formatDateYearMonth:6 Feb 2025  | 6 Feb 2025      | Female | LIM, Limousin                |
             | UK 300000 000024 | 11 Apr 2025   | formatDateYearMonth:11 Apr 2025 | 11 Apr 2025     | Male   | HFX, Holstein Friesian Cross |
 
+    @LREG-706
+    Scenario: Cattle Home - View Cattle Details - Single CPH holding
+        Given I am authenticated as a front office user with a single CPH holding
+        And the "Holding details" navigation link is active
+        When I select the "Animals on holding" navigation link
+        Then the "Animals on holding" navigation link should be active
+        And the Animals on Holding caption should display "Oakfield Farm"
+        And the Animals on Holding heading should display "Animals on holding"
+        And I should be able to search for an animal using ear tag, sex or breed
+        And I should see the following Animals on Holding:
+            | Ear tag number   | Date of birth | Age                            | Date on holding | Sex  | Breed              |
+            | UK 200000 000001 | 1 Feb 2023    | formatDateYearMonth:1 Feb 2023 | 1 Feb 2023      | Male | AA, Aberdeen Angus |
+        And I click on the Ear tag number "UK 200000 000001" link
+        And I should be navigated to the Cattle Details page
+        Then I should see the following Cattle Details:
+            | Ear tag number   | Date of birth | Date registered                | Date on holding | Sex  | Breed              | Animal status | Dam type | Genetic dam ear tag | Sire ear tag     | Sire name    |
+            | UK 200000 000001 | 1 Feb 2023    | formatDateYearMonth:5 Feb 2023 | 1 Feb 2023      | Male | AA, Aberdeen Angus | Active        | Genetic  | UK 200000 000098    | UK 200000 000099 | Not required |
+
     @LREG-530
     Scenario: Cattle Home - Search Animals on Holding - Result greater than 25 items
         Given I am authenticated as a front office user with a single CPH holding

@@ -8,6 +8,7 @@ import { LisBackOfficeIdentityPage } from '../page-objects/back-office/identity.
 import { LisFrontOfficeIdentityPage } from '../page-objects/front-office/identity.page'
 import { LisFrontOfficeHoldingsPage } from '../page-objects/front-office/holdings.page'
 import { LisFrontOfficeAnimalsOnHoldingPage } from '../page-objects/front-office/animals.on.holding.page'
+import { LisFrontOfficeCattleDetailsPage } from '../page-objects/front-office/cattle.details.page'
 import AxeBuilder from '@axe-core/playwright'
 
 export const test = base.extend<{
@@ -19,6 +20,7 @@ export const test = base.extend<{
   lisFrontOfficeIdentityPage: LisFrontOfficeIdentityPage
   lisFrontOfficeHoldingDetailsPage: LisFrontOfficeHoldingsPage
   lisFrontOfficeAnimalsOnHoldingPage: LisFrontOfficeAnimalsOnHoldingPage
+  lisFrontOfficeCattleDetailsPage: LisFrontOfficeCattleDetailsPage
   axeFrontOfficeBuilder: AxeBuilder
   axeBackOfficeBuilder: AxeBuilder
   frontOfficePage: Page
@@ -33,23 +35,21 @@ export const test = base.extend<{
   },
 
   axeFrontOfficeBuilder: async ({ frontOfficePage }, use) => {
-    const axeBuilder = new AxeBuilder({ page: frontOfficePage }).withTags([
-      'wcag2a',
-      'wcag2aa',
-      'wcag21a',
-      'wcag21aa'
-    ])
+    const axeBuilder = new AxeBuilder({
+      page: frontOfficePage as unknown as ConstructorParameters<
+        typeof AxeBuilder
+      >[0]['page']
+    }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
 
     await use(axeBuilder)
   },
 
   axeBackOfficeBuilder: async ({ backOfficePage }, use) => {
-    const axeBuilder = new AxeBuilder({ page: backOfficePage }).withTags([
-      'wcag2a',
-      'wcag2aa',
-      'wcag21a',
-      'wcag21aa'
-    ])
+    const axeBuilder = new AxeBuilder({
+      page: backOfficePage as unknown as ConstructorParameters<
+        typeof AxeBuilder
+      >[0]['page']
+    }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
 
     await use(axeBuilder)
   },
@@ -109,6 +109,13 @@ export const test = base.extend<{
     const lisFrontOfficeAnimalsOnHoldingPage =
       new LisFrontOfficeAnimalsOnHoldingPage(frontOfficePage)
     await use(lisFrontOfficeAnimalsOnHoldingPage)
+  },
+
+  lisFrontOfficeCattleDetailsPage: async ({ frontOfficePage }, use) => {
+    const lisFrontOfficeCattleDetailsPage = new LisFrontOfficeCattleDetailsPage(
+      frontOfficePage
+    )
+    await use(lisFrontOfficeCattleDetailsPage)
   }
 })
 
