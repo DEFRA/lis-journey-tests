@@ -28,7 +28,7 @@ Given(
 )
 
 Then(
-  /^the (unauthenticated|authenticated) LIS Back Office home page should be loaded correctly$/,
+  'the {word} LIS Back Office home page should be loaded correctly',
   async function (
     { lisBackOfficeHomePage, lisBackOfficeIdentityPage },
     authState: string
@@ -49,7 +49,7 @@ Then(
 )
 
 Given(
-  /^I select the (.*) species option from the species list$/,
+  'I select the {} species option from the species list',
   async ({ lisFrontOfficeHomePage }, species: string) => {
     await lisFrontOfficeHomePage.selectSpecies(species)
   }

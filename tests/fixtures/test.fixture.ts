@@ -10,6 +10,8 @@ import { LisFrontOfficeHoldingsPage } from '../page-objects/front-office/holding
 import { LisFrontOfficeAnimalsOnHoldingPage } from '../page-objects/front-office/animals.on.holding.page'
 import AxeBuilder from '@axe-core/playwright'
 
+const accessibilityTags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
+
 export const test = base.extend<{
   lisFrontOfficeClient: LisFrontOfficeClient
   lisBackOfficeClient: LisBackOfficeClient
@@ -33,25 +35,15 @@ export const test = base.extend<{
   },
 
   axeFrontOfficeBuilder: async ({ frontOfficePage }, use) => {
-    const axeBuilder = new AxeBuilder({ page: frontOfficePage }).withTags([
-      'wcag2a',
-      'wcag2aa',
-      'wcag21a',
-      'wcag21aa'
-    ])
-
-    await use(axeBuilder)
+    await use(
+      new AxeBuilder({ page: frontOfficePage }).withTags(accessibilityTags)
+    )
   },
 
   axeBackOfficeBuilder: async ({ backOfficePage }, use) => {
-    const axeBuilder = new AxeBuilder({ page: backOfficePage }).withTags([
-      'wcag2a',
-      'wcag2aa',
-      'wcag21a',
-      'wcag21aa'
-    ])
-
-    await use(axeBuilder)
+    await use(
+      new AxeBuilder({ page: backOfficePage }).withTags(accessibilityTags)
+    )
   },
   // eslint-disable-next-line no-empty-pattern
   lisBackOfficeClient: async ({}, use) => {

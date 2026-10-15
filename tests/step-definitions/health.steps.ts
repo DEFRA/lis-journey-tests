@@ -11,14 +11,14 @@ let response: HealthResponse
 
 Given(
   'the LIS Front Office application is running',
-  async function ({ lisFrontOfficeClient }) {
+  function ({ lisFrontOfficeClient }) {
     client = lisFrontOfficeClient
   }
 )
 
 Given(
   'the LIS Back Office application is running',
-  async function ({ lisBackOfficeClient }) {
+  function ({ lisBackOfficeClient }) {
     client = lisBackOfficeClient
   }
 )
@@ -27,13 +27,13 @@ When('I check the health endpoint', async function () {
   response = await client.get<HealthResponse>(EndPoints.Health, StatusCodes.OK)
 })
 
-Then('I should receive a healthy response', async function () {
+Then('I should receive a healthy response', function () {
   if (
     client instanceof LisBackOfficeClient ||
     client instanceof LisFrontOfficeClient
   ) {
     expect(response).toHaveProperty('message', 'success')
   } else {
-    throw new Error('Unknown client type')
+    throw new TypeError('Unknown client type')
   }
 })
