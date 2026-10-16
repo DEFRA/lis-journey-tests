@@ -8,6 +8,8 @@ import { LisBackOfficeIdentityPage } from '../page-objects/back-office/identity.
 import { LisFrontOfficeIdentityPage } from '../page-objects/front-office/identity.page'
 import { LisFrontOfficeHoldingsPage } from '../page-objects/front-office/holdings.page'
 import { LisFrontOfficeAnimalsOnHoldingPage } from '../page-objects/front-office/animals.on.holding.page'
+import { LisFrontOfficeCattleHoldingOverviewPage } from '../page-objects/front-office/cattle.holding.overview.page'
+import { LisFrontOfficeMyProfilePage } from '../page-objects/front-office/my.profile.page'
 import { LisFrontOfficeCattleDetailsPage } from '../page-objects/front-office/cattle.details.page'
 import AxeBuilder from '@axe-core/playwright'
 
@@ -22,6 +24,8 @@ export const test = base.extend<{
   lisFrontOfficeIdentityPage: LisFrontOfficeIdentityPage
   lisFrontOfficeHoldingDetailsPage: LisFrontOfficeHoldingsPage
   lisFrontOfficeAnimalsOnHoldingPage: LisFrontOfficeAnimalsOnHoldingPage
+  lisFrontOfficeCattleHoldingOverviewPage: LisFrontOfficeCattleHoldingOverviewPage
+  lisFrontOfficeMyProfilePage: LisFrontOfficeMyProfilePage
   lisFrontOfficeCattleDetailsPage: LisFrontOfficeCattleDetailsPage
   axeFrontOfficeBuilder: AxeBuilder
   axeBackOfficeBuilder: AxeBuilder
@@ -114,6 +118,18 @@ export const test = base.extend<{
     await use(lisFrontOfficeAnimalsOnHoldingPage)
   },
 
+  lisFrontOfficeCattleHoldingOverviewPage: async ({ frontOfficePage }, use) => {
+    const lisFrontOfficeCattleHoldingOverviewPage =
+      new LisFrontOfficeCattleHoldingOverviewPage(frontOfficePage)
+    await use(lisFrontOfficeCattleHoldingOverviewPage)
+  },
+
+  lisFrontOfficeMyProfilePage: async ({ frontOfficePage }, use) => {
+    const lisFrontOfficeMyProfilePage = new LisFrontOfficeMyProfilePage(
+      frontOfficePage
+    )
+    await use(lisFrontOfficeMyProfilePage)
+  },
   lisFrontOfficeCattleDetailsPage: async ({ frontOfficePage }, use) => {
     const lisFrontOfficeCattleDetailsPage = new LisFrontOfficeCattleDetailsPage(
       frontOfficePage
