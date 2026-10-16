@@ -33,6 +33,7 @@ import { LisFrontOfficeIsTheAnimalRegisteredPage } from '../page-objects/front-o
 import { LisFrontOfficeRegisteredAnimalDetailsPage } from '../page-objects/front-office/report.a.cattle.death/registered.animal.details.page'
 import { LisFrontOfficeReportACattleDeathPage } from '../page-objects/front-office/report.a.cattle.death/report.a.cattle.death.page'
 import { LisFrontOfficeUnregisteredAnimalDetailsPage } from '../page-objects/front-office/report.a.cattle.death/unregistered.animal.details.page'
+import { LisFrontOfficeExportCattleDataPage } from '../page-objects/front-office/download.list.of.cattle.on.your.holding/export.cattle.data.page'
 import AxeBuilder from '@axe-core/playwright'
 
 const accessibilityTags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
@@ -71,6 +72,7 @@ export const test = base.extend<{
   lisFrontOfficeRegisteredAnimalDetailsPage: LisFrontOfficeRegisteredAnimalDetailsPage
   lisFrontOfficeReportACattleDeathPage: LisFrontOfficeReportACattleDeathPage
   lisFrontOfficeUnregisteredAnimalDetailsPage: LisFrontOfficeUnregisteredAnimalDetailsPage
+  lisFrontOfficeExportCattleDataPage: LisFrontOfficeExportCattleDataPage
   axeFrontOfficeBuilder: AxeBuilder
   axeBackOfficeBuilder: AxeBuilder
   frontOfficePage: Page
@@ -262,6 +264,10 @@ export const test = base.extend<{
     use
   ) => {
     await use(new LisFrontOfficeUnregisteredAnimalDetailsPage(frontOfficePage))
+  },
+
+  lisFrontOfficeExportCattleDataPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeExportCattleDataPage(frontOfficePage))
   }
 })
 
