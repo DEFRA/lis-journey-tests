@@ -11,6 +11,17 @@ import { LisFrontOfficeAnimalsOnHoldingPage } from '../page-objects/front-office
 import { LisFrontOfficeCattleHoldingOverviewPage } from '../page-objects/front-office/cattle.holding.overview.page'
 import { LisFrontOfficeMyProfilePage } from '../page-objects/front-office/my.profile.page'
 import { LisFrontOfficeCattleDetailsPage } from '../page-objects/front-office/cattle.details.page'
+import { LisFrontOfficeRegisterCalfDetailsPage } from '../page-objects/front-office/register.a.cattle.birth/calf.details.page'
+import { LisFrontOfficeDamDetailsPage } from '../page-objects/front-office/register.a.cattle.birth/dam.details.page'
+import { LisFrontOfficeGeneticDamDetailsPage } from '../page-objects/front-office/register.a.cattle.birth/genetic.dam.details.page'
+import { LisFrontOfficeSurrogateDamDetailsPage } from '../page-objects/front-office/register.a.cattle.birth/surrogate.dam.details.page'
+import { LisFrontOfficeSireDetailsPage } from '../page-objects/front-office/register.a.cattle.birth/sire.details.page'
+import { LisFrontOfficeCheckCalfDetailsPage } from '../page-objects/front-office/register.a.cattle.birth/check.calf.details.page'
+import { LisFrontOfficeSubmitCattleRegistrationPage } from '../page-objects/front-office/register.a.cattle.birth/submit.cattle.registration.page'
+import { LisFrontOfficeRegisterNewCattleBirthPage } from '../page-objects/front-office/register.a.cattle.birth/register.new.cattle.births.page'
+import { LisFrontOfficeRegisterCattleBirthPage } from '../page-objects/front-office/register.a.cattle.birth/register.cattle.birth.page'
+import { LisFrontOfficeCancelDraftRegistrationPage } from '../page-objects/front-office/register.a.cattle.birth/cancel.draft.registration.page'
+import { LisFrontOfficeSubmissionDetailsPage } from '../page-objects/front-office/register.a.cattle.birth/submission.details.page'
 import AxeBuilder from '@axe-core/playwright'
 
 const accessibilityTags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
@@ -27,6 +38,17 @@ export const test = base.extend<{
   lisFrontOfficeCattleHoldingOverviewPage: LisFrontOfficeCattleHoldingOverviewPage
   lisFrontOfficeMyProfilePage: LisFrontOfficeMyProfilePage
   lisFrontOfficeCattleDetailsPage: LisFrontOfficeCattleDetailsPage
+  lisFrontOfficeRegisterCalfDetailsPage: LisFrontOfficeRegisterCalfDetailsPage
+  lisFrontOfficeDamDetailsPage: LisFrontOfficeDamDetailsPage
+  lisFrontOfficeGeneticDamDetailsPage: LisFrontOfficeGeneticDamDetailsPage
+  lisFrontOfficeSurrogateDamDetailsPage: LisFrontOfficeSurrogateDamDetailsPage
+  lisFrontOfficeSireDetailsPage: LisFrontOfficeSireDetailsPage
+  lisFrontOfficeCheckCalfDetailsPage: LisFrontOfficeCheckCalfDetailsPage
+  lisFrontOfficeSubmitCattleRegistrationPage: LisFrontOfficeSubmitCattleRegistrationPage
+  lisFrontOfficeRegisterNewCattleBirthPage: LisFrontOfficeRegisterNewCattleBirthPage
+  lisFrontOfficeRegisterCattleBirthPage: LisFrontOfficeRegisterCattleBirthPage
+  lisFrontOfficeCancelDraftRegistrationPage: LisFrontOfficeCancelDraftRegistrationPage
+  lisFrontOfficeSubmissionDetailsPage: LisFrontOfficeSubmissionDetailsPage
   axeFrontOfficeBuilder: AxeBuilder
   axeBackOfficeBuilder: AxeBuilder
   frontOfficePage: Page
@@ -82,59 +104,92 @@ export const test = base.extend<{
   },
 
   lisFrontOfficeHomePage: async ({ frontOfficePage }, use) => {
-    const lisFrontOfficeHomePage = new LisFrontOfficeHomePage(frontOfficePage)
-    await use(lisFrontOfficeHomePage)
+    await use(new LisFrontOfficeHomePage(frontOfficePage))
   },
 
   lisBackOfficeHomePage: async ({ backOfficePage }, use) => {
-    const lisBackOfficeHomePage = new LisBackOfficeHomePage(backOfficePage)
-    await use(lisBackOfficeHomePage)
+    await use(new LisBackOfficeHomePage(backOfficePage))
   },
 
   lisBackOfficeIdentityPage: async ({ backOfficePage }, use) => {
-    const lisBackOfficeIdentityPage = new LisBackOfficeIdentityPage(
-      backOfficePage
-    )
-    await use(lisBackOfficeIdentityPage)
+    await use(new LisBackOfficeIdentityPage(backOfficePage))
   },
 
   lisFrontOfficeIdentityPage: async ({ frontOfficePage }, use) => {
-    const lisFrontOfficeIdentityPage = new LisFrontOfficeIdentityPage(
-      frontOfficePage
-    )
-    await use(lisFrontOfficeIdentityPage)
+    await use(new LisFrontOfficeIdentityPage(frontOfficePage))
   },
 
   lisFrontOfficeHoldingDetailsPage: async ({ frontOfficePage }, use) => {
-    const lisFrontOfficeHoldingDetailsPage = new LisFrontOfficeHoldingsPage(
-      frontOfficePage
-    )
-    await use(lisFrontOfficeHoldingDetailsPage)
+    await use(new LisFrontOfficeHoldingsPage(frontOfficePage))
   },
 
   lisFrontOfficeAnimalsOnHoldingPage: async ({ frontOfficePage }, use) => {
-    const lisFrontOfficeAnimalsOnHoldingPage =
-      new LisFrontOfficeAnimalsOnHoldingPage(frontOfficePage)
-    await use(lisFrontOfficeAnimalsOnHoldingPage)
+    await use(new LisFrontOfficeAnimalsOnHoldingPage(frontOfficePage))
   },
 
   lisFrontOfficeCattleHoldingOverviewPage: async ({ frontOfficePage }, use) => {
-    const lisFrontOfficeCattleHoldingOverviewPage =
-      new LisFrontOfficeCattleHoldingOverviewPage(frontOfficePage)
-    await use(lisFrontOfficeCattleHoldingOverviewPage)
+    await use(new LisFrontOfficeCattleHoldingOverviewPage(frontOfficePage))
   },
 
   lisFrontOfficeMyProfilePage: async ({ frontOfficePage }, use) => {
-    const lisFrontOfficeMyProfilePage = new LisFrontOfficeMyProfilePage(
-      frontOfficePage
-    )
-    await use(lisFrontOfficeMyProfilePage)
+    await use(new LisFrontOfficeMyProfilePage(frontOfficePage))
   },
+
   lisFrontOfficeCattleDetailsPage: async ({ frontOfficePage }, use) => {
-    const lisFrontOfficeCattleDetailsPage = new LisFrontOfficeCattleDetailsPage(
-      frontOfficePage
-    )
-    await use(lisFrontOfficeCattleDetailsPage)
+    await use(new LisFrontOfficeCattleDetailsPage(frontOfficePage))
+  },
+
+  lisFrontOfficeRegisterCalfDetailsPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeRegisterCalfDetailsPage(frontOfficePage))
+  },
+
+  lisFrontOfficeDamDetailsPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeDamDetailsPage(frontOfficePage))
+  },
+
+  lisFrontOfficeGeneticDamDetailsPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeGeneticDamDetailsPage(frontOfficePage))
+  },
+
+  lisFrontOfficeSurrogateDamDetailsPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeSurrogateDamDetailsPage(frontOfficePage))
+  },
+
+  lisFrontOfficeSireDetailsPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeSireDetailsPage(frontOfficePage))
+  },
+
+  lisFrontOfficeCheckCalfDetailsPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeCheckCalfDetailsPage(frontOfficePage))
+  },
+
+  lisFrontOfficeSubmitCattleRegistrationPage: async (
+    { frontOfficePage },
+    use
+  ) => {
+    await use(new LisFrontOfficeSubmitCattleRegistrationPage(frontOfficePage))
+  },
+
+  lisFrontOfficeRegisterNewCattleBirthPage: async (
+    { frontOfficePage },
+    use
+  ) => {
+    await use(new LisFrontOfficeRegisterNewCattleBirthPage(frontOfficePage))
+  },
+
+  lisFrontOfficeRegisterCattleBirthPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeRegisterCattleBirthPage(frontOfficePage))
+  },
+
+  lisFrontOfficeCancelDraftRegistrationPage: async (
+    { frontOfficePage },
+    use
+  ) => {
+    await use(new LisFrontOfficeCancelDraftRegistrationPage(frontOfficePage))
+  },
+
+  lisFrontOfficeSubmissionDetailsPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeSubmissionDetailsPage(frontOfficePage))
   }
 })
 
