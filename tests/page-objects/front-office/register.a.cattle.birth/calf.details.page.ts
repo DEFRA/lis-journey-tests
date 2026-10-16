@@ -25,7 +25,7 @@ export class LisFrontOfficeRegisterCalfDetailsPage extends BasePage {
     this.breedInput = page.getByRole('combobox', { name: 'Breed' })
   }
 
-  async enterCalfDetails(
+  async submitCalfDetails(
     earTag: string,
     day: string,
     month: string,
