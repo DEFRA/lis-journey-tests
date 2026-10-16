@@ -5,10 +5,10 @@ import { fakeUsers } from '../../utils/fake.users'
 import { fetchDefraUserCredentials } from '../../utils/defra.users'
 
 export class LisFrontOfficeIdentityPage extends BasePage {
-  public readonly signInButton: Locator
-  public readonly emailInput: Locator
-  public readonly passwordInput: Locator
-  public readonly continueButton: Locator
+  readonly signInButton: Locator
+  readonly emailInput: Locator
+  readonly passwordInput: Locator
+  readonly continueButton: Locator
   private readonly env: TestEnv
 
   constructor(page: Page) {
@@ -22,7 +22,7 @@ export class LisFrontOfficeIdentityPage extends BasePage {
     this.continueButton = page.getByRole('button', { name: 'Continue' })
   }
 
-  public async authenticate(userRole: string) {
+  async authenticate(userRole: string) {
     userRole = `${userRole.toLowerCase().trim()}Cph`
 
     if (this.env === 'local') {
