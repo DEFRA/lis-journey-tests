@@ -18,6 +18,7 @@ export class BasePage {
   readonly profileMenuLink: Locator
   readonly cattleMenuLink: Locator
   readonly myProfileLink: Locator
+  readonly continueButton: Locator
 
   constructor(page: Page) {
     this.page = page
@@ -41,6 +42,7 @@ export class BasePage {
     this.profileMenuLink = this.menuBar.getByRole('link', { name: 'Profile' })
     this.cattleMenuLink = this.menuBar.getByRole('link', { name: 'Cattle' })
     this.myProfileLink = page.getByRole('link', { name: 'My profile' })
+    this.continueButton = page.getByRole('button', { name: 'Continue' })
   }
 
   async goto(path: string) {
@@ -57,6 +59,32 @@ export class BasePage {
         expect(this.errorMessages).toContainText(message)
       )
     )
+  }
+
+  async validateSummaryErrors(expectedErrors: string[]) {
+    await expect(this.errorTitle).toHaveText('There is a problem')
+    await expect(
+      this.page.locator('.govuk-error-summary .govuk-error-summary__list a')
+    ).toHaveText(expectedErrors)
+  }
+
+  async validateFieldErrors(expectedErrors: string[]) {
+    const fieldErrors = this.page.locator('.govuk-error-message')
+
+    await expect
+      .poll(async () =>
+        (await fieldErrors.allTextContents()).map((message) =>
+          message.replace(/^\s*Error:\s*/, '').trim()
+        )
+      )
+      .toEqual(expectedErrors)
+  }
+
+  async verifyFieldAndSummaryErrors(expectedErrors: string[]) {
+    await Promise.all([
+      this.validateSummaryErrors(expectedErrors),
+      this.validateFieldErrors(expectedErrors)
+    ])
   }
 
   async navigateToHoldingDetails(species: string, cphNumber: string) {
