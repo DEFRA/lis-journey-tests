@@ -17,6 +17,7 @@ export class BasePage {
   readonly startNowLink: Locator
   readonly profileMenuLink: Locator
   readonly cattleMenuLink: Locator
+  readonly myProfileLink: Locator
 
   constructor(page: Page) {
     this.page = page
