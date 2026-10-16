@@ -22,6 +22,12 @@ import { LisFrontOfficeRegisterNewCattleBirthPage } from '../page-objects/front-
 import { LisFrontOfficeRegisterCattleBirthPage } from '../page-objects/front-office/register.a.cattle.birth/register.cattle.birth.page'
 import { LisFrontOfficeCancelDraftRegistrationPage } from '../page-objects/front-office/register.a.cattle.birth/cancel.draft.registration.page'
 import { LisFrontOfficeSubmissionDetailsPage } from '../page-objects/front-office/register.a.cattle.birth/submission.details.page'
+import { AddEarTagPage } from '../page-objects/front-office/report.a.cattle.movement/add.ear.tag.page'
+import { LisFrontOfficeCheckMovementDetailsPage } from '../page-objects/front-office/report.a.cattle.movement/check.movement.details.page'
+import { LisFrontOfficeDateOfMovementPage } from '../page-objects/front-office/report.a.cattle.movement/date.of.movement.page'
+import { LisFrontOfficeOnOrOffMovementPage } from '../page-objects/front-office/report.a.cattle.movement/on.or.off.movement.page'
+import { LisFrontOfficeReportACattleMovementPage } from '../page-objects/front-office/report.a.cattle.movement/report.a.cattle.movement.page'
+import { LisFrontOfficeSubmitMovementReportPage } from '../page-objects/front-office/report.a.cattle.movement/submit.movement.report.page'
 import AxeBuilder from '@axe-core/playwright'
 
 const accessibilityTags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
@@ -49,6 +55,12 @@ export const test = base.extend<{
   lisFrontOfficeRegisterCattleBirthPage: LisFrontOfficeRegisterCattleBirthPage
   lisFrontOfficeCancelDraftRegistrationPage: LisFrontOfficeCancelDraftRegistrationPage
   lisFrontOfficeSubmissionDetailsPage: LisFrontOfficeSubmissionDetailsPage
+  lisFrontOfficeAddEarTagPage: AddEarTagPage
+  lisFrontOfficeCheckMovementDetailsPage: LisFrontOfficeCheckMovementDetailsPage
+  lisFrontOfficeDateOfMovementPage: LisFrontOfficeDateOfMovementPage
+  lisFrontOfficeOnOrOffMovementPage: LisFrontOfficeOnOrOffMovementPage
+  lisFrontOfficeReportACattleMovementPage: LisFrontOfficeReportACattleMovementPage
+  lisFrontOfficeSubmitMovementReportPage: LisFrontOfficeSubmitMovementReportPage
   axeFrontOfficeBuilder: AxeBuilder
   axeBackOfficeBuilder: AxeBuilder
   frontOfficePage: Page
@@ -190,6 +202,30 @@ export const test = base.extend<{
 
   lisFrontOfficeSubmissionDetailsPage: async ({ frontOfficePage }, use) => {
     await use(new LisFrontOfficeSubmissionDetailsPage(frontOfficePage))
+  },
+
+  lisFrontOfficeAddEarTagPage: async ({ frontOfficePage }, use) => {
+    await use(new AddEarTagPage(frontOfficePage))
+  },
+
+  lisFrontOfficeCheckMovementDetailsPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeCheckMovementDetailsPage(frontOfficePage))
+  },
+
+  lisFrontOfficeDateOfMovementPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeDateOfMovementPage(frontOfficePage))
+  },
+
+  lisFrontOfficeOnOrOffMovementPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeOnOrOffMovementPage(frontOfficePage))
+  },
+
+  lisFrontOfficeReportACattleMovementPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeReportACattleMovementPage(frontOfficePage))
+  },
+
+  lisFrontOfficeSubmitMovementReportPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeSubmitMovementReportPage(frontOfficePage))
   }
 })
 

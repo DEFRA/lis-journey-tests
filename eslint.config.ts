@@ -9,6 +9,9 @@ export default defineConfig([
     plugins: { js },
     extends: ['js/recommended'],
     languageOptions: { globals: globals.browser },
+    rules: {
+      'no-await-in-loop': 'off'
+    },
     ignores: [
       '**/dist/**',
       '**/node_modules/**',
