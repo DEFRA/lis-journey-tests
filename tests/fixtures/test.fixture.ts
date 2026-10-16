@@ -8,6 +8,7 @@ import { LisBackOfficeIdentityPage } from '../page-objects/back-office/identity.
 import { LisFrontOfficeIdentityPage } from '../page-objects/front-office/identity.page'
 import { LisFrontOfficeHoldingsPage } from '../page-objects/front-office/holdings.page'
 import { LisFrontOfficeAnimalsOnHoldingPage } from '../page-objects/front-office/animals.on.holding.page'
+import { LisFrontOfficeCattleDetailsPage } from '../page-objects/front-office/cattle.details.page'
 import AxeBuilder from '@axe-core/playwright'
 
 const accessibilityTags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
@@ -21,6 +22,7 @@ export const test = base.extend<{
   lisFrontOfficeIdentityPage: LisFrontOfficeIdentityPage
   lisFrontOfficeHoldingDetailsPage: LisFrontOfficeHoldingsPage
   lisFrontOfficeAnimalsOnHoldingPage: LisFrontOfficeAnimalsOnHoldingPage
+  lisFrontOfficeCattleDetailsPage: LisFrontOfficeCattleDetailsPage
   axeFrontOfficeBuilder: AxeBuilder
   axeBackOfficeBuilder: AxeBuilder
   frontOfficePage: Page
@@ -36,15 +38,24 @@ export const test = base.extend<{
 
   axeFrontOfficeBuilder: async ({ frontOfficePage }, use) => {
     await use(
-      new AxeBuilder({ page: frontOfficePage }).withTags(accessibilityTags)
+      new AxeBuilder({
+        page: frontOfficePage as unknown as ConstructorParameters<
+          typeof AxeBuilder
+        >[0]['page']
+      }).withTags(accessibilityTags)
     )
   },
 
   axeBackOfficeBuilder: async ({ backOfficePage }, use) => {
     await use(
-      new AxeBuilder({ page: backOfficePage }).withTags(accessibilityTags)
+      new AxeBuilder({
+        page: backOfficePage as unknown as ConstructorParameters<
+          typeof AxeBuilder
+        >[0]['page']
+      }).withTags(accessibilityTags)
     )
   },
+
   // eslint-disable-next-line no-empty-pattern
   lisBackOfficeClient: async ({}, use) => {
     const apiContext = await request.newContext({
@@ -101,6 +112,13 @@ export const test = base.extend<{
     const lisFrontOfficeAnimalsOnHoldingPage =
       new LisFrontOfficeAnimalsOnHoldingPage(frontOfficePage)
     await use(lisFrontOfficeAnimalsOnHoldingPage)
+  },
+
+  lisFrontOfficeCattleDetailsPage: async ({ frontOfficePage }, use) => {
+    const lisFrontOfficeCattleDetailsPage = new LisFrontOfficeCattleDetailsPage(
+      frontOfficePage
+    )
+    await use(lisFrontOfficeCattleDetailsPage)
   }
 })
 

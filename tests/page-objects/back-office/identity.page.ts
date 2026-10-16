@@ -4,10 +4,10 @@ import { getEnv, TestEnv } from '../../../configs/env'
 import { fakeUsers } from '../../utils/fake.users'
 
 export class LisBackOfficeIdentityPage extends BasePage {
-  public readonly signInButton: Locator
-  public readonly emailInput: Locator
-  public readonly passwordInput: Locator
-  public readonly nextButton: Locator
+  readonly signInButton: Locator
+  readonly emailInput: Locator
+  readonly passwordInput: Locator
+  readonly nextButton: Locator
   private readonly env: TestEnv
 
   constructor(page: Page) {
@@ -19,11 +19,7 @@ export class LisBackOfficeIdentityPage extends BasePage {
     this.nextButton = page.getByRole('button', { name: 'Next' })
   }
 
-  public async authenticate(
-    userRole: string,
-    email?: string,
-    password?: string
-  ) {
+  async authenticate(userRole: string, email?: string, password?: string) {
     if (this.env === 'local') {
       const user = fakeUsers[userRole as keyof typeof fakeUsers]
       if (!user) {

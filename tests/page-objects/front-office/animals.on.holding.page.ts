@@ -10,14 +10,14 @@ type PaginationState = {
 }
 
 export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
-  public readonly heading: Locator
-  public readonly searchLabel: Locator
-  public readonly searchHint: Locator
-  public readonly searchInput: Locator
-  public readonly searchInsetInfo: Locator
-  public readonly nextPaginationLink: Locator
-  public readonly previousPaginationLink: Locator
-  public readonly searchButton: Locator
+  readonly heading: Locator
+  readonly searchLabel: Locator
+  readonly searchHint: Locator
+  readonly searchInput: Locator
+  readonly searchInsetInfo: Locator
+  readonly nextPaginationLink: Locator
+  readonly previousPaginationLink: Locator
+  readonly searchButton: Locator
 
   constructor(page: Page) {
     super(page)
@@ -49,7 +49,7 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
     })
   }
 
-  public async verifySearchCapabilities() {
+  async verifySearchCapabilities() {
     await expect(this.searchLabel).toHaveText('Search animals on your holding')
     await expect(this.searchHint).toHaveText(
       'You can use all or part of the animal ear tag number, or search by sex or breed.'
@@ -60,7 +60,7 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
     )
   }
 
-  public async verifyAnimalsOnHolding(
+  async verifyAnimalsOnHolding(
     expectedAnimalsOnHolding: Record<string, string>[]
   ) {
     if (expectedAnimalsOnHolding.length === 0) {
@@ -237,12 +237,12 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
     }
   }
 
-  public async searchUsing(searchTerm: string) {
+  async searchUsing(searchTerm: string) {
     await this.searchInput.fill(searchTerm)
     await this.searchButton.click()
   }
 
-  public async verifyAnimalsOnHoldingSearchResult(
+  async verifyAnimalsOnHoldingSearchResult(
     searchTerm: string,
     expectedSearchResults: Record<string, string>[]
   ) {
@@ -254,8 +254,16 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
     await this.verifyAnimalsOnHolding(expectedSearchResults)
   }
 
-  public async verifyNoResultsForSearchTerm(searchTerm: string) {
+  async verifyNoResultsForSearchTerm(searchTerm: string) {
     const expectedSearchResultHint = `0 results for '${searchTerm}'`
     await expect(this.page.getByText(expectedSearchResultHint)).toBeVisible()
+  }
+  async clickOnEarTagNumberLink(earTagNumber: string) {
+    const earTagLink = this.page.getByRole('link', {
+      name: earTagNumber,
+      exact: true
+    })
+    await earTagLink.scrollIntoViewIfNeeded()
+    await earTagLink.click()
   }
 }
