@@ -8,32 +8,36 @@ import { LisBackOfficeIdentityPage } from '../page-objects/back-office/identity.
 import { LisFrontOfficeIdentityPage } from '../page-objects/front-office/identity.page'
 import { LisFrontOfficeHoldingsPage } from '../page-objects/front-office/holdings.page'
 import { LisFrontOfficeAnimalsOnHoldingPage } from '../page-objects/front-office/animals.on.holding.page'
-import { LisFrontOfficeCattleHoldingOverviewPage } from '../page-objects/front-office/cattle.holding.overview.page'
+import { LisFrontOfficeCattleHoldingOverviewPage } from '../page-objects/front-office/cattle/cattle.holding.overview.page'
 import { LisFrontOfficeMyProfilePage } from '../page-objects/front-office/my.profile.page'
-import { LisFrontOfficeCattleDetailsPage } from '../page-objects/front-office/cattle.details.page'
-import { LisFrontOfficeRegisterCalfDetailsPage } from '../page-objects/front-office/register.a.cattle.birth/calf.details.page'
-import { LisFrontOfficeDamDetailsPage } from '../page-objects/front-office/register.a.cattle.birth/dam.details.page'
-import { LisFrontOfficeGeneticDamDetailsPage } from '../page-objects/front-office/register.a.cattle.birth/genetic.dam.details.page'
-import { LisFrontOfficeSurrogateDamDetailsPage } from '../page-objects/front-office/register.a.cattle.birth/surrogate.dam.details.page'
-import { LisFrontOfficeSireDetailsPage } from '../page-objects/front-office/register.a.cattle.birth/sire.details.page'
-import { LisFrontOfficeCheckCalfDetailsPage } from '../page-objects/front-office/register.a.cattle.birth/check.calf.details.page'
-import { LisFrontOfficeSubmitCattleRegistrationPage } from '../page-objects/front-office/register.a.cattle.birth/submit.cattle.registration.page'
-import { LisFrontOfficeRegisterNewCattleBirthPage } from '../page-objects/front-office/register.a.cattle.birth/register.new.cattle.births.page'
-import { LisFrontOfficeRegisterCattleBirthPage } from '../page-objects/front-office/register.a.cattle.birth/register.cattle.birth.page'
-import { LisFrontOfficeCancelDraftRegistrationPage } from '../page-objects/front-office/register.a.cattle.birth/cancel.draft.registration.page'
-import { LisFrontOfficeSubmissionDetailsPage } from '../page-objects/front-office/register.a.cattle.birth/submission.details.page'
-import { AddEarTagPage } from '../page-objects/front-office/report.a.cattle.movement/add.ear.tag.page'
-import { LisFrontOfficeCheckMovementDetailsPage } from '../page-objects/front-office/report.a.cattle.movement/check.movement.details.page'
-import { LisFrontOfficeDateOfMovementPage } from '../page-objects/front-office/report.a.cattle.movement/date.of.movement.page'
-import { LisFrontOfficeOnOrOffMovementPage } from '../page-objects/front-office/report.a.cattle.movement/on.or.off.movement.page'
-import { LisFrontOfficeReportACattleMovementPage } from '../page-objects/front-office/report.a.cattle.movement/report.a.cattle.movement.page'
-import { LisFrontOfficeSubmitMovementReportPage } from '../page-objects/front-office/report.a.cattle.movement/submit.movement.report.page'
-import { LisFrontOfficeCheckAnimalDetailsPage } from '../page-objects/front-office/report.a.cattle.death/check.animal.details.page'
-import { LisFrontOfficeIsTheAnimalRegisteredPage } from '../page-objects/front-office/report.a.cattle.death/is.the.animal.registered.page'
-import { LisFrontOfficeRegisteredAnimalDetailsPage } from '../page-objects/front-office/report.a.cattle.death/registered.animal.details.page'
-import { LisFrontOfficeReportACattleDeathPage } from '../page-objects/front-office/report.a.cattle.death/report.a.cattle.death.page'
-import { LisFrontOfficeUnregisteredAnimalDetailsPage } from '../page-objects/front-office/report.a.cattle.death/unregistered.animal.details.page'
-import { LisFrontOfficeExportCattleDataPage } from '../page-objects/front-office/download.list.of.cattle.on.your.holding/export.cattle.data.page'
+import { LisFrontOfficeCattleDetailsPage } from '../page-objects/front-office/cattle/cattle.details.page'
+import { LisFrontOfficeRegisterCalfDetailsPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/calf.details.page'
+import { LisFrontOfficeDamDetailsPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/dam.details.page'
+import { LisFrontOfficeGeneticDamDetailsPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/genetic.dam.details.page'
+import { LisFrontOfficeSurrogateDamDetailsPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/surrogate.dam.details.page'
+import { LisFrontOfficeSireDetailsPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/sire.details.page'
+import { LisFrontOfficeCheckCalfDetailsPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/check.calf.details.page'
+import { LisFrontOfficeSubmitCattleRegistrationPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/submit.cattle.registration.page'
+import { LisFrontOfficeRegisterNewCattleBirthPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/register.new.cattle.births.page'
+import { LisFrontOfficeRegisterCattleBirthPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/register.cattle.birth.page'
+import { LisFrontOfficeCancelDraftRegistrationPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/cancel.draft.registration.page'
+import { LisFrontOfficeSubmissionDetailsPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/submission.details.page'
+import { AddEarTagPage } from '../page-objects/front-office/cattle/report.a.cattle.movement/add.ear.tag.page'
+import { LisFrontOfficeCheckMovementDetailsPage } from '../page-objects/front-office/cattle/report.a.cattle.movement/check.movement.details.page'
+import { LisFrontOfficeDateOfMovementPage } from '../page-objects/front-office/cattle/report.a.cattle.movement/date.of.movement.page'
+import { LisFrontOfficeOnOrOffMovementPage } from '../page-objects/front-office/cattle/report.a.cattle.movement/on.or.off.movement.page'
+import { LisFrontOfficeReportACattleMovementPage } from '../page-objects/front-office/cattle/report.a.cattle.movement/report.a.cattle.movement.page'
+import { LisFrontOfficeSubmitMovementReportPage } from '../page-objects/front-office/cattle/report.a.cattle.movement/submit.movement.report.page'
+import { LisFrontOfficeCheckAnimalDetailsPage } from '../page-objects/front-office/cattle/report.a.cattle.death/check.animal.details.page'
+import { LisFrontOfficeIsTheAnimalRegisteredPage } from '../page-objects/front-office/cattle/report.a.cattle.death/is.the.animal.registered.page'
+import { LisFrontOfficeRegisteredAnimalDetailsPage } from '../page-objects/front-office/cattle/report.a.cattle.death/registered.animal.details.page'
+import { LisFrontOfficeReportACattleDeathPage } from '../page-objects/front-office/cattle/report.a.cattle.death/report.a.cattle.death.page'
+import { LisFrontOfficeUnregisteredAnimalDetailsPage } from '../page-objects/front-office/cattle/report.a.cattle.death/unregistered.animal.details.page'
+import { LisFrontOfficeExportCattleDataPage } from '../page-objects/front-office/cattle/download.list.of.cattle.on.your.holding/export.cattle.data.page'
+import { LisFrontOfficeCattleErrorRecordDetailPage } from '../page-objects/front-office/cattle/cattle.error.record.detail.page'
+import { LisFrontOfficeCattleErrorRecordPage } from '../page-objects/front-office/cattle/cattle.error.record.page'
+import { LisFrontOfficeAnimalsOnHoldingPage as LisFrontOfficeCattleOnHoldingPage } from '../page-objects/front-office/cattle/cattle.on.holding.page'
+import { LisFrontOfficePendingValidationPage } from '../page-objects/front-office/cattle/pending.validation.page'
 import AxeBuilder from '@axe-core/playwright'
 
 const accessibilityTags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
@@ -73,6 +77,10 @@ export const test = base.extend<{
   lisFrontOfficeReportACattleDeathPage: LisFrontOfficeReportACattleDeathPage
   lisFrontOfficeUnregisteredAnimalDetailsPage: LisFrontOfficeUnregisteredAnimalDetailsPage
   lisFrontOfficeExportCattleDataPage: LisFrontOfficeExportCattleDataPage
+  lisFrontOfficeCattleErrorRecordDetailPage: LisFrontOfficeCattleErrorRecordDetailPage
+  lisFrontOfficeCattleErrorRecordPage: LisFrontOfficeCattleErrorRecordPage
+  lisFrontOfficeCattleOnHoldingPage: LisFrontOfficeCattleOnHoldingPage
+  lisFrontOfficePendingValidationPage: LisFrontOfficePendingValidationPage
   axeFrontOfficeBuilder: AxeBuilder
   axeBackOfficeBuilder: AxeBuilder
   frontOfficePage: Page
@@ -268,6 +276,25 @@ export const test = base.extend<{
 
   lisFrontOfficeExportCattleDataPage: async ({ frontOfficePage }, use) => {
     await use(new LisFrontOfficeExportCattleDataPage(frontOfficePage))
+  },
+
+  lisFrontOfficeCattleErrorRecordDetailPage: async (
+    { frontOfficePage },
+    use
+  ) => {
+    await use(new LisFrontOfficeCattleErrorRecordDetailPage(frontOfficePage))
+  },
+
+  lisFrontOfficeCattleErrorRecordPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeCattleErrorRecordPage(frontOfficePage))
+  },
+
+  lisFrontOfficeCattleOnHoldingPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeCattleOnHoldingPage(frontOfficePage))
+  },
+
+  lisFrontOfficePendingValidationPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficePendingValidationPage(frontOfficePage))
   }
 })
 
