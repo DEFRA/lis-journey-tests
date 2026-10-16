@@ -28,6 +28,11 @@ import { LisFrontOfficeDateOfMovementPage } from '../page-objects/front-office/r
 import { LisFrontOfficeOnOrOffMovementPage } from '../page-objects/front-office/report.a.cattle.movement/on.or.off.movement.page'
 import { LisFrontOfficeReportACattleMovementPage } from '../page-objects/front-office/report.a.cattle.movement/report.a.cattle.movement.page'
 import { LisFrontOfficeSubmitMovementReportPage } from '../page-objects/front-office/report.a.cattle.movement/submit.movement.report.page'
+import { LisFrontOfficeCheckAnimalDetailsPage } from '../page-objects/front-office/report.a.cattle.death/check.animal.details.page'
+import { LisFrontOfficeIsTheAnimalRegisteredPage } from '../page-objects/front-office/report.a.cattle.death/is.the.animal.registered.page'
+import { LisFrontOfficeRegisteredAnimalDetailsPage } from '../page-objects/front-office/report.a.cattle.death/registered.animal.details.page'
+import { LisFrontOfficeReportACattleDeathPage } from '../page-objects/front-office/report.a.cattle.death/report.a.cattle.death.page'
+import { LisFrontOfficeUnregisteredAnimalDetailsPage } from '../page-objects/front-office/report.a.cattle.death/unregistered.animal.details.page'
 import AxeBuilder from '@axe-core/playwright'
 
 const accessibilityTags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
@@ -61,6 +66,11 @@ export const test = base.extend<{
   lisFrontOfficeOnOrOffMovementPage: LisFrontOfficeOnOrOffMovementPage
   lisFrontOfficeReportACattleMovementPage: LisFrontOfficeReportACattleMovementPage
   lisFrontOfficeSubmitMovementReportPage: LisFrontOfficeSubmitMovementReportPage
+  lisFrontOfficeCheckAnimalDetailsPage: LisFrontOfficeCheckAnimalDetailsPage
+  lisFrontOfficeIsTheAnimalRegisteredPage: LisFrontOfficeIsTheAnimalRegisteredPage
+  lisFrontOfficeRegisteredAnimalDetailsPage: LisFrontOfficeRegisteredAnimalDetailsPage
+  lisFrontOfficeReportACattleDeathPage: LisFrontOfficeReportACattleDeathPage
+  lisFrontOfficeUnregisteredAnimalDetailsPage: LisFrontOfficeUnregisteredAnimalDetailsPage
   axeFrontOfficeBuilder: AxeBuilder
   axeBackOfficeBuilder: AxeBuilder
   frontOfficePage: Page
@@ -226,6 +236,32 @@ export const test = base.extend<{
 
   lisFrontOfficeSubmitMovementReportPage: async ({ frontOfficePage }, use) => {
     await use(new LisFrontOfficeSubmitMovementReportPage(frontOfficePage))
+  },
+
+  lisFrontOfficeCheckAnimalDetailsPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeCheckAnimalDetailsPage(frontOfficePage))
+  },
+
+  lisFrontOfficeIsTheAnimalRegisteredPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeIsTheAnimalRegisteredPage(frontOfficePage))
+  },
+
+  lisFrontOfficeRegisteredAnimalDetailsPage: async (
+    { frontOfficePage },
+    use
+  ) => {
+    await use(new LisFrontOfficeRegisteredAnimalDetailsPage(frontOfficePage))
+  },
+
+  lisFrontOfficeReportACattleDeathPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeReportACattleDeathPage(frontOfficePage))
+  },
+
+  lisFrontOfficeUnregisteredAnimalDetailsPage: async (
+    { frontOfficePage },
+    use
+  ) => {
+    await use(new LisFrontOfficeUnregisteredAnimalDetailsPage(frontOfficePage))
   }
 })
 
