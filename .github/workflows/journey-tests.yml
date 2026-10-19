@@ -84,6 +84,16 @@ jobs:
           ref: ${{ inputs.branch-set }}
           path: lis-journey-tests
 
+      # The compose stack runs from published images. The only sibling repo it
+      # reads from disk is cattle-api (liquibase changelog and localstack init
+      # script), which is public, so it needs no credentials.
+      - name: Checkout cattle-api for its migrations
+        uses: actions/checkout@v7
+        with:
+          repository: DEFRA/lis-api-cattle
+          path: lis-dev/api/cattle
+          persist-credentials: false
+
       - name: Fix permissions for lis-dev and lis-journey-tests scripts
         shell: bash
         run: |
@@ -105,13 +115,8 @@ jobs:
         working-directory: lis-journey-tests/bin
         shell: bash
         env:
-          GH_TOKEN: ${{ secrets.LIS_GITHUB_MONITOR_PAT }}
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+          SKIP_REPO_SYNC: 'true'
         run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add - <<< "${{ secrets.LIS_SSH_KEY }}"
           chmod +x platform.sh
           ./platform.sh up
 

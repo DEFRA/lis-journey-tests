@@ -45,7 +45,13 @@ setup_tls_certificates() {
 start_platform() {
     cd "$LIS_DEV_DIR"
 
-    pull_and_update_submodules
+    # CI checks out the one sibling repo the stack reads (cattle-api) itself,
+    # so it has no GitHub credentials for a full sync and skips it.
+    if [ "${SKIP_REPO_SYNC:-}" = "true" ]; then
+        echo "[platform] SKIP_REPO_SYNC=true, not syncing the lis-* repos"
+    else
+        pull_and_update_submodules
+    fi
     setup_etc_hosts
     setup_tls_certificates
 
