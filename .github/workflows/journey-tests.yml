@@ -91,6 +91,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: DEFRA/lis-api-cattle
+          ref: main
           path: lis-dev/api/cattle
           persist-credentials: false
 

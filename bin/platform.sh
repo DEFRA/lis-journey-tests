@@ -42,6 +42,26 @@ setup_tls_certificates() {
     return $?
 }
 
+# With the sync skipped, every sibling-repo path the compose stack
+# bind-mounts or builds from must already be checked out, or compose fails
+# later with an opaque error. Fail here instead, naming the path, so a newly
+# enabled include that needs another sibling repo is obvious. lis-dev's own
+# .tools/ paths are left out: its data directories are created on first use
+# and its certificates by setup-certs.sh, which runs after this check.
+check_sibling_paths() {
+    local missing=0 path
+    while IFS= read -r path; do
+        [ -n "$path" ] && [ ! -e "$path" ] && { echo "[platform] missing: $path" >&2; missing=1; }
+    done < <(docker compose -p lis-dev config --format json 2>/dev/null \
+        | jq -r '.services[] | (.volumes[]? | select(.type == "bind") | .source), (.build.context? // empty)' \
+        | grep -v "^$LIS_DEV_DIR/.tools/" \
+        | sort -u)
+    if [ "$missing" = 1 ]; then
+        echo "[platform] the compose stack reads from paths that are not checked out; add a checkout step for them or run without SKIP_REPO_SYNC" >&2
+        return 1
+    fi
+}
+
 start_platform() {
     cd "$LIS_DEV_DIR"
 
@@ -49,6 +69,7 @@ start_platform() {
     # so it has no GitHub credentials for a full sync and skips it.
     if [ "${SKIP_REPO_SYNC:-}" = "true" ]; then
         echo "[platform] SKIP_REPO_SYNC=true, not syncing the lis-* repos"
+        check_sibling_paths
     else
         pull_and_update_submodules
     fi
