@@ -65,8 +65,8 @@ check_sibling_paths() {
 start_platform() {
     cd "$LIS_DEV_DIR"
 
-    # CI checks out the one sibling repo the stack reads (cattle-api) itself,
-    # so it has no GitHub credentials for a full sync and skips it.
+    # The compose stack runs from published images and reads nothing from a
+    # sibling repo, so CI, which has no GitHub credentials for a sync, skips it.
     if [ "${SKIP_REPO_SYNC:-}" = "true" ]; then
         echo "[platform] SKIP_REPO_SYNC=true, not syncing the lis-* repos"
         check_sibling_paths

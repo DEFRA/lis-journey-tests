@@ -84,17 +84,6 @@ jobs:
           ref: ${{ inputs.branch-set }}
           path: lis-journey-tests
 
-      # The compose stack runs from published images. The only sibling repo it
-      # reads from disk is cattle-api (liquibase changelog and localstack init
-      # script), which is public, so it needs no credentials.
-      - name: Checkout cattle-api for its migrations
-        uses: actions/checkout@v7
-        with:
-          repository: DEFRA/lis-api-cattle
-          ref: main
-          path: lis-dev/api/cattle
-          persist-credentials: false
-
       - name: Fix permissions for lis-dev and lis-journey-tests scripts
         shell: bash
         run: |
