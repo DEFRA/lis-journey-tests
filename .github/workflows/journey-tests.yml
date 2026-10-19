@@ -104,8 +104,6 @@ jobs:
       - name: Start development platform (lis-dev) and wait for it to be ready
         working-directory: lis-journey-tests/bin
         shell: bash
-        env:
-          SKIP_REPO_SYNC: 'true'
         run: |
           chmod +x platform.sh
           ./platform.sh up

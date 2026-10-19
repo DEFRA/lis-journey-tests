@@ -24,12 +24,6 @@ ensure_network() {
 	fi
 }
 
-pull_and_update_submodules() {
-    echo "[platform] Pulling and updating lis-dev submodules..."
-    ./.scripts/update-project.sh
-    return $?
-}
-
 setup_etc_hosts() {
     echo "[platform] Setting up /etc/hosts entries..."
     ./.scripts/setup-hosts.sh
@@ -42,10 +36,11 @@ setup_tls_certificates() {
     return $?
 }
 
-# With the sync skipped, every sibling-repo path the compose stack
-# bind-mounts or builds from must already be checked out, or compose fails
-# later with an opaque error. Fail here instead, naming the path, so a newly
-# enabled include that needs another sibling repo is obvious. lis-dev's own
+# The compose stack runs from published images and reads nothing from the
+# other lis-* repos, so they are not cloned. Any sibling-repo path the stack
+# bind-mounts or builds from would make compose fail later with an opaque
+# error, so fail here instead, naming the path, so a newly enabled include
+# that needs another sibling repo is obvious. lis-dev's own
 # .tools/ paths are left out: its data directories are created on first use
 # and its certificates by setup-certs.sh, which runs after this check.
 check_sibling_paths() {
@@ -57,7 +52,7 @@ check_sibling_paths() {
         | grep -v "^$LIS_DEV_DIR/.tools/" \
         | sort -u)
     if [ "$missing" = 1 ]; then
-        echo "[platform] the compose stack reads from paths that are not checked out; add a checkout step for them or run without SKIP_REPO_SYNC" >&2
+        echo "[platform] the compose stack reads from paths that are not checked out; check them out first" >&2
         return 1
     fi
 }
@@ -65,14 +60,7 @@ check_sibling_paths() {
 start_platform() {
     cd "$LIS_DEV_DIR"
 
-    # The compose stack runs from published images and reads nothing from a
-    # sibling repo, so CI, which has no GitHub credentials for a sync, skips it.
-    if [ "${SKIP_REPO_SYNC:-}" = "true" ]; then
-        echo "[platform] SKIP_REPO_SYNC=true, not syncing the lis-* repos"
-        check_sibling_paths
-    else
-        pull_and_update_submodules
-    fi
+    check_sibling_paths
     setup_etc_hosts
     setup_tls_certificates
 
