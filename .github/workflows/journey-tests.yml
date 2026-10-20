@@ -38,6 +38,11 @@ on:
         required: false
         default: main
 
+      lis-versions-overrides:
+        description: 'Pin LIS images: comma-separated <project>:<version>, e.g. hubs-front-office:0.48.0 or api-cattle:0.38.0-lreg-735.alpha.1'
+        type: string
+        required: false
+        default: ''
   workflow_call:
     inputs:
       test:
@@ -58,6 +63,11 @@ on:
         default: main
       image-version:
         description: 'Published lis-journey-tests image to run; builds from source when empty'
+        required: false
+        type: string
+        default: ''
+      lis-versions-overrides:
+        description: 'Pin LIS images: comma-separated <project>:<version>'
         required: false
         type: string
         default: ''
@@ -102,18 +112,28 @@ jobs:
         run: echo "ROOT_DIR=${{ github.workspace }}" >> $GITHUB_ENV
 
       - name: Configure AWS credentials
-        if: inputs.image-version != ''
         uses: aws-actions/configure-aws-credentials@v6
         with:
           aws-region: eu-west-2
           role-to-assume: arn:aws:iam::094954420758:role/github-lis-journey-tests-build-role
 
       - name: Log in to Amazon ECR
-        if: inputs.image-version != ''
         id: ecr
         uses: aws-actions/amazon-ecr-login@v2
         with:
           mask-password: 'true'
+
+      # Pin every LIS image to its latest release (or the given overrides), always
+      # from ECR, so the run is reproducible and can use a prerelease; show the
+      # versions used in the job summary.
+      - name: Pin the LIS image versions
+        env:
+          OVERRIDES: ${{ inputs.lis-versions-overrides }}
+          REGISTRY: ${{ steps.ecr.outputs.registry }}
+        run: |
+          chmod +x lis-dev/.scripts/pin-image-versions.sh
+          lis-dev/.scripts/pin-image-versions.sh --registry="$REGISTRY" --overrides="$OVERRIDES" lis-dev/.env \
+            | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Start pulling the published journey-tests image
         if: inputs.image-version != ''
