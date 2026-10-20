@@ -38,6 +38,11 @@ on:
         required: false
         default: main
 
+      lis-versions-overrides:
+        description: 'Pin LIS images: comma-separated <project>:<version>, e.g. hubs-front-office:0.48.0'
+        type: string
+        required: false
+        default: ''
   workflow_call:
     inputs:
       test:
@@ -58,6 +63,11 @@ on:
         default: main
       image-version:
         description: 'Published lis-journey-tests image to run; builds from source when empty'
+        required: false
+        type: string
+        default: ''
+      lis-versions-overrides:
+        description: 'Pin LIS images: comma-separated <project>:<version>'
         required: false
         type: string
         default: ''
@@ -83,6 +93,15 @@ jobs:
           repository: DEFRA/lis-journey-tests
           ref: ${{ inputs.branch-set }}
           path: lis-journey-tests
+
+      # Pin every LIS image to its latest release (or the given overrides) so the
+      # run is reproducible, and show the versions used in the job summary.
+      - name: Pin the LIS image versions
+        env:
+          OVERRIDES: ${{ inputs.lis-versions-overrides }}
+        run: |
+          chmod +x lis-dev/.scripts/pin-image-versions.sh
+          lis-dev/.scripts/pin-image-versions.sh --overrides="$OVERRIDES" lis-dev/.env | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Fix permissions for lis-dev and lis-journey-tests scripts
         shell: bash
