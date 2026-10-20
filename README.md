@@ -291,7 +291,8 @@ The script:
 1. Resolves paths to:
    - `lis-dev` (infra, back-office and front-office)
 2. Ensures the shared Docker network `lis-dev` exists
-3. Updates the project sub modules and dependencies
+3. Checks that every path the compose stack reads from disk exists (it runs from published
+   images and needs nothing from the other lis-* repos, so they are not cloned)
 4. Adds the /etc/hosts entries for the local domain names (lis-dev's `.scripts/setup-hosts.sh`;
    prompts for sudo when the entries need changing)
 5. Ensures certificates are setup for TLS
