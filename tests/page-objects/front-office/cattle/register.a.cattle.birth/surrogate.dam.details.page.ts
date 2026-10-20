@@ -15,16 +15,16 @@ export class LisFrontOfficeSurrogateDamDetailsPage extends BasePage {
       name: 'Genetic dam ear tag number'
     })
     this.surrogateDamEarTagInput = page.getByRole('combobox', {
-      name: 'Surrogate dam ear tag number',
-      exact: true
+      name: 'Surrogate dam ear tag number'
     })
   }
 
   async submitGeneticAndSurrogateDamEarTagNumbers(
-    geneticDamEarTagNumber: string
+    geneticDamEarTagNumber: string,
+    surrogateDamEarTagNumber: string
   ) {
     await this.geneticDamEarTagInput.fill(geneticDamEarTagNumber)
-    await this.surrogateDamEarTagInput.selectOption('Surrogate Dam 1')
+    await this.surrogateDamEarTagInput.fill(surrogateDamEarTagNumber)
     await this.continueButton.click()
   }
 }

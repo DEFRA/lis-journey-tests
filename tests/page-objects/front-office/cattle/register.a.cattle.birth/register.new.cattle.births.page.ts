@@ -20,9 +20,8 @@ export class LisFrontOfficeRegisterNewCattleBirthPage extends BasePage {
     await link.click()
   }
 
-  async addAdditionalAnimals(additionalAnimals: 'Yes' | 'No') {
-    const radioButton =
-      additionalAnimals === 'Yes' ? this.yesRadio : this.noRadio
+  async submitAddMoreAnimals(addMoreAnimals: 'Yes' | 'No') {
+    const radioButton = addMoreAnimals === 'Yes' ? this.yesRadio : this.noRadio
     await radioButton.check()
     await this.continueButton.click()
   }

@@ -9,22 +9,20 @@ export class LisFrontOfficeSubmissionDetailsPage extends BasePage {
     this.heading = page.getByRole('heading', { name: 'Submission   details' })
   }
 
-  async verifySubmissionDetails(expectedDetails: Record<string, string>[]) {
+  async verifySubmissionDetails(expectedDetails: Record<string, string>) {
     const assertions: Promise<void>[] = []
 
-    for (const detail of expectedDetails) {
-      for (const [key, expectedValue] of Object.entries(detail)) {
-        const detailRow = this.page.locator('.govuk-summary-list__row').filter({
-          has: this.page
-            .locator('.govuk-summary-list__key')
-            .getByText(key, { exact: true })
-        })
-        assertions.push(
-          expect(detailRow.locator('.govuk-summary-list__value')).toHaveText(
-            expectedValue
-          )
+    for (const [key, expectedValue] of Object.entries(expectedDetails)) {
+      const detailRow = this.page.locator('.govuk-summary-list__row').filter({
+        has: this.page
+          .locator('.govuk-summary-list__key')
+          .getByText(key, { exact: true })
+      })
+      assertions.push(
+        expect(detailRow.locator('.govuk-summary-list__value')).toHaveText(
+          expectedValue
         )
-      }
+      )
     }
 
     await Promise.all(assertions)
@@ -50,12 +48,9 @@ export class LisFrontOfficeSubmissionDetailsPage extends BasePage {
         )
       }
 
-      const animalRow = animalsTable.locator('tbody tr').filter({
-        has: animalsTable.getByRole('cell', {
-          name: earTagNumber,
-          exact: true
-        })
-      })
+      const animalRow = animalsTable
+        .locator('tbody tr')
+        .filter({ hasText: earTagNumber })
 
       for (const [header, expectedValue] of Object.entries(animal)) {
         const columnIndex = headers.indexOf(header)
@@ -63,11 +58,9 @@ export class LisFrontOfficeSubmissionDetailsPage extends BasePage {
           throw new Error(`No animals table column found for "${header}"`)
         }
 
-        assertions.push(
-          expect(animalRow.locator('td').nth(columnIndex)).toHaveText(
-            expectedValue
-          )
-        )
+        const cell = animalRow.locator('td').nth(columnIndex)
+        const value = header === 'Breed' ? cell.locator('abbr') : cell
+        assertions.push(expect(value).toHaveText(expectedValue))
       }
     }
 
