@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     environment:
       ENVIRONMENT: docker
-      PROFILE: ""
+      PROFILE: "${PROFILE:-}"
       RUN_ID: "docker"
       GITHUB_ACTIONS: "${GITHUB_ACTIONS:-false}"
     env_file:
