@@ -21,6 +21,7 @@ import { LisFrontOfficeSubmitCattleRegistrationPage } from '../page-objects/fron
 import { LisFrontOfficeRegisterNewCattleBirthPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/register.new.cattle.births.page'
 import { LisFrontOfficeRegisterCattleBirthPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/register.cattle.birth.page'
 import { LisFrontOfficeCancelDraftRegistrationPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/cancel.draft.registration.page'
+import { LisFrontOfficeCancelThisRegistrationPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/cancel.this.registration.page'
 import { LisFrontOfficeSubmissionDetailsPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/submission.details.page'
 import { AddEarTagPage } from '../page-objects/front-office/cattle/report.a.cattle.movement/add.ear.tag.page'
 import { LisFrontOfficeCheckMovementDetailsPage } from '../page-objects/front-office/cattle/report.a.cattle.movement/check.movement.details.page'
@@ -64,6 +65,7 @@ export const test = base.extend<{
   lisFrontOfficeRegisterNewCattleBirthPage: LisFrontOfficeRegisterNewCattleBirthPage
   lisFrontOfficeRegisterCattleBirthPage: LisFrontOfficeRegisterCattleBirthPage
   lisFrontOfficeCancelDraftRegistrationPage: LisFrontOfficeCancelDraftRegistrationPage
+  lisFrontOfficeCancelThisRegistrationPage: LisFrontOfficeCancelThisRegistrationPage
   lisFrontOfficeSubmissionDetailsPage: LisFrontOfficeSubmissionDetailsPage
   lisFrontOfficeAddEarTagPage: AddEarTagPage
   lisFrontOfficeCheckMovementDetailsPage: LisFrontOfficeCheckMovementDetailsPage
@@ -218,6 +220,13 @@ export const test = base.extend<{
     use
   ) => {
     await use(new LisFrontOfficeCancelDraftRegistrationPage(frontOfficePage))
+  },
+
+  lisFrontOfficeCancelThisRegistrationPage: async (
+    { frontOfficePage },
+    use
+  ) => {
+    await use(new LisFrontOfficeCancelThisRegistrationPage(frontOfficePage))
   },
 
   lisFrontOfficeSubmissionDetailsPage: async ({ frontOfficePage }, use) => {

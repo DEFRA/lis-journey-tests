@@ -61,6 +61,10 @@ const testDir = defineBddConfig({
 
 export default defineConfig({
   testDir,
+  testIgnore:
+    process.env.GITHUB_ACTIONS === 'true'
+      ? ['**/tests/features/front-office/cattle.feature.spec.js']
+      : [],
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

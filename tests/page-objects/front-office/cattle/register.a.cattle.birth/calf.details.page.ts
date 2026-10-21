@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test'
+import { Locator, Page, expect } from '@playwright/test'
 import { BasePage } from '../../../base.page'
 
 export class LisFrontOfficeRegisterCalfDetailsPage extends BasePage {
@@ -14,9 +14,12 @@ export class LisFrontOfficeRegisterCalfDetailsPage extends BasePage {
   constructor(page: Page) {
     super(page)
     this.heading = page.getByRole('heading', { name: 'Calf details' })
-    this.animalEarTagInput = page.getByRole('combobox', {
-      name: 'Animal ear tag'
-    })
+    this.animalEarTagInput = page
+      .getByRole('combobox', {
+        name: 'Animal ear tag number',
+        exact: true
+      })
+      .filter({ visible: true })
     this.dayInput = page.getByRole('textbox', { name: 'Day' })
     this.monthInput = page.getByRole('textbox', { name: 'Month' })
     this.yearInput = page.getByRole('textbox', { name: 'Year' })
@@ -30,19 +33,34 @@ export class LisFrontOfficeRegisterCalfDetailsPage extends BasePage {
     day: string,
     month: string,
     year: string,
-    gender: 'Male' | 'Female',
+    sexOfCalf: 'Male' | 'Female',
     breed: string
   ) {
-    await this.animalEarTagInput.fill(earTag)
+    await this.selectAutocompleteOption(this.animalEarTagInput, earTag)
     await this.dayInput.fill(day)
     await this.monthInput.fill(month)
     await this.yearInput.fill(year)
-    if (gender === 'Male') {
+    await this.selectSexOfCalf(sexOfCalf)
+    await this.selectAutocompleteOption(this.breedInput, breed)
+    await this.continueButton.click()
+  }
+
+  async selectAutocompleteOption(input: Locator, option: string) {
+    await expect(input).toBeVisible()
+    await input.fill(option)
+    const suggestion = this.page.getByRole('option', {
+      name: option,
+      exact: true
+    })
+    await suggestion.waitFor({ state: 'visible' })
+    await suggestion.click()
+  }
+
+  async selectSexOfCalf(sexOfCalf: string) {
+    if (sexOfCalf === 'Male') {
       await this.maleRadio.check()
     } else {
       await this.femaleRadio.check()
     }
-    await this.breedInput.selectOption(breed)
-    await this.continueButton.click()
   }
 }

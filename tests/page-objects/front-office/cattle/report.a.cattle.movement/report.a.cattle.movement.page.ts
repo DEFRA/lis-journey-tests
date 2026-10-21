@@ -7,7 +7,6 @@ export class LisFrontOfficeReportACattleMovementPage extends BasePage {
   readonly draftDateStartedField: Locator
   readonly draftTotalBirthsField: Locator
   readonly registrationHistoryResultsField: Locator
-  readonly cancelLink: Locator
   readonly continueLink: Locator
 
   constructor(page: Page) {
@@ -25,7 +24,6 @@ export class LisFrontOfficeReportACattleMovementPage extends BasePage {
       .getByText('Total births', { exact: true })
       .locator('..')
     this.registrationHistoryResultsField = page.getByText('Showing')
-    this.cancelLink = page.getByRole('link', { name: 'Cancel' })
     this.continueLink = page.getByRole('link', { name: 'Continue' })
   }
 

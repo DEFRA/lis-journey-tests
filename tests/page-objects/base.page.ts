@@ -19,6 +19,7 @@ export class BasePage {
   readonly cattleMenuLink: Locator
   readonly myProfileLink: Locator
   readonly continueButton: Locator
+  readonly cancelLink: Locator
 
   constructor(page: Page) {
     this.page = page
@@ -43,6 +44,7 @@ export class BasePage {
     this.cattleMenuLink = this.menuBar.getByRole('link', { name: 'Cattle' })
     this.myProfileLink = page.getByRole('link', { name: 'My profile' })
     this.continueButton = page.getByRole('button', { name: 'Continue' })
+    this.cancelLink = page.getByRole('link', { name: 'Cancel' })
   }
 
   async goto(path: string) {
