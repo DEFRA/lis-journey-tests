@@ -14,9 +14,12 @@ export class LisFrontOfficeSurrogateDamDetailsPage extends BasePage {
     this.geneticDamEarTagInput = page.getByRole('textbox', {
       name: 'Genetic dam ear tag number'
     })
-    this.surrogateDamEarTagInput = page.getByRole('combobox', {
-      name: 'Surrogate dam ear tag number'
-    })
+    this.surrogateDamEarTagInput = page
+      .getByRole('combobox', {
+        name: 'Surrogate dam ear tag number',
+        exact: true
+      })
+      .filter({ visible: true })
   }
 
   async submitGeneticAndSurrogateDamEarTagNumbers(
@@ -24,7 +27,14 @@ export class LisFrontOfficeSurrogateDamDetailsPage extends BasePage {
     surrogateDamEarTagNumber: string
   ) {
     await this.geneticDamEarTagInput.fill(geneticDamEarTagNumber)
+    await this.surrogateDamEarTagInput.waitFor({ state: 'visible' })
     await this.surrogateDamEarTagInput.fill(surrogateDamEarTagNumber)
+    const suggestion = this.page.getByRole('option', {
+      name: surrogateDamEarTagNumber,
+      exact: true
+    })
+    await suggestion.waitFor({ state: 'visible' })
+    await suggestion.click()
     await this.continueButton.click()
   }
 }

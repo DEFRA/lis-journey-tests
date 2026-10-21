@@ -33,23 +33,19 @@ export class LisFrontOfficeRegisterCalfDetailsPage extends BasePage {
     day: string,
     month: string,
     year: string,
-    gender: 'Male' | 'Female',
+    sexOfCalf: 'Male' | 'Female',
     breed: string
   ) {
     await this.selectAutocompleteOption(this.animalEarTagInput, earTag)
     await this.dayInput.fill(day)
     await this.monthInput.fill(month)
     await this.yearInput.fill(year)
-    if (gender === 'Male') {
-      await this.maleRadio.check()
-    } else {
-      await this.femaleRadio.check()
-    }
+    await this.selectSexOfCalf(sexOfCalf)
     await this.selectAutocompleteOption(this.breedInput, breed)
     await this.continueButton.click()
   }
 
-  private async selectAutocompleteOption(input: Locator, option: string) {
+  async selectAutocompleteOption(input: Locator, option: string) {
     await expect(input).toBeVisible()
     await input.fill(option)
     const suggestion = this.page.getByRole('option', {
@@ -58,5 +54,13 @@ export class LisFrontOfficeRegisterCalfDetailsPage extends BasePage {
     })
     await suggestion.waitFor({ state: 'visible' })
     await suggestion.click()
+  }
+
+  async selectSexOfCalf(sexOfCalf: string) {
+    if (sexOfCalf === 'Male') {
+      await this.maleRadio.check()
+    } else {
+      await this.femaleRadio.check()
+    }
   }
 }

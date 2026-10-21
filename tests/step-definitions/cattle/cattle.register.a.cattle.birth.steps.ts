@@ -3,10 +3,17 @@ import { Given, Then, When } from '../../fixtures/test.fixture'
 import { DataTable } from 'playwright-bdd'
 
 Given('I log into the herokuapp mvp', async ({ page }) => {
+  const password = process.env.LIS_HEROKUAPP_PASSWORD
+  if (!password) {
+    throw new Error(
+      'LIS_HEROKUAPP_PASSWORD is required to log into the Heroku MVP'
+    )
+  }
+
   await page.goto(
     'https://livestock-traceability-4f1c92f377cb.herokuapp.com/mvp-front-office/v5/my-holdings/holding-overview?holding-id=holding-001'
   )
-  await page.getByRole('textbox', { name: 'Password' }).fill('traceability')
+  await page.getByRole('textbox', { name: 'Password' }).fill(password)
   await page.getByRole('button', { name: 'Continue' }).click()
 })
 
@@ -83,8 +90,16 @@ When(
 
 When('I add no sire details', async ({ lisFrontOfficeSireDetailsPage }) => {
   await expect(lisFrontOfficeSireDetailsPage.heading).toBeVisible()
-  await lisFrontOfficeSireDetailsPage.continueButton.click()
+  await lisFrontOfficeSireDetailsPage.submitSireDetails()
 })
+
+When(
+  'I submit the sire ear tag number as {string}',
+  async ({ lisFrontOfficeSireDetailsPage }, sireEarTagNumber: string) => {
+    await expect(lisFrontOfficeSireDetailsPage.heading).toBeVisible()
+    await lisFrontOfficeSireDetailsPage.submitSireDetails(sireEarTagNumber)
+  }
+)
 
 When(
   'I add sire details with {string} and {string}',
@@ -102,6 +117,12 @@ Then(
     await lisFrontOfficeCheckCalfDetailsPage.verifySummaryDetails(
       expectedDetails
     )
+  }
+)
+
+When(
+  'I select Continue from the Calf details page',
+  async ({ lisFrontOfficeCheckCalfDetailsPage }) => {
     await lisFrontOfficeCheckCalfDetailsPage.continueButton.click()
   }
 )
@@ -115,6 +136,14 @@ Then(
   ) => {
     await expect(lisFrontOfficeRegisterNewCattleBirthPage.heading).toBeVisible()
     await lisFrontOfficeRegisterNewCattleBirthPage.verifyTagStatus(tag, status)
+  }
+)
+
+Then(
+  'I submit the sire name as {string}',
+  async ({ lisFrontOfficeSireDetailsPage }, sireName: string) => {
+    await expect(lisFrontOfficeSireDetailsPage.heading).toBeVisible()
+    await lisFrontOfficeSireDetailsPage.submitSireDetails(undefined, sireName)
   }
 )
 
