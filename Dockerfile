@@ -4,25 +4,33 @@ ENV TZ="Europe/London"
 
 USER root
 
+# curl + unzip for the AWS CLI download, Java for the Allure report generator.
 RUN apt-get update -qq \
-    && apt-get install -qqy \
+    && apt-get install -qqy --no-install-recommends \
+    ca-certificates \
     curl \
-    zip \
-    openjdk-17-jre-headless
-
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
-    && unzip awscliv2.zip \
-    && ./aws/install
+    unzip \
+    openjdk-17-jre-headless \
+    && rm -rf /var/lib/apt/lists/* \
+    && curl -sS "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+    && unzip -q awscliv2.zip \
+    && ./aws/install \
+    && rm -rf awscliv2.zip aws
 
 WORKDIR /app
 
-COPY . .
+# Dependencies first so source edits do not invalidate the install layer.
+# --ignore-scripts skips the husky "prepare" hook, which has no git repo here.
+# Only chromium is configured in playwright.config.ts and runs headless, so
+# install just the headless shell rather than firefox, webkit and full chromium.
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev --ignore-scripts --no-audit --no-fund \
+    && npx playwright install --with-deps --only-shell chromium \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN rm -rf allure-report allure-results playwright-report test-results
-RUN chmod +x entrypoint.sh
-RUN chmod +x ./bin/publish-tests.sh
-RUN npm install \
-    && npx playwright install --with-deps
+COPY . .
+COPY --chmod=755 entrypoint.sh ./
+COPY --chmod=755 bin/publish-tests.sh ./bin/
 
 ENTRYPOINT [ "./entrypoint.sh" ]
 

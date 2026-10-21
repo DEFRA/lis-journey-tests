@@ -24,12 +24,6 @@ ensure_network() {
 	fi
 }
 
-pull_and_update_submodules() {
-    echo "[platform] Pulling and updating lis-dev submodules..."
-    ./.scripts/update-project.sh
-    return $?
-}
-
 setup_etc_hosts() {
     echo "[platform] Setting up /etc/hosts entries..."
     ./.scripts/setup-hosts.sh
@@ -42,10 +36,31 @@ setup_tls_certificates() {
     return $?
 }
 
+# The compose stack runs from published images and reads nothing from the
+# other lis-* repos, so they are not cloned. Any sibling-repo path the stack
+# bind-mounts or builds from would make compose fail later with an opaque
+# error, so fail here instead, naming the path, so a newly enabled include
+# that needs another sibling repo is obvious. lis-dev's own
+# .tools/ paths are left out: its data directories are created on first use
+# and its certificates by setup-certs.sh, which runs after this check.
+check_sibling_paths() {
+    local missing=0 path
+    while IFS= read -r path; do
+        [ -n "$path" ] && [ ! -e "$path" ] && { echo "[platform] missing: $path" >&2; missing=1; }
+    done < <(docker compose -p lis-dev config --format json 2>/dev/null \
+        | jq -r '.services[] | (.volumes[]? | select(.type == "bind") | .source), (.build.context? // empty)' \
+        | grep -v "^$LIS_DEV_DIR/.tools/" \
+        | sort -u)
+    if [ "$missing" = 1 ]; then
+        echo "[platform] the compose stack reads from paths that are not checked out; check them out first" >&2
+        return 1
+    fi
+}
+
 start_platform() {
     cd "$LIS_DEV_DIR"
 
-    pull_and_update_submodules
+    check_sibling_paths
     setup_etc_hosts
     setup_tls_certificates
 

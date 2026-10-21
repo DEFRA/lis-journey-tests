@@ -38,6 +38,11 @@ on:
         required: false
         default: main
 
+      lis-versions-overrides:
+        description: 'Pin LIS images: comma-separated <project>:<version>, e.g. hubs-front-office:0.48.0'
+        type: string
+        required: false
+        default: ''
   workflow_call:
     inputs:
       test:
@@ -58,6 +63,11 @@ on:
         default: main
       image-version:
         description: 'Published lis-journey-tests image to run; builds from source when empty'
+        required: false
+        type: string
+        default: ''
+      lis-versions-overrides:
+        description: 'Pin LIS images: comma-separated <project>:<version>'
         required: false
         type: string
         default: ''
@@ -84,6 +94,15 @@ jobs:
           ref: ${{ inputs.branch-set }}
           path: lis-journey-tests
 
+      # Pin every LIS image to its latest release (or the given overrides) so the
+      # run is reproducible, and show the versions used in the job summary.
+      - name: Pin the LIS image versions
+        env:
+          OVERRIDES: ${{ inputs.lis-versions-overrides }}
+        run: |
+          chmod +x lis-dev/.scripts/pin-image-versions.sh
+          lis-dev/.scripts/pin-image-versions.sh --overrides="$OVERRIDES" lis-dev/.env | tee -a "$GITHUB_STEP_SUMMARY"
+
       - name: Fix permissions for lis-dev and lis-journey-tests scripts
         shell: bash
         run: |
@@ -101,51 +120,6 @@ jobs:
         shell: bash
         run: echo "ROOT_DIR=${{ github.workspace }}" >> $GITHUB_ENV
 
-      - name: Start development platform (lis-dev) and wait for it to be ready
-        working-directory: lis-journey-tests/bin
-        shell: bash
-        env:
-          GH_TOKEN: ${{ secrets.LIS_GITHUB_MONITOR_PAT }}
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add - <<< "${{ secrets.LIS_SSH_KEY }}"
-          chmod +x platform.sh
-          ./platform.sh up
-
-      - name: Archive npm failure logs
-        uses: actions/upload-artifact@v7
-        if: failure() # Only runs if the step above fails
-        with:
-            name: npm-logs
-            path: ~/.npm/_logs/
-
-      - name: Wait for platform to stabilise
-        shell: bash
-        run: sleep 15
-
-      - name: List running containers
-        shell: bash
-        run: docker ps -a
-
-      - name: Debug back-office logs
-        shell: bash
-        run: docker logs lis-dev-lis-hubs-back-office-1 || true
-
-      - name: Debug back-office health endpoint
-        shell: bash
-        run: curl -v https://back-office.lis.defra/health
-
-      - name: Debug front-office logs
-        shell: bash
-        run: docker logs lis-dev-lis-hubs-front-office-1 || true
-
-      - name: Debug front-office health endpoint
-        shell: bash
-        run: curl -v https://front-office.lis.defra/health
-
       - name: Configure AWS credentials
         if: inputs.image-version != ''
         uses: aws-actions/configure-aws-credentials@v6
@@ -160,13 +134,42 @@ jobs:
         with:
           mask-password: 'true'
 
-      - name: Pull the published journey-tests image
+      - name: Start pulling the published journey-tests image
         if: inputs.image-version != ''
         env:
           IMAGE: ${{ steps.ecr.outputs.registry }}/lis-journey-tests:${{ inputs.image-version }}
         run: |
-          docker pull "$IMAGE"
+          # Runs while the platform starts; the later pull waits for it.
+          nohup docker pull "$IMAGE" > image-pull.log 2>&1 &
           echo "JOURNEY_TESTS_IMAGE=$IMAGE" >> "$GITHUB_ENV"
+
+      - name: Start development platform (lis-dev) and wait for it to be ready
+        working-directory: lis-journey-tests/bin
+        shell: bash
+        run: |
+          chmod +x platform.sh
+          ./platform.sh up
+
+      - name: Archive npm failure logs
+        uses: actions/upload-artifact@v7
+        if: failure() # Only runs if the step above fails
+        with:
+            name: npm-logs
+            path: ~/.npm/_logs/
+
+      - name: Check the platform is serving
+        shell: bash
+        run: |
+          for hub in back-office front-office; do
+            curl -fsS --retry 5 --retry-all-errors --retry-delay 2 "https://$hub.lis.defra/health"
+            echo
+          done
+
+      - name: Wait for the published journey-tests image
+        if: inputs.image-version != ''
+        run: |
+          docker pull "$JOURNEY_TESTS_IMAGE"
+          cat image-pull.log
 
       - name: Ensure report directories exist
         shell: bash
@@ -196,20 +199,11 @@ jobs:
           fi
 
           echo "Running tests with filter: $FILTER"
-
-          # Run the published image when one was pulled, otherwise build it.
           BUILD=()
           if [[ -z "${JOURNEY_TESTS_IMAGE:-}" ]]; then
           BUILD=(--build)
           fi
-
-          if [[ -z "$FILTER" ]]; then
-          docker compose -p lis-dev -f compose.yml up "${BUILD[@]}" --abort-on-container-exit
-          else
-          docker compose -p lis-dev -f compose.yml run --rm "${BUILD[@]}" journey-tests \
-              sh -c "npm ci && npx playwright test --grep='$FILTER'"
-          fi
-
+          PROFILE="$FILTER" docker compose -p lis-dev -f compose.yml up "${BUILD[@]}" --abort-on-container-exit --exit-code-from journey-tests
       - name: Debug Inspect lis-dev network
         if: always()
         shell: bash
@@ -268,12 +262,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: always()
-
-      # Stop platform (UI + backend)
-      - name: Stop platform
-        if: always()
-        working-directory: lis-journey-tests/bin
-        shell: bash
-        run: ./platform.sh down
-
-      # Slack reporting is covered by CDP notification integration and is setup for DEV, Test and Ext-Test environments

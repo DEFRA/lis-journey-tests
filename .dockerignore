@@ -3,3 +3,7 @@ Dockerfile
 .git
 .github
 .husky
+allure-report
+allure-results
+playwright-report
+test-results
