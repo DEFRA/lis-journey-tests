@@ -4,9 +4,7 @@ import { BasePage } from '../../../base.page'
 export class LisFrontOfficeRegisterCalfDetailsPage extends BasePage {
   readonly heading: Locator
   readonly animalEarTagInput: Locator
-  readonly dayInput: Locator
-  readonly monthInput: Locator
-  readonly yearInput: Locator
+  readonly dateInput: Locator
   readonly maleRadio: Locator
   readonly femaleRadio: Locator
   readonly breedInput: Locator
@@ -20,9 +18,7 @@ export class LisFrontOfficeRegisterCalfDetailsPage extends BasePage {
         exact: true
       })
       .filter({ visible: true })
-    this.dayInput = page.getByRole('textbox', { name: 'Day' })
-    this.monthInput = page.getByRole('textbox', { name: 'Month' })
-    this.yearInput = page.getByRole('textbox', { name: 'Year' })
+    this.dateInput = page.getByRole('textbox', { name: 'Date of birth' })
     this.maleRadio = page.getByRole('radio', { name: 'Male', exact: true })
     this.femaleRadio = page.getByRole('radio', { name: 'Female' })
     this.breedInput = page.getByRole('combobox', { name: 'Breed' })
@@ -37,9 +33,7 @@ export class LisFrontOfficeRegisterCalfDetailsPage extends BasePage {
     breed: string
   ) {
     await this.selectAutocompleteOption(this.animalEarTagInput, earTag)
-    await this.dayInput.fill(day)
-    await this.monthInput.fill(month)
-    await this.yearInput.fill(year)
+    await this.dateInput.fill(day + '/' + month + '/' + year)
     await this.selectSexOfCalf(sexOfCalf)
     await this.selectAutocompleteOption(this.breedInput, breed)
     await this.continueButton.click()

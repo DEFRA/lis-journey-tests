@@ -11,7 +11,7 @@ Given('I log into the herokuapp mvp', async ({ page }) => {
   }
 
   await page.goto(
-    'https://livestock-traceability-4f1c92f377cb.herokuapp.com/mvp-front-office/v5/my-holdings/holding-overview?holding-id=holding-001'
+    'https://livestock-traceability-4f1c92f377cb.herokuapp.com/mvp-front-office/v6/my-holdings/holding-overview?holding-id=holding-001'
   )
   await page.getByRole('textbox', { name: 'Password' }).fill(password)
   await page.getByRole('button', { name: 'Continue' }).click()
@@ -24,17 +24,10 @@ When(
   }
 )
 
-When(
-  'I start birth registration process',
-  async ({ lisFrontOfficeRegisterCattleBirthPage }) => {
-    await lisFrontOfficeRegisterCattleBirthPage.startBirthRegistrationButton.click()
-  }
-)
-
 Then(
   'I submit valid calf details with {string}, {string}, {string}, {string}, {string}, and {string}',
   async (
-    { lisFrontOfficeRegisterCalfDetailsPage },
+    { lisFrontOfficeRegisterCalfDetailsPage, page },
     earTag: string,
     day: string,
     month: string,
@@ -42,6 +35,7 @@ Then(
     sex: 'Male' | 'Female',
     breed: string
   ) => {
+    await page.waitForLoadState('networkidle')
     await expect(lisFrontOfficeRegisterCalfDetailsPage.heading).toBeVisible()
     await lisFrontOfficeRegisterCalfDetailsPage.submitCalfDetails(
       earTag,
@@ -67,7 +61,8 @@ Then(
 
 When(
   'I add the ear tag of the dam as {string}',
-  async ({ lisFrontOfficeGeneticDamDetailsPage }, earTag: string) => {
+  async ({ lisFrontOfficeGeneticDamDetailsPage, page }, earTag: string) => {
+    await page.waitForLoadState('domcontentloaded')
     await expect(lisFrontOfficeGeneticDamDetailsPage.heading).toBeVisible()
     await lisFrontOfficeGeneticDamDetailsPage.submitAnimalEarTagNumber(earTag)
   }
