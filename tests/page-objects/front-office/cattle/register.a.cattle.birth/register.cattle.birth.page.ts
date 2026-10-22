@@ -3,7 +3,6 @@ import { BasePage } from '../../../base.page'
 
 export class LisFrontOfficeRegisterCattleBirthPage extends BasePage {
   readonly heading: Locator
-  readonly startBirthRegistrationButton: Locator
   readonly draftDateStartedField: Locator
   readonly draftTotalBirthsField: Locator
   readonly registrationHistoryResultsField: Locator
@@ -13,9 +12,6 @@ export class LisFrontOfficeRegisterCattleBirthPage extends BasePage {
     super(page)
     this.heading = page.getByRole('heading', {
       name: 'Register a cattle birth'
-    })
-    this.startBirthRegistrationButton = page.getByRole('button', {
-      name: 'Start birth registration'
     })
     this.draftDateStartedField = page
       .getByText('Date started', { exact: true })

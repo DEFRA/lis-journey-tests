@@ -63,7 +63,7 @@ export default defineConfig({
   testDir,
   testIgnore:
     process.env.GITHUB_ACTIONS === 'true'
-      ? ['**/tests/features/front-office/cattle.feature.spec.js']
+      ? ['**/tests/features/front-office/cattle/**/*.feature.spec.js']
       : [],
   /* Run tests in files in parallel */
   fullyParallel: true,

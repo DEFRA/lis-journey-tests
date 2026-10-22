@@ -23,9 +23,8 @@ import { LisFrontOfficeRegisterCattleBirthPage } from '../page-objects/front-off
 import { LisFrontOfficeCancelDraftRegistrationPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/cancel.draft.registration.page'
 import { LisFrontOfficeCancelThisRegistrationPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/cancel.this.registration.page'
 import { LisFrontOfficeSubmissionDetailsPage } from '../page-objects/front-office/cattle/register.a.cattle.birth/submission.details.page'
-import { AddEarTagPage } from '../page-objects/front-office/cattle/report.a.cattle.movement/add.ear.tag.page'
+import { LisFrontOfficeMovementDetailsPage } from '../page-objects/front-office/cattle/report.a.cattle.movement/movement.details'
 import { LisFrontOfficeCheckMovementDetailsPage } from '../page-objects/front-office/cattle/report.a.cattle.movement/check.movement.details.page'
-import { LisFrontOfficeDateOfMovementPage } from '../page-objects/front-office/cattle/report.a.cattle.movement/date.of.movement.page'
 import { LisFrontOfficeOnOrOffMovementPage } from '../page-objects/front-office/cattle/report.a.cattle.movement/on.or.off.movement.page'
 import { LisFrontOfficeReportACattleMovementPage } from '../page-objects/front-office/cattle/report.a.cattle.movement/report.a.cattle.movement.page'
 import { LisFrontOfficeSubmitMovementReportPage } from '../page-objects/front-office/cattle/report.a.cattle.movement/submit.movement.report.page'
@@ -67,9 +66,8 @@ export const test = base.extend<{
   lisFrontOfficeCancelDraftRegistrationPage: LisFrontOfficeCancelDraftRegistrationPage
   lisFrontOfficeCancelThisRegistrationPage: LisFrontOfficeCancelThisRegistrationPage
   lisFrontOfficeSubmissionDetailsPage: LisFrontOfficeSubmissionDetailsPage
-  lisFrontOfficeAddEarTagPage: AddEarTagPage
+  lisFrontOfficeMovementDetailsPage: LisFrontOfficeMovementDetailsPage
   lisFrontOfficeCheckMovementDetailsPage: LisFrontOfficeCheckMovementDetailsPage
-  lisFrontOfficeDateOfMovementPage: LisFrontOfficeDateOfMovementPage
   lisFrontOfficeOnOrOffMovementPage: LisFrontOfficeOnOrOffMovementPage
   lisFrontOfficeReportACattleMovementPage: LisFrontOfficeReportACattleMovementPage
   lisFrontOfficeSubmitMovementReportPage: LisFrontOfficeSubmitMovementReportPage
@@ -233,16 +231,12 @@ export const test = base.extend<{
     await use(new LisFrontOfficeSubmissionDetailsPage(frontOfficePage))
   },
 
-  lisFrontOfficeAddEarTagPage: async ({ frontOfficePage }, use) => {
-    await use(new AddEarTagPage(frontOfficePage))
+  lisFrontOfficeMovementDetailsPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeMovementDetailsPage(frontOfficePage))
   },
 
   lisFrontOfficeCheckMovementDetailsPage: async ({ frontOfficePage }, use) => {
     await use(new LisFrontOfficeCheckMovementDetailsPage(frontOfficePage))
-  },
-
-  lisFrontOfficeDateOfMovementPage: async ({ frontOfficePage }, use) => {
-    await use(new LisFrontOfficeDateOfMovementPage(frontOfficePage))
   },
 
   lisFrontOfficeOnOrOffMovementPage: async ({ frontOfficePage }, use) => {

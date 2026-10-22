@@ -21,8 +21,8 @@ export class LisFrontOfficeOnOrOffMovementPage extends BasePage {
     })
   }
 
-  async submitMovementDetails(movementType: 'on' | 'off') {
-    if (movementType === 'on') {
+  async submitMovementDetails(movementType: 'On movement' | 'Off movement') {
+    if (movementType === 'On movement') {
       await this.onMovementRadio.check()
     } else {
       await this.offMovementRadio.check()
