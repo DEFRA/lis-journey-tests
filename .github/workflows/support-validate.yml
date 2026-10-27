@@ -33,3 +33,68 @@ jobs:
       - run: npm ci
       - run: npm run format:check
       - run: npm run lint
+
+  build-image:
+    name: 'Build and Test Container Image'
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout validated source
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Prepare image metadata
+        id: image
+        env:
+          IMAGE_NAME: ${{ github.event.repository.name }}
+          REVISION: ${{ inputs.ref }}
+        run: |
+          echo "ref=$IMAGE_NAME:build-$REVISION" >> "$GITHUB_OUTPUT"
+          echo "artifact=container-image-$REVISION" >> "$GITHUB_OUTPUT"
+
+      - name: Build container image
+        env:
+          VERSION: ${{ inputs.version }}
+          IMAGE_NAME: ${{ github.event.repository.name }}
+          IMAGE_REF: ${{ steps.image.outputs.ref }}
+          REVISION: ${{ inputs.ref }}
+        run: |
+          docker buildx build . \
+            --file ./Dockerfile \
+            --no-cache --provenance=false --sbom=false --load \
+            --tag "$IMAGE_REF" \
+            --label "defra.cdp.git.repo.url=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY" \
+            --label "defra.cdp.git.repo.name=$GITHUB_REPOSITORY" \
+            --label "defra.cdp.service.name=$IMAGE_NAME" \
+            --label "defra.cdp.build.run_id=$GITHUB_RUN_ID" \
+            --label "defra.cdp.run_mode=test" \
+            --label "git.hash=$REVISION" \
+            --label "org.opencontainers.image.version=$VERSION"
+
+      - name: Smoke test container image
+        env:
+          IMAGE: ${{ steps.image.outputs.ref }}
+        run: |
+          docker run --rm --entrypoint npx "$IMAGE" playwright --version
+          docker run --rm --entrypoint sh "$IMAGE" -c 'test -x ./entrypoint.sh && aws --version && java -version'
+
+      - name: Export tested image
+        env:
+          IMAGE: ${{ steps.image.outputs.ref }}
+        run: |
+          mkdir container-artifact
+          docker image inspect "$IMAGE" --format '{{.Id}}' > container-artifact/image-id.txt
+          printf '%s\n' "$IMAGE" > container-artifact/image-ref.txt
+          docker save --output container-artifact/image.tar "$IMAGE"
+
+      - name: Upload tested image artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.image.outputs.artifact }}
+          path: container-artifact
+          if-no-files-found: error
+          compression-level: 0
