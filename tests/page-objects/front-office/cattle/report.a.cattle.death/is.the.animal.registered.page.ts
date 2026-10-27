@@ -21,8 +21,8 @@ export class LisFrontOfficeIsTheAnimalRegisteredPage extends BasePage {
     })
   }
 
-  async submitMovementDetails(movementType: 'on' | 'off') {
-    if (movementType === 'on') {
+  async submitAnimalRegistrationStatus(registrationStatus: 'Yes' | 'No') {
+    if (registrationStatus === 'Yes') {
       await this.yesRadio.check()
     } else {
       await this.noRadio.check()

@@ -123,7 +123,7 @@ When(
 )
 
 Then(
-  'I verify tag number {string} is {string}',
+  'I verify birth tag number {string} is {string}',
   async (
     { lisFrontOfficeRegisterNewCattleBirthPage },
     tag: string,
@@ -143,7 +143,7 @@ Then(
 )
 
 When(
-  'I submit {string} for add more animals',
+  'I submit {string} for add more animals for births',
   async (
     { lisFrontOfficeRegisterNewCattleBirthPage },
     addMoreAnimals: 'Yes' | 'No'
@@ -303,7 +303,7 @@ Then(
 )
 
 Then(
-  'I verify tag number {string} is in {string} status',
+  'I verify birth tag number {string} is in {string} status',
   async (
     { lisFrontOfficeRegisterNewCattleBirthPage },
     tagNumber: string,

@@ -4,10 +4,7 @@ import { DataTable } from 'playwright-bdd'
 
 Then(
   'the Animals on Holding caption should display {string}',
-  async function (
-    { lisFrontOfficeAnimalsOnHoldingPage },
-    expectedCaption: string
-  ) {
+  async ({ lisFrontOfficeAnimalsOnHoldingPage }, expectedCaption: string) => {
     await expect(lisFrontOfficeAnimalsOnHoldingPage.headingCaption).toHaveText(
       expectedCaption
     )
@@ -16,10 +13,7 @@ Then(
 
 Then(
   'the Animals on Holding heading should display {string}',
-  async function (
-    { lisFrontOfficeAnimalsOnHoldingPage },
-    expectedHeading: string
-  ) {
+  async ({ lisFrontOfficeAnimalsOnHoldingPage }, expectedHeading: string) => {
     await expect(lisFrontOfficeAnimalsOnHoldingPage.heading).toHaveText(
       expectedHeading
     )
@@ -28,17 +22,14 @@ Then(
 
 Then(
   'I should be able to search for an animal using ear tag, sex or breed',
-  async function ({ lisFrontOfficeAnimalsOnHoldingPage }) {
+  async ({ lisFrontOfficeAnimalsOnHoldingPage }) => {
     await lisFrontOfficeAnimalsOnHoldingPage.verifySearchCapabilities()
   }
 )
 
 Then(
   'I should see the following Animals on Holding:',
-  async function (
-    { lisFrontOfficeAnimalsOnHoldingPage },
-    dataTable: DataTable
-  ) {
+  async ({ lisFrontOfficeAnimalsOnHoldingPage }, dataTable: DataTable) => {
     const expectedDAnimalsOnHolding = dataTable.hashes()
     await lisFrontOfficeAnimalsOnHoldingPage.verifyAnimalsOnHolding(
       expectedDAnimalsOnHolding
@@ -48,18 +39,18 @@ Then(
 
 When(
   'I search using search term {string}',
-  async function ({ lisFrontOfficeAnimalsOnHoldingPage }, searchTerm: string) {
+  async ({ lisFrontOfficeAnimalsOnHoldingPage }, searchTerm: string) => {
     await lisFrontOfficeAnimalsOnHoldingPage.searchUsing(searchTerm)
   }
 )
 
 Then(
   'I should see the following search results for {string}:',
-  async function (
+  async (
     { lisFrontOfficeAnimalsOnHoldingPage },
     searchTerm: string,
     dataTable: DataTable
-  ) {
+  ) => {
     const expectedDAnimalsOnHoldingSearchResult = dataTable.hashes()
     await lisFrontOfficeAnimalsOnHoldingPage.verifyAnimalsOnHoldingSearchResult(
       searchTerm,
@@ -70,7 +61,7 @@ Then(
 
 Then(
   'I should see no results returned for search term {string}',
-  async function ({ lisFrontOfficeAnimalsOnHoldingPage }, searchTerm: string) {
+  async ({ lisFrontOfficeAnimalsOnHoldingPage }, searchTerm: string) => {
     await lisFrontOfficeAnimalsOnHoldingPage.verifyNoResultsForSearchTerm(
       searchTerm
     )

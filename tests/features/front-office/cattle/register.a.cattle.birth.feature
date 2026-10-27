@@ -20,7 +20,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK123456501103           |
             | Sire name                  | Sire Name                |
         And I select Continue from the Calf details page
-        And I verify tag number "UK123456301550" is "Ready to send"
+        And I verify birth tag number "UK123456301550" is "Ready to send"
         And I click on the tag number "UK123456301550"
         Then I verify the Check calf details summary page has:
             | Field                      | Expected value           |
@@ -33,7 +33,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK123456501103           |
             | Sire name                  | Sire Name                |
         And I select Continue from the Calf details page
-        And I submit "No" for add more animals
+        And I submit "No" for add more animals for births
         And I send my cattle birth report
         Then I verify that "5 cattle births registered"
 
@@ -139,8 +139,8 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK123456501103           |
             | Sire name                  | Sire Name                |
         And I select Continue from the Calf details page
-        And I verify tag number "UK123456301550" is "Ready to send"
-        And I submit "Yes" for add more animals
+        And I verify birth tag number "UK123456301550" is "Ready to send"
+        And I submit "Yes" for add more animals for births
         And I submit valid calf details with "UK123456301554", "21", "3", "2024", "Female", and "Charolais (CH)"
         And I submit the dam details as "calf born via genetic dam"
         And I add the ear tag of the dam as "UK123456501103"
@@ -156,8 +156,8 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK123456501103 |
             | Sire name                  | Sire Name2     |
         And I select Continue from the Calf details page
-        And I verify tag number "UK123456301554" is "Ready to send"
-        And I submit "No" for add more animals
+        And I verify birth tag number "UK123456301554" is "Ready to send"
+        And I submit "No" for add more animals for births
         And I send my cattle birth report
         Then I verify that "5 cattle births registered"
 
@@ -175,8 +175,8 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
 
     # Scenario: Register a cattle birth, continue a draft registration
     #     And I select Continue on Draft registrations
-    #     Then I verify tag number "UK 312545 670001" is in "Ready to send" status
-    #     Then I verify tag number "UK 312545 670002" is in "Incomplete" status
+    #     Then I verify birth tag number "UK 312545 670001" is in "Ready to send" status
+    #     Then I verify birth tag number "UK 312545 670002" is in "Incomplete" status
 
     # Scenario: Register a cattle birth open historical registration thats in Pending validation status
     #     And I verify reference number "7KWM-3HTP" is "Pending validation"
@@ -246,8 +246,8 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | Not provided   |
             | Sire name                  | Not provided   |
         And I select Continue from the Calf details page
-        And I verify tag number "UK123456301550" is "Ready to send"
-        And I submit "No" for add more animals
+        And I verify birth tag number "UK123456301550" is "Ready to send"
+        And I submit "No" for add more animals for births
         And I send my cattle birth report
         Then I verify that "5 cattle births registered"
 
@@ -268,8 +268,8 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Sire ear tag number          | Not provided   |
             | Sire name                    | Not provided   |
         And I select Continue from the Calf details page
-        And I verify tag number "UK123456301550" is "Ready to send"
-        And I submit "No" for add more animals
+        And I verify birth tag number "UK123456301550" is "Ready to send"
+        And I submit "No" for add more animals for births
         And I send my cattle birth report
         Then I verify that "5 cattle births registered"
 
@@ -290,7 +290,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Sire ear tag number          | UK123456501103    |
             | Sire name                    | Sire Name         |
         And I select Continue from the Calf details page
-        And I verify tag number "UK123456301550" is "Ready to send"
-        And I submit "No" for add more animals
+        And I verify birth tag number "UK123456301550" is "Ready to send"
+        And I submit "No" for add more animals for births
         And I send my cattle birth report
         Then I verify that "5 cattle births registered"
