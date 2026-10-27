@@ -166,7 +166,6 @@ jobs:
           docker push "$revision_image"
 
       - name: Log in to Docker Hub
-        if: ${{ !contains(needs.validate-release.outputs.version, '-') }}
         uses: DEFRA/cdp-build-action/docker-login@main
         with:
           iam-role-name: github-${{ env.IMAGE_NAME }}-build-role
@@ -174,7 +173,6 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Push image to Docker Hub
-        if: ${{ !contains(needs.validate-release.outputs.version, '-') }}
         env:
           SOURCE_IMAGE: ${{ steps.image.outputs.source }}
           VERSION: ${{ needs.validate-release.outputs.version }}
