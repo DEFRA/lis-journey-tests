@@ -74,6 +74,25 @@ jobs:
             --label "git.hash=$REVISION" \
             --label "org.opencontainers.image.version=$VERSION"
 
+      - name: Show image tags and labels
+        env:
+          IMAGE: ${{ steps.image.outputs.ref }}
+        run: |
+          tags=$(docker image inspect "$IMAGE" --format '{{json .RepoTags}}' | jq .)
+          labels=$(docker image inspect "$IMAGE" --format '{{json .Config.Labels}}' | jq .)
+          echo "Tags: $tags"
+          echo "Labels: $labels"
+          {
+            echo '### Image tags'
+            echo '```json'
+            echo "$tags"
+            echo '```'
+            echo '### Image labels'
+            echo '```json'
+            echo "$labels"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Smoke test container image
         env:
           IMAGE: ${{ steps.image.outputs.ref }}
