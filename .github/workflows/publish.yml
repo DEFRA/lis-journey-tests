@@ -149,3 +149,9 @@ jobs:
           docker tag "$SOURCE_IMAGE" "$revision_image"
           docker push "$version_image"
           docker push "$revision_image"
+
+          {
+            echo '### Published image tags'
+            echo "- \`$version_image\`"
+            echo "- \`$revision_image\`"
+          } >> "$GITHUB_STEP_SUMMARY"
