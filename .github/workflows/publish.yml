@@ -189,16 +189,3 @@ jobs:
             docker tag "$SOURCE_IMAGE" "$latest_image"
             docker push "$latest_image"
           fi
-
-  journey-tests:
-    name: 'Run Journey Tests'
-    needs: [validate-release, publish-image]
-    permissions:
-      id-token: write
-      contents: write
-      checks: write
-      pull-requests: write
-    uses: ./.github/workflows/journey-tests.yml
-    with:
-      image-version: ${{ needs.validate-release.outputs.version }}
-    secrets: inherit

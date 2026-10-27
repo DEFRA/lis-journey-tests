@@ -70,6 +70,7 @@ jobs:
             --label "defra.cdp.git.repo.url=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY" \
             --label "defra.cdp.git.repo.name=$GITHUB_REPOSITORY" \
             --label "defra.cdp.service.name=$IMAGE_NAME" \
+            --label "defra.cdp.testsuite.name=$IMAGE_NAME" \
             --label "defra.cdp.build.run_id=$GITHUB_RUN_ID" \
             --label "defra.cdp.run_mode=test" \
             --label "git.hash=$REVISION" \
