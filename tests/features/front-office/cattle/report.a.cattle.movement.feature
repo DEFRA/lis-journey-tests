@@ -190,3 +190,25 @@ Feature: Cattle -  Report a Cattle Movement - Positive scenarios
         When I continue from Check movement details page
         When I send my movement report
         Then I confirm the Movement has been reported
+
+    Scenario: Go back from the movement details summary and verify entered details remain
+        When I select "On movement" and continue
+        When I submit movement details
+            | Ear tag number | Movement date |
+            | UK123456301550 | 01/01/2025    |
+        When I verify the Check movement details page displays the following details
+            | Field         | Expected value                      |
+            | Movement type | On movement                         |
+            | Animal 1      | UK123456301550 Moved 1 January 2025 |
+        When I select Back from the Check movement details page
+        And the previously entered movement animal details are still populated:
+            | Ear tag number | UK123456301550 |
+            | Movement date  | 01/01/2025     |
+        When I select Continue from the Movement details page
+        When I verify the Check movement details page displays the following details
+            | Field         | Expected value                      |
+            | Movement type | On movement                         |
+            | Animal 1      | UK123456301550 Moved 1 January 2025 |
+        When I continue from Check movement details page
+        When I send my movement report
+        Then I confirm the Movement has been reported
