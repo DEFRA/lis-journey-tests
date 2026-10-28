@@ -1,0 +1,114 @@
+name: 'Calculate Version'
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: 'Git ref (branch name) to check out before calculating the version'
+        required: true
+        type: string
+      branch:
+        description: 'Feature or hotfix branch used to determine the release type'
+        required: true
+        type: string
+      release-type:
+        description: 'Whether to calculate a prerelease or stable version'
+        required: false
+        type: string
+        default: 'prerelease'
+    outputs:
+      version:
+        description: 'The calculated semantic version'
+        value: ${{ jobs.calculate-version.outputs.version }}
+
+permissions:
+  contents: read
+
+jobs:
+  calculate-version:
+    name: 'Calculate Version'
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.calculate_version.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.ref }}
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Calculate Version
+        id: calculate_version
+        shell: bash
+        env:
+          INPUT_BRANCH: ${{ inputs.branch }}
+          RELEASE_TYPE: ${{ inputs.release-type }}
+        run: |
+          set -euo pipefail
+
+          if [[ "$RELEASE_TYPE" != "prerelease" && "$RELEASE_TYPE" != "stable" ]]; then
+            echo "::error::Release type '$RELEASE_TYPE' is invalid. Use 'prerelease' or 'stable'."
+            exit 1
+          fi
+
+          git fetch --force --tags origin +refs/heads/main:refs/remotes/origin/main
+
+          branch="${INPUT_BRANCH:-${GITHUB_HEAD_REF:-${GITHUB_REF_NAME:-}}}"
+          if [[ -z "$branch" ]]; then
+            branch="$(git branch --show-current)"
+          fi
+          if [[ -z "$branch" ]]; then
+            echo "::error::Unable to determine the branch name."
+            exit 1
+          fi
+          branch="$(printf '%s' "$branch" | tr '[:upper:]' '[:lower:]')"
+
+          if [[ "$branch" =~ ^hotfix/(lreg-[0-9]+)-.+$ ]]; then
+            story_id="${BASH_REMATCH[1]}"
+            bump_type="patch"
+          elif [[ "$branch" =~ ^feature/(lreg-[0-9]+)-.+$ ]]; then
+            story_id="${BASH_REMATCH[1]}"
+            bump_type="minor"
+          else
+            echo "::error::Branch '$branch' does not have the correct name."
+            exit 1
+          fi
+
+          latest_main_tag="$(git tag --merged origin/main --sort=-v:refname | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -n 1 || true)"
+
+          major=0
+          minor=0
+          patch=0
+          if [[ -n "$latest_main_tag" ]]; then
+            IFS='.' read -r major minor patch <<< "$latest_main_tag"
+          fi
+
+          if [[ "$bump_type" == "minor" ]]; then
+            minor=$((minor + 1))
+            patch=0
+          else
+            patch=$((patch + 1))
+          fi
+
+          base_version="${major}.${minor}.${patch}"
+
+          if [[ "$RELEASE_TYPE" == "stable" ]]; then
+            version="$base_version"
+          else
+            merge_base="$(git merge-base HEAD origin/main)"
+            depth="$(git rev-list --count "${merge_base}..HEAD")"
+            if ! [[ "$depth" =~ ^[0-9]+$ ]] || (( depth < 1 )); then
+              depth=1
+            fi
+            version="${base_version}-${story_id}.alpha.${depth}"
+          fi
+
+          if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-lreg-[0-9]+\.alpha\.[1-9][0-9]*)?$ ]]; then
+            echo "::error::Calculated version '$version' is not valid."
+            exit 1
+          fi
+
+          echo "Resolved branch '$branch' with story '$story_id' and bump '$bump_type'."
+          echo "Calculated Version: $version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
