@@ -7,6 +7,7 @@ export class BasePage {
   readonly subHeading: Locator
   readonly headingCaption: Locator
   readonly backButton: Locator
+  readonly backLink: Locator
   readonly errorTitle: Locator
   readonly errorMessages: Locator
   readonly alert: Locator
@@ -28,6 +29,7 @@ export class BasePage {
     this.subHeading = page.locator('.govuk-heading-l')
     this.headingCaption = page.locator('.govuk-caption-l')
     this.backButton = page.locator('.govuk-back-link')
+    this.backLink = page.getByRole('link', { name: 'Back' })
     this.errorTitle = page.locator(
       '.govuk-error-summary .govuk-error-summary__title'
     )

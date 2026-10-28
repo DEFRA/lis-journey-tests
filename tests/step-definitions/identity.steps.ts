@@ -14,10 +14,10 @@ Given(
 
 Given(
   'I am authenticated as a front office user with {word} CPH holding(s)',
-  async function (
+  async (
     { lisFrontOfficeHomePage, lisFrontOfficeIdentityPage },
     userRole: string
-  ) {
+  ) => {
     await lisFrontOfficeHomePage.navigateToHomePage()
     await lisFrontOfficeHomePage.clickStartNowLink()
     await lisFrontOfficeIdentityPage.authenticate(userRole)
@@ -27,10 +27,10 @@ Given(
 
 Given(
   'I am authenticated as a front office user with a {word} CPH holding',
-  async function (
+  async (
     { lisFrontOfficeHomePage, lisFrontOfficeIdentityPage },
     userRole: string
-  ) {
+  ) => {
     await lisFrontOfficeHomePage.navigateToHomePage()
     await lisFrontOfficeHomePage.clickStartNowLink()
     await lisFrontOfficeIdentityPage.authenticate(userRole)

@@ -11,7 +11,7 @@ Given(
 
 Then(
   'the LIS Front Office home page should be loaded correctly',
-  async function ({ lisFrontOfficeHomePage }) {
+  async ({ lisFrontOfficeHomePage }) => {
     await expect(lisFrontOfficeHomePage.heading).toBeVisible()
     await expect(lisFrontOfficeHomePage.heading).toHaveText(
       'Livestock Information Service (LIS) for cattle'
@@ -29,10 +29,10 @@ Given(
 
 Then(
   'the {word} LIS Back Office home page should be loaded correctly',
-  async function (
+  async (
     { lisBackOfficeHomePage, lisBackOfficeIdentityPage },
     authState: string
-  ) {
+  ) => {
     await expect(lisBackOfficeHomePage.headingCaption).toBeVisible()
     if (authState === 'unauthenticated') {
       await expect(lisBackOfficeIdentityPage.subHeading).toHaveText('Sign in')
@@ -57,22 +57,22 @@ Given(
 
 Then(
   'I should be informed I have no holdings associated to my account',
-  async function ({ lisFrontOfficeHomePage }) {
+  async ({ lisFrontOfficeHomePage, page }) => {
     await expect(lisFrontOfficeHomePage.heading).toHaveText('My holdings')
-    await expect(lisFrontOfficeHomePage.body).toHaveText(
-      'No holdings are currently linked to this account.'
-    )
+    await expect(
+      page.getByText('No holdings are currently linked to this account.')
+    ).toBeVisible()
   }
 )
 
 Then(
   'I should see the following CPH holdings:',
-  async function ({ lisFrontOfficeHomePage }, dataTable: DataTable) {
+  async ({ lisFrontOfficeHomePage }, dataTable: DataTable) => {
     const expectedCphs = dataTable.rows()
     await lisFrontOfficeHomePage.verifyCphs(expectedCphs)
   }
 )
 
-Then('I should not be able to view the CPH holding', async function ({ page }) {
+Then('I should not be able to view the CPH holding', async ({ page }) => {
   await expect(page.getByText('Page not found')).toBeVisible()
 })

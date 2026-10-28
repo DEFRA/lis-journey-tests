@@ -23,7 +23,7 @@ Given(
   }
 )
 
-When('I check the health endpoint', async function () {
+When('I check the health endpoint', async () => {
   response = await client.get<HealthResponse>(EndPoints.Health, StatusCodes.OK)
 })
 

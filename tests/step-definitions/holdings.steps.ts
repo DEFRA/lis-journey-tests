@@ -4,10 +4,7 @@ import { expect } from '@playwright/test'
 
 Then(
   'the holding details caption should display {string}',
-  async function (
-    { lisFrontOfficeHoldingDetailsPage },
-    expectedCaption: string
-  ) {
+  async ({ lisFrontOfficeHoldingDetailsPage }, expectedCaption: string) => {
     await expect(lisFrontOfficeHoldingDetailsPage.headingCaption).toHaveText(
       expectedCaption
     )
@@ -16,7 +13,7 @@ Then(
 
 Then(
   'I should see the following holding details for the CPH:',
-  async function ({ lisFrontOfficeHoldingDetailsPage }, dataTable: DataTable) {
+  async ({ lisFrontOfficeHoldingDetailsPage }, dataTable: DataTable) => {
     const expectedDetails = dataTable.hashes()
     await lisFrontOfficeHoldingDetailsPage.verifyHoldingDetails(expectedDetails)
   }
@@ -24,17 +21,14 @@ Then(
 
 When(
   'I click the {string} CPH number link',
-  async function ({ lisFrontOfficeHoldingDetailsPage }, cphNumber: string) {
+  async ({ lisFrontOfficeHoldingDetailsPage }, cphNumber: string) => {
     await lisFrontOfficeHoldingDetailsPage.clickOnCphNumberLink(cphNumber)
   }
 )
 
 Then(
   'the holding details heading should display {string}',
-  async function (
-    { lisFrontOfficeHoldingDetailsPage },
-    expectedHeading: string
-  ) {
+  async ({ lisFrontOfficeHoldingDetailsPage }, expectedHeading: string) => {
     await expect(lisFrontOfficeHoldingDetailsPage.heading).toHaveText(
       expectedHeading
     )
@@ -57,7 +51,7 @@ Then(
 
 When(
   'I select the {string} navigation link',
-  async function ({ lisFrontOfficeHoldingDetailsPage }, tabName: string) {
+  async ({ lisFrontOfficeHoldingDetailsPage }, tabName: string) => {
     await lisFrontOfficeHoldingDetailsPage.selectTab(tabName)
   }
 )

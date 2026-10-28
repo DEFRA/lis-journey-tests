@@ -21,7 +21,7 @@ Then(
 
 Then(
   'I should see the following Cattle Details:',
-  async function ({ lisFrontOfficeCattleDetailsPage }, dataTable: DataTable) {
+  async ({ lisFrontOfficeCattleDetailsPage }, dataTable: DataTable) => {
     const expectedDAnimalsOnHolding = dataTable.hashes()
     await lisFrontOfficeCattleDetailsPage.verifyCattleDetails(
       expectedDAnimalsOnHolding

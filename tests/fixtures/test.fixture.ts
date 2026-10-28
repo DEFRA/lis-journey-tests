@@ -30,8 +30,9 @@ import { LisFrontOfficeReportACattleMovementPage } from '../page-objects/front-o
 import { LisFrontOfficeSubmitMovementReportPage } from '../page-objects/front-office/cattle/report.a.cattle.movement/submit.movement.report.page'
 import { LisFrontOfficeCheckAnimalDetailsPage } from '../page-objects/front-office/cattle/report.a.cattle.death/check.animal.details.page'
 import { LisFrontOfficeIsTheAnimalRegisteredPage } from '../page-objects/front-office/cattle/report.a.cattle.death/is.the.animal.registered.page'
-import { LisFrontOfficeRegisteredAnimalDetailsPage } from '../page-objects/front-office/cattle/report.a.cattle.death/registered.animal.details.page'
-import { LisFrontOfficeReportACattleDeathPage } from '../page-objects/front-office/cattle/report.a.cattle.death/report.a.cattle.death.page'
+import { LisFrontOfficeAnimalDetailsPage } from '../page-objects/front-office/cattle/report.a.cattle.death/animal.details.page'
+import { LisFrontOfficeReportCattleDeathsPage } from '../page-objects/front-office/cattle/report.a.cattle.death/report.cattle.deaths.page'
+import { LisFrontOfficeSubmitCattleDeathPage } from '../page-objects/front-office/cattle/report.a.cattle.death/submit.cattle.death.page'
 import { LisFrontOfficeUnregisteredAnimalDetailsPage } from '../page-objects/front-office/cattle/report.a.cattle.death/unregistered.animal.details.page'
 import { LisFrontOfficeExportCattleDataPage } from '../page-objects/front-office/cattle/download.list.of.cattle.on.your.holding/export.cattle.data.page'
 import { LisFrontOfficeCattleErrorRecordDetailPage } from '../page-objects/front-office/cattle/cattle.error.record.detail.page'
@@ -73,8 +74,9 @@ export const test = base.extend<{
   lisFrontOfficeSubmitMovementReportPage: LisFrontOfficeSubmitMovementReportPage
   lisFrontOfficeCheckAnimalDetailsPage: LisFrontOfficeCheckAnimalDetailsPage
   lisFrontOfficeIsTheAnimalRegisteredPage: LisFrontOfficeIsTheAnimalRegisteredPage
-  lisFrontOfficeRegisteredAnimalDetailsPage: LisFrontOfficeRegisteredAnimalDetailsPage
-  lisFrontOfficeReportACattleDeathPage: LisFrontOfficeReportACattleDeathPage
+  lisFrontOfficeAnimalDetailsPage: LisFrontOfficeAnimalDetailsPage
+  lisFrontOfficeReportCattleDeathsPage: LisFrontOfficeReportCattleDeathsPage
+  lisFrontOfficeSubmitCattleDeathPage: LisFrontOfficeSubmitCattleDeathPage
   lisFrontOfficeUnregisteredAnimalDetailsPage: LisFrontOfficeUnregisteredAnimalDetailsPage
   lisFrontOfficeExportCattleDataPage: LisFrontOfficeExportCattleDataPage
   lisFrontOfficeCattleErrorRecordDetailPage: LisFrontOfficeCattleErrorRecordDetailPage
@@ -259,15 +261,16 @@ export const test = base.extend<{
     await use(new LisFrontOfficeIsTheAnimalRegisteredPage(frontOfficePage))
   },
 
-  lisFrontOfficeRegisteredAnimalDetailsPage: async (
-    { frontOfficePage },
-    use
-  ) => {
-    await use(new LisFrontOfficeRegisteredAnimalDetailsPage(frontOfficePage))
+  lisFrontOfficeAnimalDetailsPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeAnimalDetailsPage(frontOfficePage))
   },
 
-  lisFrontOfficeReportACattleDeathPage: async ({ frontOfficePage }, use) => {
-    await use(new LisFrontOfficeReportACattleDeathPage(frontOfficePage))
+  lisFrontOfficeReportCattleDeathsPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeReportCattleDeathsPage(frontOfficePage))
+  },
+
+  lisFrontOfficeSubmitCattleDeathPage: async ({ frontOfficePage }, use) => {
+    await use(new LisFrontOfficeSubmitCattleDeathPage(frontOfficePage))
   },
 
   lisFrontOfficeUnregisteredAnimalDetailsPage: async (
