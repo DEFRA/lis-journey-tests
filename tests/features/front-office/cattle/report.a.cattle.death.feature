@@ -392,7 +392,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Animal ear tag number | UK123456301550  |
             | Date of death         | 01 January 2026 |
         When I select Back from the Check animal details page
-        And the previously entered details are still populated:
+        And the previously entered registered animal details are still populated:
             | Animal ear tag number | UK123456301550 |
             | Date of death         | 01/01/2026     |
         And I select Continue from the Animal details page
@@ -412,13 +412,15 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Date of birth         | 11 February 2025 |
             | Date of death         | 01 January 2026  |
             | Sex                   | Female           |
+            | Breed                 | Limousin (LIM)   |
         When I select Back from the Check animal details page
-        And the previously entered details are still populated:
-            | Animal registered     | No               |
-            | Animal ear tag number | UK123456301550   |
-            | Date of birth         | 11 February 2025 |
-            | Date of death         | 01 January 2026  |
-            | Sex                   | Female           |
+        And the previously entered unregistered animal details are still populated:
+            | Animal registered     | No             |
+            | Animal ear tag number | UK123456301550 |
+            | Date of birth         | 11/2/2025      |
+            | Date of death         | 01/1/2026      |
+            | Sex                   | Female         |
+            | Breed                 | Limousin (LIM) |
         And I select Continue from the Animal details page
         Then I verify the Check animal details summary page has:
             | Field                 | Expected value   |
@@ -427,3 +429,4 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Date of birth         | 11 February 2025 |
             | Date of death         | 01 January 2026  |
             | Sex                   | Female           |
+            | Breed                 | Limousin (LIM)   |

@@ -121,9 +121,9 @@ When(
 )
 
 Then(
-  'the previously entered details are still populated:',
+  'the previously entered registered animal details are still populated:',
   async ({ lisFrontOfficeAnimalDetailsPage }, dataTable: DataTable) => {
-    const values = Object.fromEntries(dataTable.rows())
+    const values = dataTable.rowsHash()
 
     await expect(lisFrontOfficeAnimalDetailsPage.animalEarTagInput).toHaveValue(
       values['Animal ear tag number']
@@ -131,6 +131,27 @@ Then(
 
     await expect(lisFrontOfficeAnimalDetailsPage.dodInput).toHaveValue(
       values['Date of death']
+    )
+  }
+)
+
+Then(
+  'the previously entered unregistered animal details are still populated:',
+  async ({ lisFrontOfficeAnimalDetailsPage }, dataTable: DataTable) => {
+    const values = dataTable.rowsHash()
+
+    await expect(lisFrontOfficeAnimalDetailsPage.animalEarTagInput).toHaveValue(
+      values['Animal ear tag number']
+    )
+    await expect(lisFrontOfficeAnimalDetailsPage.dobInput).toHaveValue(
+      values['Date of birth']
+    )
+    await expect(lisFrontOfficeAnimalDetailsPage.dodInput).toHaveValue(
+      values['Date of death']
+    )
+    await expect(lisFrontOfficeAnimalDetailsPage.femaleRadio).toBeChecked()
+    await expect(lisFrontOfficeAnimalDetailsPage.breedInput).toHaveValue(
+      values['Breed']
     )
   }
 )
