@@ -149,7 +149,20 @@ Then(
     await expect(lisFrontOfficeAnimalDetailsPage.dodInput).toHaveValue(
       values['Date of death']
     )
-    await expect(lisFrontOfficeAnimalDetailsPage.femaleRadio).toBeChecked()
+
+    let sexRadio
+
+    if (values['Sex'] === 'Male') {
+      sexRadio = lisFrontOfficeAnimalDetailsPage.maleRadio
+    } else if (values['Sex'] === 'Female') {
+      sexRadio = lisFrontOfficeAnimalDetailsPage.femaleRadio
+    }
+
+    if (!sexRadio) {
+      throw new Error(`Unexpected animal sex: "${values['Sex']}"`)
+    }
+
+    await expect(sexRadio).toBeChecked()
     await expect(lisFrontOfficeAnimalDetailsPage.breedInput).toHaveValue(
       values['Breed']
     )
