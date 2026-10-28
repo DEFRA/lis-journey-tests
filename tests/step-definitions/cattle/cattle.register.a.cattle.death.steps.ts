@@ -125,12 +125,12 @@ Then(
   async ({ lisFrontOfficeAnimalDetailsPage }, dataTable: DataTable) => {
     const values = Object.fromEntries(dataTable.rows())
 
-    await expect(
-      lisFrontOfficeAnimalDetailsPage.animalEarTagInput
-    ).toHaveValue(values['Animal ear tag number'])
+    await expect(lisFrontOfficeAnimalDetailsPage.animalEarTagInput).toHaveValue(
+      values['Animal ear tag number']
+    )
 
-    await expect(
-      lisFrontOfficeAnimalDetailsPage.dodInput
-    ).toHaveValue(values['Date of death'])
+    await expect(lisFrontOfficeAnimalDetailsPage.dodInput).toHaveValue(
+      values['Date of death']
+    )
   }
 )
