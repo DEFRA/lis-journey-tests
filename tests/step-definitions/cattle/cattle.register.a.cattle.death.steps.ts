@@ -112,3 +112,25 @@ When(
     await lisFrontOfficeCheckAnimalDetailsPage.clickChangeLink(section)
   }
 )
+
+When(
+  'I select Back from the Check animal details page',
+  async ({ lisFrontOfficeCheckAnimalDetailsPage }) => {
+    await lisFrontOfficeCheckAnimalDetailsPage.backLink.click()
+  }
+)
+
+Then(
+  'the previously entered details are still populated:',
+  async ({ lisFrontOfficeAnimalDetailsPage }, dataTable: DataTable) => {
+    const values = Object.fromEntries(dataTable.rows())
+
+    await expect(
+      lisFrontOfficeAnimalDetailsPage.animalEarTagInput
+    ).toHaveValue(values['Animal ear tag number'])
+
+    await expect(
+      lisFrontOfficeAnimalDetailsPage.dodInput
+    ).toHaveValue(values['Date of death'])
+  }
+)
