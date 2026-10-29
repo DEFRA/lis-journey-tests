@@ -325,15 +325,6 @@ Then(
   }
 )
 
-Then(
-  'I submit the sire ear tag as {string}',
-  async ({ lisFrontOfficeSireDetailsPage }, earTagNumber: string) => {
-    await expect(lisFrontOfficeSireDetailsPage.heading).toBeVisible()
-    await lisFrontOfficeSireDetailsPage.sireEarTagNumberInput.fill(earTagNumber)
-    await lisFrontOfficeSireDetailsPage.continueButton.click()
-  }
-)
-
 When(
   'I select Back from the Check calf details page',
   async ({ lisFrontOfficeCheckCalfDetailsPage }) => {
@@ -355,13 +346,6 @@ When(
       'Date of birth': lisFrontOfficeRegisterCalfDetailsPage.dateInput,
       'Breed': lisFrontOfficeRegisterCalfDetailsPage.breedInput
     })
-  }
-)
-
-Then(
-  'I select Continue from the Calf details page',
-  async ({ lisFrontOfficeRegisterCalfDetailsPage }) => {
-    await lisFrontOfficeRegisterCalfDetailsPage.continueButton.click()
   }
 )
 
