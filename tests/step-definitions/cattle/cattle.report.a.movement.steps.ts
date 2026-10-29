@@ -92,3 +92,32 @@ When(
     await lisFrontOfficeMovementDetailsPage.continueButton.click()
   }
 )
+
+When(
+  'I select Back from the Check movement details page',
+  async ({ lisFrontOfficeMovementDetailsPage }) => {
+    await lisFrontOfficeMovementDetailsPage.backLink.click()
+  }
+)
+
+When(
+  'the previously entered movement animal details are still populated:',
+  async ({ lisFrontOfficeMovementDetailsPage }, dataTable: DataTable) => {
+    const values = dataTable.rowsHash()
+
+    await expect(lisFrontOfficeMovementDetailsPage.earTagInput).toHaveValue(
+      values['Ear tag number']
+    )
+
+    await expect(lisFrontOfficeMovementDetailsPage.dateInput).toHaveValue(
+      values['Movement date']
+    )
+  }
+)
+
+When(
+  'I select Continue from the Movement details page',
+  async ({ lisFrontOfficeMovementDetailsPage }) => {
+    await lisFrontOfficeMovementDetailsPage.continueButton.click()
+  }
+)

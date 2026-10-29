@@ -57,4 +57,19 @@ export class LisFrontOfficeRegisterCalfDetailsPage extends BasePage {
       await this.femaleRadio.check()
     }
   }
+
+  async verifySexSelected(sexOfCalf: string) {
+    const sexRadio =
+      sexOfCalf === 'Male'
+        ? this.maleRadio
+        : sexOfCalf === 'Female'
+          ? this.femaleRadio
+          : undefined
+
+    if (!sexRadio) {
+      throw new Error(`Unexpected animal sex: "${sexOfCalf}"`)
+    }
+
+    await expect(sexRadio).toBeChecked()
+  }
 }
