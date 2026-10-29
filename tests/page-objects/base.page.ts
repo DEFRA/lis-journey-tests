@@ -57,6 +57,21 @@ export class BasePage {
     return await this.page.title()
   }
 
+  async verifyInputValues(
+    expectedValues: Record<string, string>,
+    inputs: Record<string, Locator>
+  ) {
+    const assertions = Object.entries(inputs).map(([fieldName, input]) => {
+      const expectedValue = expectedValues[fieldName]
+      if (expectedValue === undefined) {
+        throw new Error(`Missing expected value for "${fieldName}"`)
+      }
+      return expect(input).toHaveValue(expectedValue)
+    })
+
+    await Promise.all(assertions)
+  }
+
   async verifyError(messages: string[]) {
     await Promise.all(
       messages.map((message) =>

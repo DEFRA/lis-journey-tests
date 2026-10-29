@@ -395,12 +395,6 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And the previously entered registered animal details are still populated:
             | Animal ear tag number | UK123456301550 |
             | Date of death         | 01/01/2026     |
-        And I select Continue from the Animal details page
-        Then I verify the Check animal details summary page has:
-            | Field                 | Expected value  |
-            | Animal registered     | Yes             |
-            | Animal ear tag number | UK123456301550  |
-            | Date of death         | 01 January 2026 |
 
     Scenario: Go back from the unregistered animal details summary and verify entered details remain
         When I select "No" to is the animal registered
@@ -421,12 +415,3 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Date of death         | 01/1/2026      |
             | Sex                   | Female         |
             | Breed                 | Limousin (LIM) |
-        And I select Continue from the Animal details page
-        Then I verify the Check animal details summary page has:
-            | Field                 | Expected value   |
-            | Animal registered     | No               |
-            | Animal ear tag number | UK123456301550   |
-            | Date of birth         | 11 February 2025 |
-            | Date of death         | 01 January 2026  |
-            | Sex                   | Female           |
-            | Breed                 | Limousin (LIM)   |

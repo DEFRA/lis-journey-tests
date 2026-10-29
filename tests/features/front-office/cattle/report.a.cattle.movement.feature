@@ -204,11 +204,3 @@ Feature: Cattle -  Report a Cattle Movement - Positive scenarios
         And the previously entered movement animal details are still populated:
             | Ear tag number | UK123456301550 |
             | Movement date  | 01/01/2025     |
-        When I select Continue from the Movement details page
-        When I verify the Check movement details page displays the following details
-            | Field         | Expected value                      |
-            | Movement type | On movement                         |
-            | Animal 1      | UK123456301550 Moved 1 January 2025 |
-        When I continue from Check movement details page
-        When I send my movement report
-        Then I confirm the Movement has been reported

@@ -116,7 +116,7 @@ Then(
 )
 
 When(
-  'I select Continue from the Calf details page',
+  'I select Continue from the Check calf details page',
   async ({ lisFrontOfficeCheckCalfDetailsPage }) => {
     await lisFrontOfficeCheckCalfDetailsPage.continueButton.click()
   }
@@ -322,5 +322,116 @@ Then(
   async ({ lisFrontOfficeCheckCalfDetailsPage }, sectionName: string) => {
     await expect(lisFrontOfficeCheckCalfDetailsPage.heading).toBeVisible()
     await lisFrontOfficeCheckCalfDetailsPage.clickChangeLink(sectionName)
+  }
+)
+
+Then(
+  'I submit the sire ear tag as {string}',
+  async ({ lisFrontOfficeSireDetailsPage }, earTagNumber: string) => {
+    await expect(lisFrontOfficeSireDetailsPage.heading).toBeVisible()
+    await lisFrontOfficeSireDetailsPage.sireEarTagNumberInput.fill(earTagNumber)
+    await lisFrontOfficeSireDetailsPage.continueButton.click()
+  }
+)
+
+When(
+  'I select Back from the Check calf details page',
+  async ({ lisFrontOfficeCheckCalfDetailsPage }) => {
+    await lisFrontOfficeCheckCalfDetailsPage.backLink.click()
+  }
+)
+
+When(
+  'the previously entered calf details are still populated:',
+  async ({ lisFrontOfficeRegisterCalfDetailsPage }, dataTable: DataTable) => {
+    await expect(lisFrontOfficeRegisterCalfDetailsPage.heading).toBeVisible()
+    const values = dataTable.rowsHash()
+
+    await lisFrontOfficeRegisterCalfDetailsPage.verifySexSelected(values['Sex'])
+
+    await lisFrontOfficeRegisterCalfDetailsPage.verifyInputValues(values, {
+      'Animal ear tag number':
+        lisFrontOfficeRegisterCalfDetailsPage.animalEarTagInput,
+      'Date of birth': lisFrontOfficeRegisterCalfDetailsPage.dateInput,
+      'Breed': lisFrontOfficeRegisterCalfDetailsPage.breedInput
+    })
+  }
+)
+
+Then(
+  'I select Continue from the Calf details page',
+  async ({ lisFrontOfficeRegisterCalfDetailsPage }) => {
+    await lisFrontOfficeRegisterCalfDetailsPage.continueButton.click()
+  }
+)
+
+When(
+  'I select Back from the Sire details page',
+  async ({ lisFrontOfficeSireDetailsPage }) => {
+    await lisFrontOfficeSireDetailsPage.backLink.click()
+  }
+)
+
+When(
+  'the previously entered sire details are still populated:',
+  async ({ lisFrontOfficeSireDetailsPage }, dataTable: DataTable) => {
+    await expect(lisFrontOfficeSireDetailsPage.heading).toBeVisible()
+    const values = dataTable.rowsHash()
+
+    await lisFrontOfficeSireDetailsPage.verifyInputValues(values, {
+      'Sire ear tag number':
+        lisFrontOfficeSireDetailsPage.sireEarTagNumberInput,
+      'Sire name': lisFrontOfficeSireDetailsPage.sireNameInput
+    })
+  }
+)
+
+When(
+  'the previously entered Genetic Dam details are still populated:',
+  async ({ lisFrontOfficeGeneticDamDetailsPage }, dataTable: DataTable) => {
+    await expect(lisFrontOfficeGeneticDamDetailsPage.heading).toBeVisible()
+    const values = dataTable.rowsHash()
+
+    await lisFrontOfficeGeneticDamDetailsPage.verifyInputValues(values, {
+      'Genetic dam ear tag number':
+        lisFrontOfficeGeneticDamDetailsPage.animalEarTagInput
+    })
+  }
+)
+
+When(
+  'the previously entered Surrogate Dam details are still populated:',
+  async ({ lisFrontOfficeSurrogateDamDetailsPage }, dataTable: DataTable) => {
+    await expect(lisFrontOfficeSurrogateDamDetailsPage.heading).toBeVisible()
+    const values = dataTable.rowsHash()
+
+    await lisFrontOfficeSurrogateDamDetailsPage.verifyInputValues(values, {
+      'Genetic dam ear tag number':
+        lisFrontOfficeSurrogateDamDetailsPage.geneticDamEarTagInput,
+      'Surrogate dam ear tag number':
+        lisFrontOfficeSurrogateDamDetailsPage.surrogateDamEarTagInput
+    })
+  }
+)
+
+When(
+  'I select Back from the Dam details page',
+  async ({ lisFrontOfficeDamDetailsPage }) => {
+    await lisFrontOfficeDamDetailsPage.backLink.click()
+  }
+)
+
+When(
+  'the previously entered Dam type {string} is still checked:',
+  async ({ lisFrontOfficeDamDetailsPage }, damType: string) => {
+    await expect(lisFrontOfficeDamDetailsPage.heading).toBeVisible()
+    await lisFrontOfficeDamDetailsPage.verifyDamTypeSelected(damType)
+  }
+)
+
+When(
+  'I select Back from the Dam type page',
+  async ({ lisFrontOfficeDamDetailsPage }) => {
+    await lisFrontOfficeDamDetailsPage.backLink.click()
   }
 )

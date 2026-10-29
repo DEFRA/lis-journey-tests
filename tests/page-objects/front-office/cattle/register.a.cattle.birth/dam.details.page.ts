@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test'
+import { expect, Locator, Page } from '@playwright/test'
 import { BasePage } from '../../../base.page'
 
 export class LisFrontOfficeDamDetailsPage extends BasePage {
@@ -29,5 +29,20 @@ export class LisFrontOfficeDamDetailsPage extends BasePage {
       await this.calfBornViaSurrogateDamRadio.check()
     }
     await this.continueButton.click()
+  }
+
+  async verifyDamTypeSelected(damType: string) {
+    const damTypeRadio =
+      damType === 'calf born via genetic dam'
+        ? this.calfBornViaGeneticDamRadio
+        : damType === 'calf born via surrogate dam'
+          ? this.calfBornViaSurrogateDamRadio
+          : undefined
+
+    if (!damTypeRadio) {
+      throw new Error(`Unexpected dam type: "${damType}"`)
+    }
+
+    await expect(damTypeRadio).toBeChecked()
   }
 }
