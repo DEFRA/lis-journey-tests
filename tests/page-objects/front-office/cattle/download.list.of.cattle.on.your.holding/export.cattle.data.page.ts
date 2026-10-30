@@ -1,42 +1,14 @@
-import { Locator, Page } from '@playwright/test'
+import { expect, Locator, Page } from '@playwright/test'
 import { BasePage } from '../../../base.page'
-
-export type CattleExportColumn =
-  | 'cph'
-  | 'earTagNumber'
-  | 'dateOfBirth'
-  | 'dateOfRegistration'
-  | 'onHoldingDate'
-  | 'sex'
-  | 'breedName'
-  | 'breedCode'
-  | 'status'
-  | 'damType'
-  | 'geneticDamEarTagNumber'
-  | 'surrogateDamEarTagNumber'
-  | 'sireEarTagNumber'
-  | 'sireName'
-
-type DateParts = {
-  day: string
-  month: string
-  year: string
-}
-
-export type CattleExportOptions = {
-  columns: CattleExportColumn[]
-  dateRange?: {
-    from?: DateParts
-    to?: DateParts
-  }
-  fileFormat: 'csv' | 'xlsx'
-}
 
 export class LisFrontOfficeExportCattleDataPage extends BasePage {
   readonly heading: Locator
   readonly columns: Locator
+  readonly fromDateInput: Locator
+  readonly toDateInput: Locator
   readonly csvRadio: Locator
   readonly excelRadio: Locator
+  readonly pdfRadio: Locator
   readonly downloadButton: Locator
 
   constructor(page: Page) {
@@ -45,59 +17,92 @@ export class LisFrontOfficeExportCattleDataPage extends BasePage {
       name: 'Download a list of cattle on your holding'
     })
     this.columns = page.locator('input[name="columns"]')
+    this.fromDateInput = page.getByRole('textbox', { name: 'From' })
+    this.toDateInput = page.getByRole('textbox', { name: 'To' })
     this.csvRadio = page.getByRole('radio', { name: 'CSV', exact: true })
-    this.excelRadio = page.getByRole('radio', { name: 'Excel (.xlsx)' })
+    this.excelRadio = page.getByRole('radio', { name: 'XLSX' })
+    this.pdfRadio = page.getByRole('radio', { name: 'PDF' })
     this.downloadButton = page.getByRole('button', { name: 'Download' })
   }
 
-  private async fillDate(prefix: 'date-from' | 'date-to', date?: DateParts) {
-    await this.page.locator(`#${prefix}-day`).fill(date?.day ?? '')
-    await this.page.locator(`#${prefix}-month`).fill(date?.month ?? '')
-    await this.page.locator(`#${prefix}-year`).fill(date?.year ?? '')
+  async enterDateRange(fromDate: string, toDate: string) {
+    await this.fromDateInput.fill(fromDate)
+    await this.toDateInput.fill(toDate)
   }
 
   async checkAllColumns() {
-    const columnCount = await this.columns.count()
-    for (let index = 0; index < columnCount; index++) {
-      const checkbox = this.columns.nth(index)
-      if (!(await checkbox.isChecked())) {
-        await checkbox.check()
-      }
+    for (const checkbox of await this.columns.all()) {
+      await checkbox.check()
+      await expect(checkbox).toBeChecked()
     }
   }
 
   async uncheckAllColumns() {
-    const columnCount = await this.columns.count()
-    for (let index = 0; index < columnCount; index++) {
-      const checkbox = this.columns.nth(index)
+    for (const checkbox of await this.columns.all()) {
       if (await checkbox.isChecked()) {
         await checkbox.uncheck()
+        await expect(checkbox).not.toBeChecked()
       }
     }
   }
 
-  async downloadCattleData(options: CattleExportOptions) {
-    if (options.columns.length === 0) {
-      throw new Error('Select at least one cattle export column')
+  async verifyEachColumnCanBeSelectedAndDeselected() {
+    for (const checkbox of await this.columns.all()) {
+      await checkbox.check()
+      await expect(checkbox).toBeChecked()
+      await checkbox.uncheck()
+      await expect(checkbox).not.toBeChecked()
     }
+  }
 
+  async verifyDefaultColumnSelections() {
+    const defaultColumns = new Set([
+      'cph',
+      'earTagNumber',
+      'dateOfBirth',
+      'sex'
+    ])
+
+    for (const checkbox of await this.columns.all()) {
+      const value = await checkbox.getAttribute('value')
+      if (value === null) {
+        throw new Error('Cattle export column checkbox is missing its value')
+      }
+
+      if (defaultColumns.has(value)) {
+        await expect(checkbox).toBeChecked()
+      } else {
+        await expect(checkbox).not.toBeChecked()
+      }
+    }
+  }
+
+  async selectOnlyColumns(columnLabels: string[]) {
     await this.uncheckAllColumns()
 
-    for (const column of options.columns) {
-      await this.page
-        .locator(`input[name="columns"][value="${column}"]`)
-        .check()
+    for (const columnLabel of columnLabels) {
+      const checkbox = this.page.getByRole('checkbox', {
+        name: columnLabel,
+        exact: true
+      })
+      await checkbox.check()
+      await expect(checkbox).toBeChecked()
     }
+  }
 
-    await this.fillDate('date-from', options.dateRange?.from)
-    await this.fillDate('date-to', options.dateRange?.to)
-
-    if (options.fileFormat === 'csv') {
-      await this.csvRadio.check()
-    } else {
-      await this.excelRadio.check()
+  async selectFileFormat(fileFormat: string) {
+    switch (fileFormat.trim().toLowerCase()) {
+      case 'csv':
+        await this.csvRadio.check()
+        break
+      case 'xlsx':
+        await this.excelRadio.check()
+        break
+      case 'pdf':
+        await this.pdfRadio.check()
+        break
+      default:
+        throw new Error(`Unexpected file format: "${fileFormat}"`)
     }
-
-    await this.downloadButton.click()
   }
 }
