@@ -1,6 +1,7 @@
 import { expect } from 'playwright/test'
 import { Given, Then, When } from '../../fixtures/test.fixture'
 import { DataTable } from 'playwright-bdd'
+import { resolveDisplayDate, resolveInputDate } from '../../utils/dates'
 
 Given('I log into the herokuapp mvp', async ({ page }) => {
   const password = process.env.LIS_HEROKUAPP_PASSWORD
@@ -25,13 +26,11 @@ When(
 )
 
 Then(
-  'I submit valid calf details with {string}, {string}, {string}, {string}, {string}, and {string}',
+  'I submit valid calf details with {string}, {string}, {string}, and {string}',
   async (
     { lisFrontOfficeRegisterCalfDetailsPage, page },
     earTag: string,
-    day: string,
-    month: string,
-    year: string,
+    date: string,
     sex: 'Male' | 'Female',
     breed: string
   ) => {
@@ -39,9 +38,7 @@ Then(
     await expect(lisFrontOfficeRegisterCalfDetailsPage.heading).toBeVisible()
     await lisFrontOfficeRegisterCalfDetailsPage.submitCalfDetails(
       earTag,
-      day,
-      month,
-      year,
+      resolveInputDate(date),
       sex,
       breed
     )
@@ -108,7 +105,13 @@ Then(
   'I verify the Check calf details summary page has:',
   async ({ lisFrontOfficeCheckCalfDetailsPage }, dataTable: DataTable) => {
     await expect(lisFrontOfficeCheckCalfDetailsPage.heading).toBeVisible()
-    const expectedDetails = [Object.fromEntries(dataTable.rows())]
+    const expectedDetails = [
+      Object.fromEntries(
+        dataTable
+          .rows()
+          .map(([field, value]) => [field, resolveDisplayDate(value)])
+      )
+    ]
     await lisFrontOfficeCheckCalfDetailsPage.verifySummaryDetails(
       expectedDetails
     )

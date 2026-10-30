@@ -9,7 +9,7 @@ export class LisFrontOfficeIsTheAnimalRegisteredPage extends BasePage {
   constructor(page: Page) {
     super(page)
     this.heading = page.getByRole('heading', {
-      name: 'Is the animal registered?'
+      name: 'Is the animal registered on your holding?'
     })
     this.yesRadio = page.getByRole('radio', {
       name: 'Yes',

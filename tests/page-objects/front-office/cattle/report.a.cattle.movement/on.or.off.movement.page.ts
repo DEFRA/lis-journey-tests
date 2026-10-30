@@ -9,7 +9,7 @@ export class LisFrontOfficeOnOrOffMovementPage extends BasePage {
   constructor(page: Page) {
     super(page)
     this.heading = page.getByRole('heading', {
-      name: 'Is this an on or off movement?'
+      name: 'Select movement type'
     })
     this.onMovementRadio = page.getByRole('radio', {
       name: 'On movement',

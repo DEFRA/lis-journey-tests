@@ -1,6 +1,7 @@
 import { expect } from 'playwright/test'
 import { Then, When } from '../../fixtures/test.fixture'
 import { DataTable } from 'playwright-bdd'
+import { resolveDisplayDate, resolveInputDate } from '../../utils/dates'
 
 When(
   'I select Report a cattle death',
@@ -29,7 +30,7 @@ When(
     await expect(lisFrontOfficeAnimalDetailsPage.heading).toBeVisible()
     await lisFrontOfficeAnimalDetailsPage.submitRegisteredAnimalDetails(
       tag,
-      date
+      resolveInputDate(date)
     )
   }
 )
@@ -38,7 +39,16 @@ Then(
   'I verify the Check animal details summary page has:',
   async ({ lisFrontOfficeCheckAnimalDetailsPage }, dataTable: DataTable) => {
     await expect(lisFrontOfficeCheckAnimalDetailsPage.heading).toBeVisible()
-    const expectedDetails = [Object.fromEntries(dataTable.rows())]
+    const expectedDetails = [
+      Object.fromEntries(
+        dataTable
+          .rows()
+          .map(([field, value]) => [
+            field,
+            resolveDisplayDate(value, '2-digit')
+          ])
+      )
+    ]
     await lisFrontOfficeCheckAnimalDetailsPage.verifySummaryDetails(
       expectedDetails
     )
@@ -97,8 +107,8 @@ When(
     await expect(lisFrontOfficeAnimalDetailsPage.heading).toBeVisible()
     await lisFrontOfficeAnimalDetailsPage.submitUnregisteredAnimalDetails(
       earTag,
-      dateOfBirth,
-      dateOfDeath,
+      resolveInputDate(dateOfBirth),
+      resolveInputDate(dateOfDeath),
       sexOfAnimal,
       breed
     )

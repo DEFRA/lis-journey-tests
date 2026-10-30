@@ -212,3 +212,16 @@ Feature: Cattle -  Report a Cattle Movement - Positive scenarios
         When I continue from Check movement details page
         When I send my movement report
         Then I confirm the Movement has been reported
+
+    Scenario: Report a single cattle On movement with todays date as movement date
+        When I select "On movement" and continue
+        When I submit movement details
+            | Ear tag number | Movement date |
+            | UK123456301550 | today         |
+        When I verify the Check movement details page displays the following details
+            | Field         | Expected value             |
+            | Movement type | On movement                |
+            | Animal 1      | UK123456301550 Moved today |
+        When I continue from Check movement details page
+        When I send my movement report
+        Then I confirm the Movement has been reported

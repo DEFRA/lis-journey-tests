@@ -1,6 +1,7 @@
 import { expect } from 'playwright/test'
 import { Then, When } from '../../fixtures/test.fixture'
 import { DataTable } from 'playwright-bdd'
+import { resolveDisplayDate, resolveInputDate } from '../../utils/dates'
 
 When(
   'I select Report a cattle movement',
@@ -29,7 +30,7 @@ When(
     await lisFrontOfficeMovementDetailsPage.submitMovementDetails(
       dataTable.hashes().map((animal) => ({
         earTag: animal['Ear tag number'],
-        movementDate: animal['Movement date']
+        movementDate: resolveInputDate(animal['Movement date'])
       }))
     )
   }
@@ -46,7 +47,7 @@ When(
     await lisFrontOfficeCheckMovementDetailsPage.verifyMovementDetails(
       dataTable.hashes().map((detail) => ({
         field: detail.Field,
-        expectedValue: detail['Expected value']
+        expectedValue: resolveDisplayDate(detail['Expected value'])
       }))
     )
   }

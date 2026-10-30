@@ -430,3 +430,32 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Date of death         | 01 January 2026  |
             | Sex                   | Female           |
             | Breed                 | Limousin (LIM)   |
+
+    Scenario: Report a cattle death for a registered animal with todays date as date of death
+        When I select "Yes" to is the animal registered
+        When I submit tag "UK123456301550" and date of death "today"
+        Then I verify the Check animal details summary page has:
+            | Field                 | Expected value |
+            | Animal registered     | Yes            |
+            | Animal ear tag number | UK123456301550 |
+            | Date of death         | today          |
+        And I select Continue from the Animal details page
+        And I submit "No" for add more animals for deaths
+        And I send my cattle death report
+        Then I verify that "2 cattle deaths reported"
+
+    Scenario: Report a cattle death for an unregistered animal with todays date as date of birth and date of death
+        When I select "No" to is the animal registered
+        And I submit valid animal details with "UK123456301550", "today","today", "Male", and "Limousin (LIM)"
+        Then I verify the Check animal details summary page has:
+            | Field                 | Expected value |
+            | Animal registered     | No             |
+            | Animal ear tag number | UK123456301550 |
+            | Date of birth         | today          |
+            | Date of death         | today          |
+            | Sex                   | Male           |
+            | Breed                 | Limousin (LIM) |
+        And I select Continue from the Animal details page
+        And I submit "No" for add more animals for deaths
+        And I send my cattle death report
+        Then I verify that "2 cattle deaths reported"

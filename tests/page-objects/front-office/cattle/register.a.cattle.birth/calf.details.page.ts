@@ -26,17 +26,39 @@ export class LisFrontOfficeRegisterCalfDetailsPage extends BasePage {
 
   async submitCalfDetails(
     earTag: string,
-    day: string,
-    month: string,
-    year: string,
+    dateOfBirth: string,
     sexOfCalf: 'Male' | 'Female',
     breed: string
   ) {
     await this.selectAutocompleteOption(this.animalEarTagInput, earTag)
-    await this.dateInput.fill(day + '/' + month + '/' + year)
+    await this.dateInput.fill(dateOfBirth)
     await this.selectSexOfCalf(sexOfCalf)
     await this.selectAutocompleteOption(this.breedInput, breed)
     await this.continueButton.click()
+  }
+
+  // Types values without picking an autocomplete suggestion, for invalid input
+  async enterCalfDetails(
+    earTag: string,
+    dateOfBirth: string,
+    sexOfCalf: 'Male' | 'Female',
+    breed: string
+  ) {
+    await this.animalEarTagInput.fill(earTag)
+    await this.dateInput.fill(dateOfBirth)
+    await this.selectSexOfCalf(sexOfCalf)
+    await this.breedInput.fill(breed)
+    await this.continueButton.click()
+  }
+
+  async searchAnimalEarTag(earTag: string) {
+    await expect(this.animalEarTagInput).toBeVisible()
+    await this.animalEarTagInput.fill(earTag)
+  }
+
+  async searchBreed(breed: string) {
+    await expect(this.breedInput).toBeVisible()
+    await this.breedInput.fill(breed)
   }
 
   async selectAutocompleteOption(input: Locator, option: string) {
@@ -59,14 +81,13 @@ export class LisFrontOfficeRegisterCalfDetailsPage extends BasePage {
   }
 
   async verifySexSelected(sexOfCalf: string) {
-    const sexRadio =
-      sexOfCalf === 'Male'
-        ? this.maleRadio
-        : sexOfCalf === 'Female'
-          ? this.femaleRadio
-          : undefined
+    let sexRadio: Locator
 
-    if (!sexRadio) {
+    if (sexOfCalf === 'Male') {
+      sexRadio = this.maleRadio
+    } else if (sexOfCalf === 'Female') {
+      sexRadio = this.femaleRadio
+    } else {
       throw new Error(`Unexpected animal sex: "${sexOfCalf}"`)
     }
 

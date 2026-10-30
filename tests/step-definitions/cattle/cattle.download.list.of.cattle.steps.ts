@@ -1,5 +1,6 @@
 import { expect } from 'playwright/test'
 import { Then, When } from '../../fixtures/test.fixture'
+import { resolveInputDate } from '../../utils/dates'
 
 When(
   'I select Download a list of cattle on your holding',
@@ -38,7 +39,10 @@ When(
     fromDate: string,
     toDate: string
   ) => {
-    await lisFrontOfficeExportCattleDataPage.enterDateRange(fromDate, toDate)
+    await lisFrontOfficeExportCattleDataPage.enterDateRange(
+      resolveInputDate(fromDate),
+      resolveInputDate(toDate)
+    )
   }
 )
 
