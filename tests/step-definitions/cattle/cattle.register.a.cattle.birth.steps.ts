@@ -118,13 +118,6 @@ Then(
   }
 )
 
-When(
-  'I select Continue from the Check calf details page',
-  async ({ lisFrontOfficeCheckCalfDetailsPage }) => {
-    await lisFrontOfficeCheckCalfDetailsPage.continueButton.click()
-  }
-)
-
 Then(
   'I verify birth tag number {string} is {string}',
   async (

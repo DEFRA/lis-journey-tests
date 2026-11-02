@@ -12,7 +12,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Animal registered     | Yes             |
             | Animal ear tag number | UK123456301550  |
             | Date of death         | 01 January 2026 |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301550" is "Ready to send"
         And I click on the tag number "UK123456301550"
         Then I verify the Check animal details summary page has:
@@ -20,7 +20,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Animal registered     | Yes             |
             | Animal ear tag number | UK123456301550  |
             | Date of death         | 01 January 2026 |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
         Then I verify that "2 cattle deaths reported"
@@ -36,7 +36,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Date of death         | 01 January 2026  |
             | Sex                   | Male             |
             | Breed                 | Limousin (LIM)   |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
         Then I verify that "2 cattle deaths reported"
@@ -61,9 +61,9 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Date of death         | 01 January 2026  |
             | Sex                   | Male             |
             | Breed                 | Limousin (LIM)   |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301550" is "Ready to send"
-        And I select Continue from the Animal details page
+        And I continue from the "Report cattle deaths" page
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
         Then I verify that "2 cattle deaths reported"
@@ -83,7 +83,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Animal registered     | Yes              |
             | Animal ear tag number | UK123456301551   |
             | Date of death         | 02 February 2026 |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
@@ -104,9 +104,9 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Animal registered     | Yes              |
             | Animal ear tag number | UK123456301550   |
             | Date of death         | 02 February 2026 |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301550" is "Ready to send"
-        And I select Continue from the Animal details page
+        And I continue from the "Report cattle deaths" page
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
         Then I verify that "2 cattle deaths reported"
@@ -131,7 +131,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Animal registered     | Yes             |
             | Animal ear tag number | UK123456301551  |
             | Date of birth         | 01 January 2026 |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
@@ -158,7 +158,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Date of death         | 01 January 2026   |
             | Sex                   | Female            |
             | Breed                 | Montbeliarde (MO) |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301550" is "Ready to send"
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
@@ -185,7 +185,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Date of death         | 01 January 2026   |
             | Sex                   | Female            |
             | Breed                 | Montbeliarde (MO) |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301552" is "Ready to send"
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
@@ -212,7 +212,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Date of death         | 09 May 2026       |
             | Sex                   | Female            |
             | Breed                 | Montbeliarde (MO) |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
@@ -239,7 +239,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Date of death         | 01 January 2026   |
             | Sex                   | Male              |
             | Breed                 | Montbeliarde (MO) |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
@@ -266,7 +266,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Date of death         | 01 January 2026   |
             | Sex                   | Female            |
             | Breed                 | Montbeliarde (MO) |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
@@ -280,7 +280,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Animal registered     | Yes             |
             | Animal ear tag number | UK123456301550  |
             | Date of death         | 01 January 2026 |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301550" is "Ready to send"
         And I submit "Yes" for add more animals for deaths
         When I select "Yes" to is the animal registered
@@ -290,7 +290,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Animal registered     | Yes             |
             | Animal ear tag number | UK123456301551  |
             | Date of death         | 01 January 2026 |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301550" is "Ready to send"
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
@@ -305,7 +305,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Animal registered     | Yes             |
             | Animal ear tag number | UK123456301550  |
             | Date of death         | 01 January 2026 |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301550" is "Ready to send"
         And I submit "Yes" for add more animals for deaths
         When I select "No" to is the animal registered
@@ -318,7 +318,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Date of death         | 01 January 2026  |
             | Sex                   | Female           |
             | Breed                 | Limousin (LIM)   |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301550" is "Ready to send"
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
@@ -336,7 +336,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Date of death         | 01 January 2026  |
             | Sex                   | Female           |
             | Breed                 | Limousin (LIM)   |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301550" is "Ready to send"
         And I submit "Yes" for add more animals for deaths
         When I select "No" to is the animal registered
@@ -349,7 +349,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Date of death         | 01 January 2026  |
             | Sex                   | Female           |
             | Breed                 | Limousin (LIM)   |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301550" is "Ready to send"
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
@@ -366,7 +366,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Date of birth         | 11 February 2025 |
             | Date of death         | 01 January 2026  |
             | Sex                   | Female           |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301550" is "Ready to send"
         And I submit "Yes" for add more animals for deaths
         When I select "Yes" to is the animal registered
@@ -376,7 +376,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Animal registered     | Yes             |
             | Animal ear tag number | UK123456301551  |
             | Date of death         | 01 January 2026 |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301550" is "Ready to send"
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
@@ -395,7 +395,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And the previously entered registered animal details are still populated:
             | Animal ear tag number | UK123456301550 |
             | Date of death         | 01/01/2026     |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         Then I verify the Check animal details summary page has:
             | Field                 | Expected value  |
             | Animal registered     | Yes             |
@@ -421,7 +421,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Date of death         | 01/1/2026      |
             | Sex                   | Female         |
             | Breed                 | Limousin (LIM) |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         Then I verify the Check animal details summary page has:
             | Field                 | Expected value   |
             | Animal registered     | No               |
@@ -439,7 +439,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Animal registered     | Yes            |
             | Animal ear tag number | UK123456301550 |
             | Date of death         | today          |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
         Then I verify that "2 cattle deaths reported"
@@ -455,7 +455,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
             | Date of death         | today          |
             | Sex                   | Male           |
             | Breed                 | Limousin (LIM) |
-        And I select Continue from the Animal details page
+        And I continue from the "Check animal details" page
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
         Then I verify that "2 cattle deaths reported"

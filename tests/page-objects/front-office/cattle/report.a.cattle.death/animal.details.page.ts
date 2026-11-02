@@ -1,4 +1,4 @@
-import { Locator, Page, expect } from '@playwright/test'
+import { Locator, Page } from '@playwright/test'
 import { BasePage } from '../../../base.page'
 
 export class LisFrontOfficeAnimalDetailsPage extends BasePage {
@@ -42,17 +42,6 @@ export class LisFrontOfficeAnimalDetailsPage extends BasePage {
     await this.selectSexOfCalf(sexOfAnimal)
     await this.selectAutocompleteOption(this.breedInput, breed)
     await this.continueButton.click()
-  }
-
-  async selectAutocompleteOption(input: Locator, option: string) {
-    await expect(input).toBeVisible()
-    await input.fill(option)
-    const suggestion = this.page.getByRole('option', {
-      name: option,
-      exact: true
-    })
-    await suggestion.waitFor({ state: 'visible' })
-    await suggestion.click()
   }
 
   async selectSexOfCalf(sexOfCalf: string) {

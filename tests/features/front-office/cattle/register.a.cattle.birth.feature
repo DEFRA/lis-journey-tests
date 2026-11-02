@@ -4,6 +4,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
         Given I log into the herokuapp mvp
         And I select Register a cattle birth
 
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register a cattle birth via genetic dam with with sire details
         And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
         And I submit the dam details as "calf born via genetic dam"
@@ -19,7 +20,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Genetic dam ear tag number | UK123456501101           |
             | Sire ear tag number        | UK123456501103           |
             | Sire name                  | Sire Name                |
-        And I select Continue from the Check calf details page
+        And I continue from the "Check calf details" page
         And I verify birth tag number "UK123456301550" is "Ready to send"
         And I click on the tag number "UK123456301550"
         Then I verify the Check calf details summary page has:
@@ -32,11 +33,12 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Genetic dam ear tag number | UK123456501101           |
             | Sire ear tag number        | UK123456501103           |
             | Sire name                  | Sire Name                |
-        And I select Continue from the Check calf details page
+        And I continue from the "Check calf details" page
         And I submit "No" for add more animals for births
         And I send my cattle birth report
         Then I verify that "1 cattle birth registered"
 
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register a cattle birth via genetic dam then change the Animal ear tag number of the calf from the summary page
         And I submit valid calf details with "UK123456301550", "30/4/2025", "Male", and "Danish Red (DR)"
         And I submit the dam details as "calf born via genetic dam"
@@ -65,6 +67,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK123456501103  |
             | Sire name                  | Sire Name       |
 
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register a cattle birth via genetic dam then change the Date of birth of the calf from the summary page
         And I submit valid calf details with "UK123456301550", "30/4/2025", "Male", and "Danish Red (DR)"
         And I submit the dam details as "calf born via genetic dam"
@@ -93,6 +96,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK123456501103  |
             | Sire name                  | Sire Name       |
 
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register a cattle birth via genetic dam then change the Sex of the calf from the summary page
         And I submit valid calf details with "UK123456301550", "30/4/2025", "Male", and "Danish Red (DR)"
         And I submit the dam details as "calf born via genetic dam"
@@ -121,6 +125,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK123456501103  |
             | Sire name                  | Sire Name       |
 
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register a cattle birth via genetic dam then change the Breed of the calf from the summary page
         And I submit valid calf details with "UK123456301550", "30/4/2025", "Male", and "Danish Red (DR)"
         And I submit the dam details as "calf born via genetic dam"
@@ -149,6 +154,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK123456501103 |
             | Sire name                  | Sire Name      |
 
+    @LREG-781 @LREG-782 @LREG-783 @LREG-784 @LREG-785
     Scenario: Register a cattle birth via genetic dam then change the Dam type from the summary page
         And I submit valid calf details with "UK123456301550", "1/5/2025", "Male", and "Estonian Red (ER)"
         And I submit the dam details as "calf born via genetic dam"
@@ -179,6 +185,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Sire ear tag number          | UK123456501103    |
             | Sire name                    | Sire Name         |
 
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register a cattle birth via genetic dam then change the Genetic dam ear tag number from the summary page
         And I submit valid calf details with "UK123456301550", "1/5/2025", "Male", and "Estonian Red (ER)"
         And I submit the dam details as "calf born via genetic dam"
@@ -207,6 +214,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK123456501103    |
             | Sire name                  | Sire Name         |
 
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register a cattle birth via genetic dam then change the Sire Ear tag from the summary page
         And I submit valid calf details with "UK123456301550", "13/6/2025", "Female", and "Flekvieh (FKV)"
         And I submit the dam details as "calf born via genetic dam"
@@ -235,6 +243,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK123456501105 |
             | Sire name                  | Sire Name      |
 
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register a cattle birth via genetic dam then change the Sire Name from the summary page
         And I submit valid calf details with "UK123456301550", "13/6/2025", "Female", and "Flekvieh (FKV)"
         And I submit the dam details as "calf born via genetic dam"
@@ -263,6 +272,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK123456501103 |
             | Sire name                  | Sire Name 2    |
 
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register a cattle birth via genetic dam with with sire details and add another animal
         And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
         And I submit the dam details as "calf born via genetic dam"
@@ -278,7 +288,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Genetic dam ear tag number | UK123456501101           |
             | Sire ear tag number        | UK123456501103           |
             | Sire name                  | Sire Name                |
-        And I select Continue from the Check calf details page
+        And I continue from the "Check calf details" page
         And I verify birth tag number "UK123456301550" is "Ready to send"
         And I submit "Yes" for add more animals for births
         And I submit valid calf details with "UK123456301554", "21/3/2024", "Female", and "Charolais (CH)"
@@ -295,7 +305,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Genetic dam ear tag number | UK123456501103 |
             | Sire ear tag number        | UK123456501103 |
             | Sire name                  | Sire Name2     |
-        And I select Continue from the Check calf details page
+        And I continue from the "Check calf details" page
         And I verify birth tag number "UK123456301554" is "Ready to send"
         And I submit "No" for add more animals for births
         And I send my cattle birth report
@@ -352,6 +362,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
     #         | UK 123456 301544 | 28 Jul 2026   | 28 Jul 2026     | Female | LIM   | 1      |
     #         | UK 123456 301545 | 30 Jul 2026   | 30 Jul 2026     | Female | LIM   | 0      |
 
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register a cattle birth via genetic dam with with sire details and then cancel
         And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
         And I submit the dam details as "calf born via genetic dam"
@@ -361,6 +372,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
         And I select "Continue" on the cancellation confirmation page
         Then I am returned to Register new cattle births page
 
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register a cattle birth via genetic dam with with sire details, cancel and then abort the cancellation
         And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
         And I submit the dam details as "calf born via genetic dam"
@@ -370,6 +382,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
         And I select "Cancel" on the cancellation confirmation page
         Then I am returned to Check calf details summary page
 
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register a cattle birth via genetic dam with no sire details
         And I submit valid calf details with "UK123456301550", "20/7/2025", "Male", and "Guernsey (GU)"
         And I submit the dam details as "calf born via genetic dam"
@@ -385,12 +398,13 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Genetic dam ear tag number | UK123456501101 |
             | Sire ear tag number        | Not provided   |
             | Sire name                  | Not provided   |
-        And I select Continue from the Check calf details page
+        And I continue from the "Check calf details" page
         And I verify birth tag number "UK123456301550" is "Ready to send"
         And I submit "No" for add more animals for births
         And I send my cattle birth report
         Then I verify that "1 cattle birth registered"
 
+    @LREG-781 @LREG-782 @LREG-784 @LREG-785
     Scenario: Register a cattle birth via surrogate dam with no sire details
         And I submit valid calf details with "UK123456301550", "30/8/2025", "Female", and "Heck (HK)"
         And I submit the dam details as "calf born via surrogate dam"
@@ -407,12 +421,13 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Surrogate dam ear tag number | UK123456601200 |
             | Sire ear tag number          | Not provided   |
             | Sire name                    | Not provided   |
-        And I select Continue from the Check calf details page
+        And I continue from the "Check calf details" page
         And I verify birth tag number "UK123456301550" is "Ready to send"
         And I submit "No" for add more animals for births
         And I send my cattle birth report
         Then I verify that "1 cattle birth registered"
 
+    @LREG-781 @LREG-782 @LREG-784 @LREG-785
     Scenario: Register a cattle birth via surrogate dam with sire details
         And I submit valid calf details with "UK123456301550", "3/9/2025", "Female", and "Irish Moiled (IM)"
         And I submit the dam details as "calf born via surrogate dam"
@@ -429,12 +444,13 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Surrogate dam ear tag number | UK123456601200    |
             | Sire ear tag number          | UK123456501103    |
             | Sire name                    | Sire Name         |
-        And I select Continue from the Check calf details page
+        And I continue from the "Check calf details" page
         And I verify birth tag number "UK123456301550" is "Ready to send"
         And I submit "No" for add more animals for births
         And I send my cattle birth report
         Then I verify that "1 cattle birth registered"
 
+    @LREG-781 @LREG-782 @LREG-784 @LREG-785
     Scenario: Register a cattle birth via surrogate dam then change the surrogate dam ear tag number
         And I submit valid calf details with "UK123456301550", "3/9/2025", "Female", and "Irish Moiled (IM)"
         And I submit the dam details as "calf born via surrogate dam"
@@ -464,11 +480,12 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Surrogate dam ear tag number | UK123456601202    |
             | Sire ear tag number          | UK123456501103    |
             | Sire name                    | Sire Name         |
-        And I select Continue from the Check calf details page
+        And I continue from the "Check calf details" page
         And I submit "No" for add more animals for births
         And I send my cattle birth report
         Then I verify that "1 cattle birth registered"
 
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Go back from Register cattle birth via genetic dam page and verify entered details remain
         And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
         And I submit the dam details as "calf born via genetic dam"
@@ -500,6 +517,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Sex                   | Female                   |
             | Breed                 | Baltata Romaneasca (BRO) |
 
+    @LREG-781 @LREG-782 @LREG-784 @LREG-785
     Scenario: Go back from Register a cattle birth via surrogate dam and verify entered details remain
         And I submit valid calf details with "UK123456301550", "3/9/2025", "Female", and "Irish Moiled (IM)"
         And I submit the dam details as "calf born via surrogate dam"
@@ -533,6 +551,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Sex                   | Female            |
             | Breed                 | Irish Moiled (IM) |
 
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register a cattle birth with todays date as date of birth
         And I submit valid calf details with "UK123456301550", "today", "Female", and "Baltata Romaneasca (BRO)"
         And I submit the dam details as "calf born via genetic dam"
@@ -548,7 +567,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Genetic dam ear tag number | UK123456501101           |
             | Sire ear tag number        | UK123456501103           |
             | Sire name                  | Sire Name                |
-        And I select Continue from the Check calf details page
+        And I continue from the "Check calf details" page
         And I verify birth tag number "UK123456301550" is "Ready to send"
         And I submit "No" for add more animals for births
         And I send my cattle birth report

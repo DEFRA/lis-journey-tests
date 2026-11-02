@@ -56,13 +56,6 @@ Then(
 )
 
 Then(
-  'I select Continue from the Animal details page',
-  async ({ lisFrontOfficeCheckAnimalDetailsPage }) => {
-    await lisFrontOfficeCheckAnimalDetailsPage.continueButton.click()
-  }
-)
-
-Then(
   'I verify death tag number {string} is {string}',
   async (
     { lisFrontOfficeReportCattleDeathsPage },

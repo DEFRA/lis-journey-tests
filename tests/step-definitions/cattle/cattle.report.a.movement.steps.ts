@@ -54,13 +54,6 @@ When(
 )
 
 When(
-  'I continue from Check movement details page',
-  async ({ lisFrontOfficeCheckMovementDetailsPage }) => {
-    await lisFrontOfficeCheckMovementDetailsPage.continueButton.click()
-  }
-)
-
-When(
   'I send my movement report',
   async ({ lisFrontOfficeSubmitMovementReportPage }) => {
     await expect(lisFrontOfficeSubmitMovementReportPage.heading).toBeVisible()
@@ -88,13 +81,6 @@ When(
 )
 
 When(
-  'I continue from Movement details page',
-  async ({ lisFrontOfficeMovementDetailsPage }) => {
-    await lisFrontOfficeMovementDetailsPage.continueButton.click()
-  }
-)
-
-When(
   'I select Back from the Check movement details page',
   async ({ lisFrontOfficeMovementDetailsPage }) => {
     await lisFrontOfficeMovementDetailsPage.backLink.click()
@@ -113,12 +99,5 @@ When(
     await expect(lisFrontOfficeMovementDetailsPage.dateInput).toHaveValue(
       values['Movement date']
     )
-  }
-)
-
-When(
-  'I select Continue from the Movement details page',
-  async ({ lisFrontOfficeMovementDetailsPage }) => {
-    await lisFrontOfficeMovementDetailsPage.continueButton.click()
   }
 )
