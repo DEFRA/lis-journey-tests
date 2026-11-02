@@ -57,6 +57,23 @@ export class BasePage {
     return await this.page.title()
   }
 
+  // Autocomplete lookups, e.g. ear tag and breed: types the value and picks the matching suggestion
+  async selectAutocompleteOption(input: Locator, option: string) {
+    await this.searchAutocomplete(input, option)
+    const suggestion = this.page.getByRole('option', {
+      name: option,
+      exact: true
+    })
+    await suggestion.waitFor({ state: 'visible' })
+    await suggestion.click()
+  }
+
+  // Types into an autocomplete lookup without picking a suggestion, e.g. for values with no results
+  async searchAutocomplete(input: Locator, value: string) {
+    await expect(input).toBeVisible()
+    await input.fill(value)
+  }
+
   async verifyInputValues(
     expectedValues: Record<string, string>,
     inputs: Record<string, Locator>

@@ -47,13 +47,7 @@ export class LisFrontOfficeMovementDetailsPage extends BasePage {
 
       if (await earTagCombobox.count()) {
         earTagInput = earTagCombobox
-        await earTagCombobox.fill(animal.earTag)
-        const suggestion = this.page.getByRole('option', {
-          name: animal.earTag,
-          exact: true
-        })
-        await suggestion.waitFor({ state: 'visible' })
-        await suggestion.click()
+        await this.selectAutocompleteOption(earTagCombobox, animal.earTag)
       } else {
         earTagInput = animalItem.getByRole('textbox', {
           name: /Ear tag number/
@@ -86,7 +80,7 @@ export class LisFrontOfficeMovementDetailsPage extends BasePage {
     for (const identifier of animals) {
       const animalItems = this.page.locator('.moj-add-another__item')
       let matchingItem: Locator | undefined
-      const animalNumber = identifier.match(/^animal\s+(\d+)$/i)?.[1]
+      const animalNumber = new RegExp(/^animal\s+(\d+)$/i).exec(identifier)?.[1]
       const animalCount = await animalItems.count()
 
       for (let index = 0; index < animalCount; index++) {
@@ -98,7 +92,7 @@ export class LisFrontOfficeMovementDetailsPage extends BasePage {
         const matchesAnimalNumber =
           animalNumber !== undefined &&
           new RegExp(
-            `^Animal\\s+${animalNumber}(?:\\s+of\\s+\\d+)?$`,
+            String.raw`^Animal\s+${animalNumber}(?:\s+of\s+\d+)?$`,
             'i'
           ).test((await animalItem.locator('legend').innerText()).trim())
 

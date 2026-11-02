@@ -26,28 +26,15 @@ export class LisFrontOfficeRegisterCalfDetailsPage extends BasePage {
 
   async submitCalfDetails(
     earTag: string,
-    day: string,
-    month: string,
-    year: string,
+    dateOfBirth: string,
     sexOfCalf: 'Male' | 'Female',
     breed: string
   ) {
     await this.selectAutocompleteOption(this.animalEarTagInput, earTag)
-    await this.dateInput.fill(day + '/' + month + '/' + year)
+    await this.dateInput.fill(dateOfBirth)
     await this.selectSexOfCalf(sexOfCalf)
     await this.selectAutocompleteOption(this.breedInput, breed)
     await this.continueButton.click()
-  }
-
-  async selectAutocompleteOption(input: Locator, option: string) {
-    await expect(input).toBeVisible()
-    await input.fill(option)
-    const suggestion = this.page.getByRole('option', {
-      name: option,
-      exact: true
-    })
-    await suggestion.waitFor({ state: 'visible' })
-    await suggestion.click()
   }
 
   async selectSexOfCalf(sexOfCalf: string) {
@@ -59,14 +46,13 @@ export class LisFrontOfficeRegisterCalfDetailsPage extends BasePage {
   }
 
   async verifySexSelected(sexOfCalf: string) {
-    const sexRadio =
-      sexOfCalf === 'Male'
-        ? this.maleRadio
-        : sexOfCalf === 'Female'
-          ? this.femaleRadio
-          : undefined
+    let sexRadio: Locator
 
-    if (!sexRadio) {
+    if (sexOfCalf === 'Male') {
+      sexRadio = this.maleRadio
+    } else if (sexOfCalf === 'Female') {
+      sexRadio = this.femaleRadio
+    } else {
       throw new Error(`Unexpected animal sex: "${sexOfCalf}"`)
     }
 

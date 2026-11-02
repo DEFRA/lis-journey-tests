@@ -1,6 +1,7 @@
 import { expect } from 'playwright/test'
 import { Then, When } from '../../fixtures/test.fixture'
 import { DataTable } from 'playwright-bdd'
+import { resolveDisplayDate, resolveInputDate } from '../../utils/dates'
 
 When(
   'I select Report a cattle movement',
@@ -29,7 +30,7 @@ When(
     await lisFrontOfficeMovementDetailsPage.submitMovementDetails(
       dataTable.hashes().map((animal) => ({
         earTag: animal['Ear tag number'],
-        movementDate: animal['Movement date']
+        movementDate: resolveInputDate(animal['Movement date'])
       }))
     )
   }
@@ -46,16 +47,9 @@ When(
     await lisFrontOfficeCheckMovementDetailsPage.verifyMovementDetails(
       dataTable.hashes().map((detail) => ({
         field: detail.Field,
-        expectedValue: detail['Expected value']
+        expectedValue: resolveDisplayDate(detail['Expected value'])
       }))
     )
-  }
-)
-
-When(
-  'I continue from Check movement details page',
-  async ({ lisFrontOfficeCheckMovementDetailsPage }) => {
-    await lisFrontOfficeCheckMovementDetailsPage.continueButton.click()
   }
 )
 
@@ -87,13 +81,6 @@ When(
 )
 
 When(
-  'I continue from Movement details page',
-  async ({ lisFrontOfficeMovementDetailsPage }) => {
-    await lisFrontOfficeMovementDetailsPage.continueButton.click()
-  }
-)
-
-When(
   'I select Back from the Check movement details page',
   async ({ lisFrontOfficeMovementDetailsPage }) => {
     await lisFrontOfficeMovementDetailsPage.backLink.click()
@@ -112,12 +99,5 @@ When(
     await expect(lisFrontOfficeMovementDetailsPage.dateInput).toHaveValue(
       values['Movement date']
     )
-  }
-)
-
-When(
-  'I select Continue from the Movement details page',
-  async ({ lisFrontOfficeMovementDetailsPage }) => {
-    await lisFrontOfficeMovementDetailsPage.continueButton.click()
   }
 )
