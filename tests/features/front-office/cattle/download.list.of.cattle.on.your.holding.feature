@@ -62,3 +62,8 @@ Feature: Cattle -  Download a list of cattle on your holding - Positive scenario
         When I enter the date range from "1/1/2026" to "3/3/2026"
         When I select Download
         Then I verify a download has been requested
+
+    Scenario: Request an export with todays date as the date range
+        When I enter the date range from "today" to "today"
+        And I select Download
+        Then I verify a download has been requested

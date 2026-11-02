@@ -27,14 +27,10 @@ export class LisFrontOfficeSurrogateDamDetailsPage extends BasePage {
     surrogateDamEarTagNumber: string
   ) {
     await this.geneticDamEarTagInput.fill(geneticDamEarTagNumber)
-    await this.surrogateDamEarTagInput.waitFor({ state: 'visible' })
-    await this.surrogateDamEarTagInput.fill(surrogateDamEarTagNumber)
-    const suggestion = this.page.getByRole('option', {
-      name: surrogateDamEarTagNumber,
-      exact: true
-    })
-    await suggestion.waitFor({ state: 'visible' })
-    await suggestion.click()
+    await this.selectAutocompleteOption(
+      this.surrogateDamEarTagInput,
+      surrogateDamEarTagNumber
+    )
     await this.continueButton.click()
   }
 }

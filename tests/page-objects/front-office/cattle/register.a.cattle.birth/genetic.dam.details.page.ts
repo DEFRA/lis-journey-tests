@@ -19,14 +19,10 @@ export class LisFrontOfficeGeneticDamDetailsPage extends BasePage {
   }
 
   async submitAnimalEarTagNumber(animalEarTagNumber: string) {
-    await this.animalEarTagInput.waitFor({ state: 'visible' })
-    await this.animalEarTagInput.fill(animalEarTagNumber)
-    const suggestion = this.page.getByRole('option', {
-      name: animalEarTagNumber,
-      exact: true
-    })
-    await suggestion.waitFor({ state: 'visible' })
-    await suggestion.click()
+    await this.selectAutocompleteOption(
+      this.animalEarTagInput,
+      animalEarTagNumber
+    )
     await this.continueButton.click()
   }
 }
