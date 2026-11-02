@@ -1,4 +1,4 @@
-// Replaces "today", "tomorrow" or "<n> days ago" (e.g. "28 days ago") with that date; any other value is returned unchanged
+// Replaces "today", "yesterday", "tomorrow" or "<n> days ago" (e.g. "28 days ago") with that date; any other value is returned unchanged
 export function resolveInputDate(value: string) {
   const date = keywordToDate(value)
   if (!date) return value
@@ -7,6 +7,12 @@ export function resolveInputDate(value: string) {
 
 function keywordToDate(value: string) {
   if (value === 'today') return new Date()
+
+  if (value === 'yesterday') {
+    const date = new Date()
+    date.setDate(date.getDate() - 1)
+    return date
+  }
 
   if (value === 'tomorrow') {
     const date = new Date()

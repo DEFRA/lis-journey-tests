@@ -28,6 +28,40 @@ When('I close the {string} date picker', async ({ page }, field: string) => {
   await DatePicker.forField(page, field).close()
 })
 
+When(
+  'I tab to the {string} date picker button',
+  async ({ page }, field: string) => {
+    await DatePicker.forField(page, field).tabToChooseDateButton()
+  }
+)
+
+// key is a Playwright key name, e.g. "Enter", "Space", "Escape" or "ArrowLeft"
+When('I press {string}', async ({ page }, key: string) => {
+  await page.keyboard.press(key)
+})
+
+Then(
+  '{string} has focus in the {string} date picker',
+  async ({ page }, date: string, field: string) => {
+    await DatePicker.forField(page, field).verifyDateHasFocus(
+      resolveInputDate(date)
+    )
+  }
+)
+
+Then('the {string} date picker is closed', async ({ page }, field: string) => {
+  await expect(DatePicker.forField(page, field).dialog).toBeHidden()
+})
+
+Then(
+  'the {string} date picker button has focus',
+  async ({ page }, field: string) => {
+    await expect(
+      DatePicker.forField(page, field).chooseDateButton
+    ).toBeFocused()
+  }
+)
+
 Then(
   'the {string} field shows {string}',
   async ({ page }, field: string, date: string) => {

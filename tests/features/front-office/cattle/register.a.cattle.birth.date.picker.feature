@@ -30,3 +30,35 @@ Feature: Cattle - Register a Cattle Birth - Date of birth date picker
         When I type "11/2/2025" into the "Date of birth" field
         And I open the "Date of birth" date picker
         Then "11/2/2025" is selected in the "Date of birth" date picker
+
+    Scenario Outline: Opening the date picker with the <key> key moves focus into the calendar
+        When I tab to the "Date of birth" date picker button
+        And I press "<key>"
+        Then "today" has focus in the "Date of birth" date picker
+
+        Examples:
+            | key   |
+            | Enter |
+            | Space |
+
+    Scenario Outline: Selecting a date using only the keyboard - <key>
+        When I tab to the "Date of birth" date picker button
+        And I press "Enter"
+        And I press "<key>"
+        Then "<date>" has focus in the "Date of birth" date picker
+        When I press "Enter"
+        Then the "Date of birth" date picker is closed
+        And the "Date of birth" field shows "<date>"
+
+        Examples:
+            | key       | date       |
+            | ArrowLeft | yesterday  |
+            | ArrowUp   | 7 days ago |
+
+    Scenario: Closing the date picker with the Escape key
+        When I tab to the "Date of birth" date picker button
+        And I press "Enter"
+        And I press "Escape"
+        Then the "Date of birth" date picker is closed
+        And the "Date of birth" date picker button has focus
+        And the "Date of birth" field shows ""

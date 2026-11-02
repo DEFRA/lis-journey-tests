@@ -19,6 +19,7 @@ Feature: Cattle - Register a Cattle Birth - Validation
         Examples:
             | case                            | earTag         | dob        | sex    | breed           | error                                                     |
             | date of birth in future         | UK123456301550 | 1/1/2099   | Female | Danish Red (DR) | Date of birth must be today or in the past                |
+            | date of birth is tomorrow       | UK123456301550 | tomorrow   | Female | Danish Red (DR) | Date of birth must be today or in the past                |
             | invalid date of birth in future | UK123456301550 | ABCDEFG    | Female | Danish Red (DR) | Date of birth must be a real date, for example 01/05/2026 |
             | US style date of birth          | UK123456301550 | 12/20/2025 | Female | Danish Red (DR) | Date of birth must be a real date, for example 01/05/2026 |
             | Non leap year                   | UK123456301550 | 29/02/2023 | Female | Danish Red (DR) | Date of birth must be a real date, for example 01/05/2026 |

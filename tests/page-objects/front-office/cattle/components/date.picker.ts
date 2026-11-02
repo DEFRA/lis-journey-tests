@@ -87,6 +87,18 @@ export class DatePicker {
     await expect(this.dayButton(date)).toHaveAttribute('aria-current', 'date')
   }
 
+  // Tabs from the date input to the Choose date button, as a keyboard user would
+  async tabToChooseDateButton() {
+    await this.input.focus()
+    await this.input.press('Tab')
+    await expect(this.chooseDateButton).toBeFocused()
+  }
+
+  // No goToMonthOf here: clicking the month buttons would move focus out of the grid
+  async verifyDateHasFocus(date: string) {
+    await expect(this.dayButton(date)).toBeFocused()
+  }
+
   async verifyDateIsSelected(date: string) {
     await expect(this.dayButton(date)).toHaveClass(
       /moj-datepicker__button--selected/
