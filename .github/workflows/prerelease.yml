@@ -43,7 +43,7 @@ jobs:
 
   create-tag:
     name: 'Tag Validated Commit'
-    needs: [get-version, validate]
+    needs: [get-version, validate, sonar-analysis]
     uses: ./.github/workflows/support-tag.yml
     with:
       version: ${{ needs.get-version.outputs.version }}
