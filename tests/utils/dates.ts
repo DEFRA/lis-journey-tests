@@ -20,7 +20,7 @@ function keywordToDate(value: string) {
     return date
   }
 
-  const daysAgo = value.match(/^(\d+) days ago$/)
+  const daysAgo = /^(\d+) days ago$/.exec(value)
   if (!daysAgo) return undefined
 
   const date = new Date()

@@ -32,17 +32,12 @@ export class LisFrontOfficeDamDetailsPage extends BasePage {
   }
 
   async verifyDamTypeSelected(damType: string) {
-    const damTypeRadio =
-      damType === 'calf born via genetic dam'
-        ? this.calfBornViaGeneticDamRadio
-        : damType === 'calf born via surrogate dam'
-          ? this.calfBornViaSurrogateDamRadio
-          : undefined
-
-    if (!damTypeRadio) {
+    if (damType === 'calf born via genetic dam') {
+      await expect(this.calfBornViaGeneticDamRadio).toBeChecked()
+    } else if (damType === 'calf born via surrogate dam') {
+      await expect(this.calfBornViaSurrogateDamRadio).toBeChecked()
+    } else {
       throw new Error(`Unexpected dam type: "${damType}"`)
     }
-
-    await expect(damTypeRadio).toBeChecked()
   }
 }

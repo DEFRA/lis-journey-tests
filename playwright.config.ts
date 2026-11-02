@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv'
-import * as fs from 'fs'
+import * as fs from 'node:fs'
 import { defineConfig, devices } from '@playwright/test'
 import { defineBddConfig } from 'playwright-bdd'
 import { ReporterDescription } from 'playwright/test'

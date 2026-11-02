@@ -261,7 +261,7 @@ Feature: Cattle - Register a Cattle Birth - Validation
             | Sire ear tag number (optional) | herd mark     | 123456         | UK123456501103 |
             | Sire ear tag number (optional) | full ear tag  | UK123456501103 | UK123456501103 |
 
-    @LREG-781 @LREG-782 @LREG-783 @LREG-785
+    @LREG-781 @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register new cattle birth - Empty field error
         And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
         And I submit the dam details as "calf born via genetic dam"
