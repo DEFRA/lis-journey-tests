@@ -31,9 +31,19 @@ jobs:
       version: ${{ needs.get-version.outputs.version }}
       ref: ${{ github.event.pull_request.merge_commit_sha }}
 
+  sonar-analysis:
+    name: 'Sonar Analysis'
+    needs: [get-version, validate]
+    uses: ./.github/workflows/support-sonar.yml
+    with:
+      version: ${{ needs.get-version.outputs.version }}
+      ref: ${{ github.event.pull_request.merge_commit_sha }}
+      branch: main
+    secrets: inherit
+
   create-tag:
     name: 'Tag Main'
-    needs: [get-version, validate]
+    needs: [get-version, validate, sonar-analysis]
     uses: ./.github/workflows/support-tag.yml
     with:
       version: ${{ needs.get-version.outputs.version }}
