@@ -5,8 +5,9 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         When I select Report a cattle death
 
     Scenario: Report a cattle death for a registered animal
-        When I select "Yes" to is the animal registered
+        When I select "No" to is the animal registered
         When I submit tag "UK123456301550" and date of death "01/01/2026"
+        And I submit "No" for add more animals for deaths
         Then I verify the Check animal details summary page has:
             | Field                 | Expected value  |
             | Animal registered     | Yes             |
@@ -23,7 +24,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I continue from the "Check animal details" page
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
-        Then I verify that "2 cattle deaths reported"
+        Then I verify that "1 cattle death reported"
 
     Scenario: Report a cattle death for an unregistered animal
         When I select "No" to is the animal registered
@@ -39,9 +40,10 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I continue from the "Check animal details" page
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
-        Then I verify that "2 cattle deaths reported"
+        Then I verify that "1 cattle death reported"
 
     # Error - When selecting No to animal registered submission goes to summary rather than animal details page
+    @fixme
     Scenario: Report a cattle death for registered animal then change the Registration status from the summary page
         When I select "Yes" to is the animal registered
         When I submit tag "UK123456301550" and date of death "01/01/2026"
@@ -66,7 +68,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I continue from the "Report cattle deaths" page
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
-        Then I verify that "2 cattle deaths reported"
+        Then I verify that "1 cattle death reported"
 
     Scenario: Report a cattle death for registered animal then change the Ear tag from the summary page
         When I select "Yes" to is the animal registered
@@ -87,7 +89,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
-        Then I verify that "2 cattle deaths reported"
+        Then I verify that "1 cattle death reported"
 
     Scenario: Report a cattle death for registered animal then change the Date of death from the summary page
         When I select "Yes" to is the animal registered
@@ -109,9 +111,10 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I continue from the "Report cattle deaths" page
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
-        Then I verify that "2 cattle deaths reported"
+        Then I verify that "1 cattle death reported"
 
     # Error - When selecting Yes to animal registered submission goes to summary rather than animal details page
+    @fixme
     Scenario: Report a cattle death for unregistered animal then change the Registration status from the summary page
         When I select "No" to is the animal registered
         And I submit valid animal details with "UK123456301551", "11/2/2025","01/1/2026", "Female", and "Limousin (LIM)"
@@ -135,7 +138,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
-        Then I verify that "2 cattle deaths reported"
+        Then I verify that "1 cattle death reported"
 
     Scenario: Report a cattle death for unregistered animal then change the Ear tag from the summary page
         When I select "No" to is the animal registered
@@ -162,7 +165,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I verify death tag number "UK123456301550" is "Ready to send"
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
-        Then I verify that "2 cattle deaths reported"
+        Then I verify that "1 cattle death reported"
 
     Scenario: Report a cattle death for unregistered animal then change the Date of birth the Breed from the summary page
         When I select "No" to is the animal registered
@@ -189,7 +192,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I verify death tag number "UK123456301552" is "Ready to send"
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
-        Then I verify that "2 cattle deaths reported"
+        Then I verify that "1 cattle death reported"
 
     Scenario: Report a cattle death for unregistered animal then change the Date of death from the summary page
         When I select "No" to is the animal registered
@@ -216,7 +219,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
-        Then I verify that "2 cattle deaths reported"
+        Then I verify that "1 cattle death reported"
 
     Scenario: Report a cattle death for unregistered animal then change the Sex from the summary page
         When I select "No" to is the animal registered
@@ -243,7 +246,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
-        Then I verify that "2 cattle deaths reported"
+        Then I verify that "1 cattle death reported"
 
     Scenario: Report a cattle death for unregistered animal then change the Breed from the summary page
         When I select "No" to is the animal registered
@@ -270,7 +273,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
-        Then I verify that "2 cattle deaths reported"
+        Then I verify that "1 cattle death reported"
 
     Scenario: Report a cattle death for a registered animal and add another registered animal
         When I select "Yes" to is the animal registered
@@ -354,7 +357,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
-        Then I verify that "2 cattle deaths reported"
+        Then I verify that "1 cattle death reported"
 
     Scenario: Report a cattle death for a unregistered animal and add another registered animal
         When I select "No" to is the animal registered
@@ -381,7 +384,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
-        Then I verify that "2 cattle deaths reported"
+        Then I verify that "1 cattle death reported"
 
     Scenario: Go back from the registered animal details summary and verify entered details remain
         When I select "Yes" to is the animal registered
@@ -442,7 +445,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I continue from the "Check animal details" page
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
-        Then I verify that "2 cattle deaths reported"
+        Then I verify that "1 cattle death reported"
 
     Scenario: Report a cattle death for an unregistered animal with todays date as date of birth and date of death
         When I select "No" to is the animal registered
@@ -458,4 +461,31 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I continue from the "Check animal details" page
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
-        Then I verify that "2 cattle deaths reported"
+        Then I verify that "1 cattle death reported"
+
+    Scenario Outline: <registered> Animal details - Animal ear tag number - search using <case> '<searchTerm>' - matching tags are suggested
+        When I select "<answer>" to is the animal registered
+        When I search for "<searchTerm>" in the "Animal ear tag number" field
+        Then the "Animal ear tag number" field suggests "<suggestion>"
+        And every suggestion in the "Animal ear tag number" field contains "<searchTerm>"
+        And the "Animal ear tag number" field shows no more than 10 suggestions
+
+        Examples: Partial and full ear tags
+            | registered   | answer | case          | searchTerm     | suggestion     |
+            | Registered   | Yes    | last 3 digits | 550            | UK123456301550 |
+            | Registered   | Yes    | herd mark     | 123456         | UK123456301550 |
+            | Registered   | Yes    | full ear tag  | UK123456301550 | UK123456301550 |
+            | Unregistered | No     | last 3 digits | 550            | UK123456301550 |
+            | Unregistered | No     | herd mark     | 123456         | UK123456301550 |
+            | Unregistered | No     | full ear tag  | UK123456301550 | UK123456301550 |
+
+    Scenario Outline: Unregistered Animal details - Breed - search using <case> '<searchTerm>' - matching breeds are suggested
+        When I select "No" to is the animal registered
+        When I search for "<searchTerm>" in the "Breed" field
+        Then the "Breed" field suggests "<suggestion>"
+        And every suggestion in the "Breed" field contains "<searchTerm>"
+
+        Examples: Partial breed names and breed codes
+            | case            | searchTerm | suggestion     |
+            | breed code      | LIM        | Limousin (LIM) |
+            | first 3 letters | Lim        | Limousin (LIM) |

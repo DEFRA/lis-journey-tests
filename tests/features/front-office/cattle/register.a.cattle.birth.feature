@@ -312,55 +312,60 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
         Then I verify that "2 cattle births registered"
 
     # Cancel draft button not functional
-    # Scenario: Register a cattle birth and cancel a draft registration
-    #   And I select Cancel on Draft registrations
-    #   And I confirm the cancellation
-    #   Then I am returned to Register new cattle births page
+    @fixme
+    Scenario: Register a cattle birth and cancel a draft registration
+        And I select Cancel on Draft registrations
+        And I confirm the cancellation
+        Then I am returned to Register new cattle births page
 
     # Cancel draft button not functional
-    # Scenario: Register a cattle birth, cancel a draft then abort cancellation
-    #     And I select Cancel on Draft registrations
-    #     And I select Go back on the cancellation confirmation page
-    #     Then I am returned to Register cattle births page
+    @fixme
+    Scenario: Register a cattle birth, cancel a draft then abort cancellation
+        And I select Cancel on Draft registrations
+        And I select Go back on the cancellation confirmation page
+        Then I am returned to Register cattle births page
 
-    # Scenario: Register a cattle birth, continue a draft registration
-    #     And I select Continue on Draft registrations
-    #     Then I verify birth tag number "UK 312545 670001" is in "Ready to send" status
-    #     Then I verify birth tag number "UK 312545 670002" is in "Incomplete" status
+    @fixme
+    Scenario: Register a cattle birth, continue a draft registration
+        And I select Continue on Draft registrations
+        Then I verify birth tag number "UK 312545 670001" is in "Ready to send" status
+        Then I verify birth tag number "UK 312545 670002" is in "Incomplete" status
 
-    # Scenario: Register a cattle birth open historical registration thats in Pending validation status
-    #     And I verify reference number "7KWM-3HTP" is "Pending validation"
-    #     And I click on reference number "7KWM-3HTP" from the history registrations
-    #     Then I verify the submission details page has:
-    #         | Field            | Expected value            |
-    #         | Reference number | 7KWM-3HTP                 |
-    #         | Submission date  | 22 Sep 2026               |
-    #         | Total animals    | 4                         |
-    #         | Type             | Cattle birth registration |
-    #         | Status           | Pending validation        |
-    #     Then I verify the Animals registered table has:
-    #         | Ear tag number   | Date of birth | Date on holding | Sex    | Breed |
-    #         | UK 123456 301550 | 2 Sep 2026    | 2 Sep 2026      | Male   | HER   |
-    #         | UK 123456 301551 | 2 Sep 2026    | 2 Sep 2026      | Female | HER   |
-    #         | UK 123456 301552 | 5 Sep 2026    | 5 Sep 2026      | Male   | HER   |
-    #         | UK 123456 301553 | 5 Sep 2026    | 5 Sep 2026      | Female | HER   |
+    @fixme
+    Scenario: Register a cattle birth open historical registration thats in Pending validation status
+        And I verify reference number "7KWM-3HTP" is "Pending validation"
+        And I click on reference number "7KWM-3HTP" from the history registrations
+        Then I verify the submission details page has:
+            | Field            | Expected value            |
+            | Reference number | 7KWM-3HTP                 |
+            | Submission date  | 22 Sep 2026               |
+            | Total animals    | 4                         |
+            | Type             | Cattle birth registration |
+            | Status           | Pending validation        |
+        Then I verify the Animals registered table has:
+            | Ear tag number   | Date of birth | Date on holding | Sex    | Breed |
+            | UK 123456 301550 | 2 Sep 2026    | 2 Sep 2026      | Male   | HER   |
+            | UK 123456 301551 | 2 Sep 2026    | 2 Sep 2026      | Female | HER   |
+            | UK 123456 301552 | 5 Sep 2026    | 5 Sep 2026      | Male   | HER   |
+            | UK 123456 301553 | 5 Sep 2026    | 5 Sep 2026      | Female | HER   |
 
-    # Scenario: Register a cattle birth open historical registration thats in Approved status
-    #     And I verify reference number "M6QA-2JVE" is "Approved"
-    #     And I click on reference number "M6QA-2JVE" from the history registrations
-    #     Then I verify the submission details page has:
-    #         | Field              | Expected value            |
-    #         | Reference number   | M6QA-2JVE                 |
-    #         | Submission date    | 14 Aug 2026               |
-    #         | Total animals      | 3                         |
-    #         | Type               | Cattle birth registration |
-    #         | Status             | Approved                  |
-    #         | Outstanding errors | 1                         |
-    #     Then I verify the Animals registered table has:
-    #         | Ear tag number   | Date of birth | Date on holding | Sex    | Breed | Errors |
-    #         | UK 123456 301543 | 25 Jul 2026   | 25 Jul 2026     | Male   | LIM   | 0      |
-    #         | UK 123456 301544 | 28 Jul 2026   | 28 Jul 2026     | Female | LIM   | 1      |
-    #         | UK 123456 301545 | 30 Jul 2026   | 30 Jul 2026     | Female | LIM   | 0      |
+    @fixme
+    Scenario: Register a cattle birth open historical registration thats in Approved status
+        And I verify reference number "M6QA-2JVE" is "Approved"
+        And I click on reference number "M6QA-2JVE" from the history registrations
+        Then I verify the submission details page has:
+            | Field              | Expected value            |
+            | Reference number   | M6QA-2JVE                 |
+            | Submission date    | 14 Aug 2026               |
+            | Total animals      | 3                         |
+            | Type               | Cattle birth registration |
+            | Status             | Approved                  |
+            | Outstanding errors | 1                         |
+        Then I verify the Animals registered table has:
+            | Ear tag number   | Date of birth | Date on holding | Sex    | Breed | Errors |
+            | UK 123456 301543 | 25 Jul 2026   | 25 Jul 2026     | Male   | LIM   | 0      |
+            | UK 123456 301544 | 28 Jul 2026   | 28 Jul 2026     | Female | LIM   | 1      |
+            | UK 123456 301545 | 30 Jul 2026   | 30 Jul 2026     | Female | LIM   | 0      |
 
     @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register a cattle birth via genetic dam with with sire details and then cancel

@@ -39,3 +39,13 @@ Then(
     ])
   }
 )
+
+// For page-level errors that only appear in the error summary, with no field error
+Then(
+  'I should see the summary error {string}',
+  async ({ lisFrontOfficeRegisterCalfDetailsPage }, errorMessage: string) => {
+    await lisFrontOfficeRegisterCalfDetailsPage.validateSummaryErrors([
+      errorMessage
+    ])
+  }
+)
