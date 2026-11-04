@@ -17,15 +17,15 @@ Feature: Cattle -  Download a list of cattle on your holding - Positive scenario
 
     Scenario: Verify a single column can be selected and download report
         When I clear the default options
-        # When I select only the "Breed name" column
-        # And I select Download
-        # Then I verify a download has been requested
+        When I select only the "Breed name" column
+        And I select Download
+        Then I verify a download has been requested
 
     Scenario: Verify multiple columns can be selected and download report
         When I clear the default options
         When I select only the "Dam type" and "Sire name" columns
-        # And I select Download
-        # Then I verify a download has been requested
+        And I select Download
+        Then I verify a download has been requested
 
     Scenario: Request an export with default options without a date range
         When I Download default options

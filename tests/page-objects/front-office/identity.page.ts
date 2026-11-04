@@ -39,7 +39,7 @@ export class LisFrontOfficeIdentityPage extends BasePage {
       await userToSelectRadio.check()
       await this.signInButton.click()
     } else {
-      const user = await fetchDefraUserCredentials(userRole, 'frontoffice')
+      const user = fetchDefraUserCredentials(userRole, 'frontoffice')
       await this.page.waitForURL('**/sign-in-or-create')
       await this.signInButton.click()
       await this.page.waitForURL('**/enter-email')

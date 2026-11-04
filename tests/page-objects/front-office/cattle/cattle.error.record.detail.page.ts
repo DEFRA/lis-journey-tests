@@ -28,9 +28,7 @@ export class LisFrontOfficeCattleErrorRecordDetailPage extends BasePage {
     assertions.push(
       expect(this.heading).toHaveText(expectedReference, {
         useInnerText: true
-      })
-    )
-    assertions.push(
+      }),
       expect(this.page.locator('.govuk-summary-list__row')).toHaveCount(
         expectedSummaryRowCount
       )
