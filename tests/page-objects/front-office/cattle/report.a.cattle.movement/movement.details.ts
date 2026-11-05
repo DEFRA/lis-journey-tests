@@ -45,17 +45,34 @@ export class LisFrontOfficeMovementDetailsPage extends BasePage {
       })
       let earTagInput: Locator
 
-      if (await earTagCombobox.count()) {
-        earTagInput = earTagCombobox
-        await this.selectAutocompleteOption(earTagCombobox, animal.earTag)
-      } else {
-        earTagInput = animalItem.getByRole('textbox', {
-          name: /Ear tag number/
-        })
-        await earTagInput.fill(animal.earTag)
-      }
+      // An empty ear tag leaves the field blank, e.g. to test the missing ear tag error
+      if (animal.earTag) {
+        if (await earTagCombobox.count()) {
+          earTagInput = earTagCombobox
+          await this.searchAutocomplete(earTagCombobox, animal.earTag)
+          const suggestion = this.page.getByRole('option', {
+            name: animal.earTag,
+            exact: true
+          })
+          const noResults = animalItem
+            .getByRole('option')
+            .filter({ hasText: 'No results found' })
+          await expect(suggestion.or(noResults)).toBeVisible()
+          // An ear tag not in the lookup only shows "No results found", so stop
+          // here and leave it on screen for the next step to check
+          if (await noResults.isVisible()) {
+            return
+          }
+          await suggestion.click()
+        } else {
+          earTagInput = animalItem.getByRole('textbox', {
+            name: /Ear tag number/
+          })
+          await earTagInput.fill(animal.earTag)
+        }
 
-      await expect(earTagInput).toHaveValue(animal.earTag)
+        await expect(earTagInput).toHaveValue(animal.earTag)
+      }
 
       const movementDateInput = this.dateInput.nth(index)
       await movementDateInput.fill(animal.movementDate)
@@ -63,9 +80,6 @@ export class LisFrontOfficeMovementDetailsPage extends BasePage {
     }
 
     await this.continueButton.click()
-    await expect(
-      this.page.getByRole('heading', { name: 'Check movement details' })
-    ).toBeVisible()
   }
 
   async removeAnimals(animals: string[]) {

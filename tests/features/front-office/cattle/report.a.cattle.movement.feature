@@ -225,3 +225,19 @@ Feature: Cattle -  Report a Cattle Movement - Positive scenarios
         When I continue from the "Check movement details" page
         When I send my movement report
         Then I confirm the Movement has been reported
+
+    Scenario Outline: <movementType> - Ear tag number - search using <case> '<searchTerm>' - matching tags are suggested
+        When I select "<movementType>" and continue
+        When I search for "<searchTerm>" in the "Ear tag number for animal 1" field
+        Then the "Ear tag number for animal 1" field suggests "<suggestion>"
+        And every suggestion in the "Ear tag number for animal 1" field contains "<searchTerm>"
+        And the "Ear tag number for animal 1" field shows no more than 10 suggestions
+
+        Examples: Partial and full ear tags
+            | movementType | case          | searchTerm     | suggestion     |
+            | On movement  | last 3 digits | 550            | UK123456301550 |
+            | On movement  | herd mark     | 123456         | UK123456301550 |
+            | On movement  | full ear tag  | UK123456301550 | UK123456301550 |
+            | Off movement | last 3 digits | 235            | UK324537113235 |
+            | Off movement | herd mark     | 324537         | UK324537113235 |
+            | Off movement | full ear tag  | UK324537113235 | UK324537113235 |
