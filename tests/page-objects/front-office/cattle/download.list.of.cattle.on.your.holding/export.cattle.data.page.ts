@@ -1,5 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test'
 import { BasePage } from '../../../base.page'
+import { runInOrder } from '../../../../utils/run.in.order'
 
 export class LisFrontOfficeExportCattleDataPage extends BasePage {
   readonly heading: Locator
@@ -31,28 +32,28 @@ export class LisFrontOfficeExportCattleDataPage extends BasePage {
   }
 
   async checkAllColumns() {
-    for (const checkbox of await this.columns.all()) {
+    await runInOrder(await this.columns.all(), async (checkbox) => {
       await checkbox.check()
       await expect(checkbox).toBeChecked()
-    }
+    })
   }
 
   async uncheckAllColumns() {
-    for (const checkbox of await this.columns.all()) {
+    await runInOrder(await this.columns.all(), async (checkbox) => {
       if (await checkbox.isChecked()) {
         await checkbox.uncheck()
         await expect(checkbox).not.toBeChecked()
       }
-    }
+    })
   }
 
   async verifyEachColumnCanBeSelectedAndDeselected() {
-    for (const checkbox of await this.columns.all()) {
+    await runInOrder(await this.columns.all(), async (checkbox) => {
       await checkbox.check()
       await expect(checkbox).toBeChecked()
       await checkbox.uncheck()
       await expect(checkbox).not.toBeChecked()
-    }
+    })
   }
 
   async verifyDefaultColumnSelections() {
@@ -63,31 +64,35 @@ export class LisFrontOfficeExportCattleDataPage extends BasePage {
       'sex'
     ])
 
-    for (const checkbox of await this.columns.all()) {
-      const value = await checkbox.getAttribute('value')
-      if (value === null) {
-        throw new Error('Cattle export column checkbox is missing its value')
-      }
+    // Only checks state, so all checkboxes are checked at once
+    const checkboxes = await this.columns.all()
+    await Promise.all(
+      checkboxes.map(async (checkbox) => {
+        const value = await checkbox.getAttribute('value')
+        if (value === null) {
+          throw new Error('Cattle export column checkbox is missing its value')
+        }
 
-      if (defaultColumns.has(value)) {
-        await expect(checkbox).toBeChecked()
-      } else {
-        await expect(checkbox).not.toBeChecked()
-      }
-    }
+        if (defaultColumns.has(value)) {
+          await expect(checkbox).toBeChecked()
+        } else {
+          await expect(checkbox).not.toBeChecked()
+        }
+      })
+    )
   }
 
   async selectOnlyColumns(columnLabels: string[]) {
     await this.uncheckAllColumns()
 
-    for (const columnLabel of columnLabels) {
+    await runInOrder(columnLabels, async (columnLabel) => {
       const checkbox = this.page.getByRole('checkbox', {
         name: columnLabel,
         exact: true
       })
       await checkbox.check()
       await expect(checkbox).toBeChecked()
-    }
+    })
   }
 
   async selectFileFormat(fileFormat: string) {

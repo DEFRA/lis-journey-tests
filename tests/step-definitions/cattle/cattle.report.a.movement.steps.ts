@@ -13,10 +13,9 @@ When(
 When(
   'I select {string} and continue',
   async (
-    { lisFrontOfficeOnOrOffMovementPage, page },
+    { lisFrontOfficeOnOrOffMovementPage },
     movementType: 'On movement' | 'Off movement'
   ) => {
-    await page.waitForLoadState('domcontentloaded')
     await expect(lisFrontOfficeOnOrOffMovementPage.heading).toBeVisible()
     await lisFrontOfficeOnOrOffMovementPage.submitMovementDetails(movementType)
   }
@@ -24,8 +23,7 @@ When(
 
 When(
   'I submit movement details',
-  async ({ lisFrontOfficeMovementDetailsPage, page }, dataTable: DataTable) => {
-    await page.waitForLoadState('networkidle')
+  async ({ lisFrontOfficeMovementDetailsPage }, dataTable: DataTable) => {
     await expect(lisFrontOfficeMovementDetailsPage.heading).toBeVisible()
     await lisFrontOfficeMovementDetailsPage.submitMovementDetails(
       dataTable.hashes().map((animal) => ({
@@ -42,6 +40,8 @@ When(
     { lisFrontOfficeCheckMovementDetailsPage, page },
     dataTable: DataTable
   ) => {
+    // Wait for the page to load before reloading, so the reload doesn't catch the previous page
+    await expect(lisFrontOfficeCheckMovementDetailsPage.heading).toBeVisible()
     await page.reload()
     await expect(lisFrontOfficeCheckMovementDetailsPage.heading).toBeVisible()
     await lisFrontOfficeCheckMovementDetailsPage.verifyMovementDetails(
