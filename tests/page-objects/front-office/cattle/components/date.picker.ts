@@ -1,4 +1,5 @@
 import { expect, Locator, Page } from '@playwright/test'
+import { runInOrder } from '../../../../utils/run.in.order'
 
 // The MOJ date picker attached to a date input, e.g. Date of birth.
 // Dates are d/m/yyyy, which matches the data-testid on each day button.
@@ -53,21 +54,23 @@ export class DatePicker {
     const [, month, year] = date.split('/').map(Number)
     const targetMonth = year * 12 + month
 
-    // Safety limit so a wrong date can't loop forever
-    for (let clicks = 0; clicks < 240; clicks++) {
-      const shown = new Date(`1 ${await this.monthYearTitle.innerText()}`)
-      const shownMonth = shown.getFullYear() * 12 + shown.getMonth() + 1
+    const shown = new Date(`1 ${await this.monthYearTitle.innerText()}`)
+    const shownMonth = shown.getFullYear() * 12 + shown.getMonth() + 1
 
-      if (shownMonth === targetMonth) return
+    // Works out the clicks up front, e.g. 3 months back is 3 Previous month clicks
+    const monthsToMove = targetMonth - shownMonth
+    const monthButton =
+      monthsToMove < 0 ? this.previousMonthButton : this.nextMonthButton
+    await runInOrder(Array.from({ length: Math.abs(monthsToMove) }), () =>
+      monthButton.click()
+    )
 
-      if (shownMonth > targetMonth) {
-        await this.previousMonthButton.click()
-      } else {
-        await this.nextMonthButton.click()
-      }
-    }
-
-    throw new Error(`Could not navigate the date picker to ${date}`)
+    await expect(this.monthYearTitle).toHaveText(
+      new Date(year, month - 1).toLocaleDateString('en-GB', {
+        month: 'long',
+        year: 'numeric'
+      })
+    )
   }
 
   async selectDate(date: string) {

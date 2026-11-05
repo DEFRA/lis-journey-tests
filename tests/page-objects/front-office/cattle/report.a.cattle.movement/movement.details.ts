@@ -1,5 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test'
 import { BasePage } from '../../../base.page'
+import { runInOrder } from '../../../../utils/run.in.order'
 
 export class LisFrontOfficeMovementDetailsPage extends BasePage {
   readonly heading: Locator
@@ -30,15 +31,18 @@ export class LisFrontOfficeMovementDetailsPage extends BasePage {
       throw new Error('At least one animal must be provided')
     }
 
-    let currentAnimalCount = await this.earTagInput.count()
-    while (currentAnimalCount < animals.length) {
-      // Each click adds a row needed before the next iteration.
+    const currentAnimalCount = await this.earTagInput.count()
+    const rowsToAdd = Math.max(animals.length - currentAnimalCount, 0)
+    // Each click adds a row, which must appear before the next click
+    await runInOrder(Array.from({ length: rowsToAdd }), async (_, index) => {
       await this.addAnotherAnimalButton.click()
-      currentAnimalCount++
-      await expect(this.earTagInput).toHaveCount(currentAnimalCount)
-    }
+      await expect(this.earTagInput).toHaveCount(currentAnimalCount + index + 1)
+    })
 
-    for (const [index, animal] of animals.entries()) {
+    let lookupHasNoResults = false
+    await runInOrder(animals, async (animal, index) => {
+      if (lookupHasNoResults) return
+
       const animalItem = this.animalItems.nth(index)
       const earTagCombobox = animalItem.getByRole('combobox', {
         name: /Ear tag number/
@@ -58,9 +62,8 @@ export class LisFrontOfficeMovementDetailsPage extends BasePage {
             .getByRole('option')
             .filter({ hasText: 'No results found' })
           await expect(suggestion.or(noResults)).toBeVisible()
-          // An ear tag not in the lookup only shows "No results found", so stop
-          // here and leave it on screen for the next step to check
           if (await noResults.isVisible()) {
+            lookupHasNoResults = true
             return
           }
           await suggestion.click()
@@ -77,7 +80,11 @@ export class LisFrontOfficeMovementDetailsPage extends BasePage {
       const movementDateInput = this.dateInput.nth(index)
       await movementDateInput.fill(animal.movementDate)
       await expect(movementDateInput).toHaveValue(animal.movementDate)
-    }
+    })
+
+    // An ear tag not in the lookup only shows "No results found", so stop
+    // here and leave it on screen for the next step to check
+    if (lookupHasNoResults) return
 
     await this.continueButton.click()
   }
@@ -91,36 +98,35 @@ export class LisFrontOfficeMovementDetailsPage extends BasePage {
       throw new Error('Animal identifiers to remove must be unique')
     }
 
-    for (const identifier of animals) {
+    // Removes one at a time, as each removal renumbers the rows
+    await runInOrder(animals, async (identifier) => {
       const animalItems = this.page.locator('.moj-add-another__item')
-      let matchingItem: Locator | undefined
       const animalNumber = new RegExp(/^animal\s+(\d+)$/i).exec(identifier)?.[1]
-      const animalCount = await animalItems.count()
+      const items = await animalItems.all()
 
-      for (let index = 0; index < animalCount; index++) {
-        const animalItem = animalItems.nth(index)
-        const earTagInput = animalItem.locator(
-          'input[name^="movement-ear-tags"]'
-        )
-        const matchesEarTag = (await earTagInput.inputValue()) === identifier
-        const matchesAnimalNumber =
-          animalNumber !== undefined &&
-          new RegExp(
-            String.raw`^Animal\s+${animalNumber}(?:\s+of\s+\d+)?$`,
-            'i'
-          ).test((await animalItem.locator('legend').innerText()).trim())
+      // Only reads the rows, so all rows are checked at once
+      const matches = await Promise.all(
+        items.map(async (animalItem) => {
+          const earTag = await animalItem
+            .locator('input[name^="movement-ear-tags"]')
+            .inputValue()
+          const legend = (await animalItem.locator('legend').innerText()).trim()
+          const matchesAnimalNumber =
+            animalNumber !== undefined &&
+            new RegExp(
+              String.raw`^Animal\s+${animalNumber}(?:\s+of\s+\d+)?$`,
+              'i'
+            ).test(legend)
+          return earTag === identifier || matchesAnimalNumber
+        })
+      )
 
-        if (matchesEarTag || matchesAnimalNumber) {
-          matchingItem = animalItem
-          break
-        }
-      }
-
+      const matchingItem = items[matches.indexOf(true)]
       if (!matchingItem) {
         throw new Error(`No animal found matching "${identifier}"`)
       }
       await matchingItem.getByRole('button', { name: /^Remove/ }).click()
-      await expect(animalItems).toHaveCount(animalCount - 1)
-    }
+      await expect(animalItems).toHaveCount(items.length - 1)
+    })
   }
 }
