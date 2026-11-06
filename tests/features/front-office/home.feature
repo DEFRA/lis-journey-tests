@@ -7,6 +7,18 @@ Feature: LIS Front Office Home Page
         Then the LIS Front Office home page should be loaded correctly
         And the LIS Front Office home page should be accessible
 
+    @LREG-894
+    Scenario: Cattle Home - Help and Support links - Gov.uk guidance for cattle
+        Given I am authenticated as a front office user with a single CPH holding
+        When I click the GOV.UK guidance for cattle link
+        Then I should be navigated to the "Keeping cattle, bison and buffalo in England and Wales" page and the web address contains "keeping-cattle-bison-and-buffalo-in-england-and-wales"
+
+    @LREG-894
+    Scenario Outline: Cattle Home - Help and Support links - Contact BCMS
+        Given I am authenticated as a front office user with a single CPH holding
+        When I click the Contact BCMS link
+        Then I should be navigated to the "Latest from the British Cattle Movement Service" page and the web address contains "british-cattle-movement-service"
+
     @LREG-531
     Scenario: Cattle Home - View Holding Details - No CPH holdings
         Given I am authenticated as a front office user with no CPH holding
@@ -27,7 +39,12 @@ Feature: LIS Front Office Home Page
     @LREG-531
     Scenario: Cattle Home - View Holding Details - Single CPH holding
         Given I am authenticated as a front office user with a single CPH holding
-        Then the "Holding details" navigation link should be active
+        Then I should see the Cattle overview page with the following details:
+            | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
+            | 22/001/0001 | Oakfield Farm | 35                | 0           | 0             |
+        When I click the Cattle on holding link
+        When I select the "Holding details" tab
+        Then the "Holding details" tab should be active
         And the holding details caption should display "Oakfield Farm"
         And the holding details heading should display "Holding details"
         And I should see the following holding details for the CPH:
@@ -37,11 +54,16 @@ Feature: LIS Front Office Home Page
     @LREG-531
     Scenario: Cattle Home - View Holding Details - Multiple CPH holding - Display CPH number as caption when holding name is missing
         Given I am authenticated as a front office user with a multiple CPH holding
-        When I navigate to the "cattle" holdings detail page for the CPH "22/003/0003"
-        Then the holding details caption should display "22/003/0003"
+        And I click the "22/004/0004" CPH number link
+        Then I should see the Cattle overview page with the following details:
+            | CPH         | Holding name | Cattle on holding | In Progress | Cattle Errors |
+            | 22/004/0004 | Hilltop Farm | 1                 | 0           | 0             |
+        When I click the Cattle on holding link
+        When I select the "Holding details" tab
+        Then the "Holding details" tab should be active
         And I should see the following holding details for the CPH:
-            | CPH number  | Holding name | Address                                                        | Herd mark |
-            | 22/003/0003 | Not supplied | Meadow View FarmMill LaneLavendonBuckinghamshireMK1 1ABEngland | UK 324788 |
+            | CPH number  | Holding name | Address                                                     | Herd mark |
+            | 22/004/0004 | Hilltop Farm | Hilltop FarmRidge RoadLavendonBuckinghamshireMK1 1ACEngland | UK 324789 |
 
     @LREG-531
     Scenario: Cattle Home - View Holding Details - Single CPH holding - Should not be able to see any other holding that is not associated
@@ -50,11 +72,13 @@ Feature: LIS Front Office Home Page
         Then I should not be able to view the CPH holding
 
     @LREG-530
-    Scenario: Cattle Home - View Animals on Holding - Single CPH holding
+    Scenario: Cattle Home - View Animals on holding - Single CPH holding
         Given I am authenticated as a front office user with a single CPH holding
-        And the "Holding details" navigation link is active
-        When I select the "Animals on holding" navigation link
-        Then the "Animals on holding" navigation link should be active
+        Then I should see the Cattle overview page with the following details:
+            | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
+            | 22/001/0001 | Oakfield Farm | 35                | 0           | 0             |
+        When I click the Cattle on holding link
+        Then the "Animals on holding" tab should be active
         And the Animals on Holding caption should display "Oakfield Farm"
         And the Animals on Holding heading should display "Animals on holding"
         And I should be able to search for an animal using ear tag, sex or breed
@@ -99,9 +123,11 @@ Feature: LIS Front Office Home Page
     @LREG-706
     Scenario: Cattle Home - View Cattle Details - Single CPH holding
         Given I am authenticated as a front office user with a single CPH holding
-        And the "Holding details" navigation link is active
-        When I select the "Animals on holding" navigation link
-        Then the "Animals on holding" navigation link should be active
+        Then I should see the Cattle overview page with the following details:
+            | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
+            | 22/001/0001 | Oakfield Farm | 35                | 0           | 0             |
+        When I click the Cattle on holding link
+        Then the "Animals on holding" tab should be active
         And the Animals on Holding caption should display "Oakfield Farm"
         And the Animals on Holding heading should display "Animals on holding"
         And I should be able to search for an animal using ear tag, sex or breed
@@ -115,9 +141,11 @@ Feature: LIS Front Office Home Page
     Scenario: Cattle Home - View Cattle Details - Multiple CPH holding
         Given I am authenticated as a front office user with a multiple CPH holding
         And I click the "22/002/0002" CPH number link
-        And the "Holding details" navigation link is active
-        When I select the "Animals on holding" navigation link
-        Then the "Animals on holding" navigation link should be active
+        Then I should see the Cattle overview page with the following details:
+            | CPH         | Holding name   | Cattle on holding | In Progress | Cattle Errors |
+            | 22/002/0002 | Fairfield Farm | 1                 | 0           | 0             |
+        When I click the Cattle on holding link
+        Then the "Animals on holding" tab should be active
         And the Animals on Holding caption should display "Fairfield Farm"
         And the Animals on Holding heading should display "Animals on holding"
         And I should be able to search for an animal using ear tag, sex or breed
@@ -130,7 +158,11 @@ Feature: LIS Front Office Home Page
     @LREG-530
     Scenario: Cattle Home - Search Animals on Holding - Result greater than 25 items
         Given I am authenticated as a front office user with a single CPH holding
-        When I select the "Animals on holding" navigation link
+        Then I should see the Cattle overview page with the following details:
+            | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
+            | 22/001/0001 | Oakfield Farm | 35                | 0           | 0             |
+        When I click the Cattle on holding link
+        Then the "Animals on holding" tab should be active
         And I search using search term '00000'
         Then I should see the following search results for '00000':
             | Ear tag number   | Date of birth | Age                             | Date on holding | Sex    | Breed                        |
@@ -173,7 +205,11 @@ Feature: LIS Front Office Home Page
     @LREG-530
     Scenario Outline: Cattle Home - Search Animals on Holding using search term <searchTerm> - Result less than 25
         Given I am authenticated as a front office user with a single CPH holding
-        When I select the "Animals on holding" navigation link
+        Then I should see the Cattle overview page with the following details:
+            | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
+            | 22/001/0001 | Oakfield Farm | 35                | 0           | 0             |
+        When I click the Cattle on holding link
+        Then the "Animals on holding" tab should be active
         And I search using search term '<searchTerm>'
         Then I should see the following search results for '<searchTerm>':
             | Ear tag number   | Date of birth | Age                            | Date on holding | Sex  | Breed              |
@@ -188,7 +224,11 @@ Feature: LIS Front Office Home Page
     @LREG-530
     Scenario Outline: Cattle Home - Search Animals on Holding using search term <searchTerm> - no result returned
         Given I am authenticated as a front office user with a single CPH holding
-        When I select the "Animals on holding" navigation link
+        Then I should see the Cattle overview page with the following details:
+            | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
+            | 22/001/0001 | Oakfield Farm | 35                | 0           | 0             |
+        When I click the Cattle on holding link
+        Then the "Animals on holding" tab should be active
         And I search using search term '<searchTerm>'
         Then I should see no results returned for search term '<searchTerm>'
         Examples: Search terms that return no result
@@ -202,7 +242,11 @@ Feature: LIS Front Office Home Page
     @LREG-530
     Scenario: Cattle Home - Search Animals on Holding using sex matches full sex not partial
         Given I am authenticated as a front office user with a single CPH holding
-        When I select the "Animals on holding" navigation link
+        Then I should see the Cattle overview page with the following details:
+            | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
+            | 22/001/0001 | Oakfield Farm | 35                | 0           | 0             |
+        When I click the Cattle on holding link
+        Then the "Animals on holding" tab should be active
         And I search using search term 'male'
         Then I should see the following search results for 'male':
             | Ear tag number   | Date of birth | Age                             | Date on holding | Sex  | Breed                        |

@@ -23,17 +23,15 @@ export class LisFrontOfficeCattleHoldingOverviewPage extends BasePage {
     this.overviewTab = page.getByRole('link', { name: 'Overview' })
     this.holdingDetailsTab = page.getByRole('link', { name: 'Holding details' })
     this.heading = page.getByRole('heading', { name: 'Cattle' })
-    this.cattleOnHoldingAmount = page
-      .locator('.app-traffic-card__number')
-      .nth(0)
+    this.cattleOnHoldingAmount = page.locator('.lis-status-card__number').nth(0)
     this.cattleOnHoldingLink = page.getByRole('link', {
       name: 'Cattle on holding'
     })
-    this.inProgressAmount = page.locator('.app-traffic-card__number').nth(1)
+    this.inProgressAmount = page.locator('.lis-status-card__number').nth(1)
     this.inProgressLink = page.getByRole('link', {
       name: 'In progress'
     })
-    this.cattleErrorsAmount = page.locator('.app-traffic-card__number').nth(2)
+    this.cattleErrorsAmount = page.locator('.lis-status-card__number').nth(2)
     this.cattleErrorsLink = page.getByRole('link', {
       name: 'Cattle errors'
     })
