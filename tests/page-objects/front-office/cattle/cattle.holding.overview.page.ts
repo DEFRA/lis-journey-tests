@@ -7,8 +7,8 @@ export class LisFrontOfficeCattleHoldingOverviewPage extends BasePage {
   readonly holdingDetailsTab: Locator
   readonly cattleOnHoldingAmount: Locator
   readonly cattleOnHoldingLink: Locator
-  readonly pendingValidationAmount: Locator
-  readonly pendingValidationLink: Locator
+  readonly inProgressAmount: Locator
+  readonly inProgressLink: Locator
   readonly cattleErrorsAmount: Locator
   readonly cattleErrorsLink: Locator
   readonly registerCattleBirthLink: Locator
@@ -29,11 +29,9 @@ export class LisFrontOfficeCattleHoldingOverviewPage extends BasePage {
     this.cattleOnHoldingLink = page.getByRole('link', {
       name: 'Cattle on holding'
     })
-    this.pendingValidationAmount = page
-      .locator('app-traffic-card__number')
-      .nth(1)
-    this.pendingValidationLink = page.getByRole('link', {
-      name: 'Pending validation'
+    this.inProgressAmount = page.locator('.app-traffic-card__number').nth(1)
+    this.inProgressLink = page.getByRole('link', {
+      name: 'In progress'
     })
     this.cattleErrorsAmount = page.locator('.app-traffic-card__number').nth(2)
     this.cattleErrorsLink = page.getByRole('link', {
