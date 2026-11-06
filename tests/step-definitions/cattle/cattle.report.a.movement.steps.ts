@@ -44,11 +44,13 @@ When(
     await expect(lisFrontOfficeCheckMovementDetailsPage.heading).toBeVisible()
     await page.reload()
     await expect(lisFrontOfficeCheckMovementDetailsPage.heading).toBeVisible()
-    await lisFrontOfficeCheckMovementDetailsPage.verifyMovementDetails(
-      dataTable.hashes().map((detail) => ({
-        field: detail.Field,
-        expectedValue: resolveDisplayDate(detail['Expected value'])
-      }))
+    const expectedDetails = Object.fromEntries(
+      dataTable
+        .rows()
+        .map(([field, value]) => [field, resolveDisplayDate(value)])
+    )
+    await lisFrontOfficeCheckMovementDetailsPage.verifySummaryDetails(
+      expectedDetails
     )
   }
 )
@@ -90,14 +92,12 @@ When(
 When(
   'the previously entered movement animal details are still populated:',
   async ({ lisFrontOfficeMovementDetailsPage }, dataTable: DataTable) => {
-    const values = dataTable.rowsHash()
-
-    await expect(lisFrontOfficeMovementDetailsPage.earTagInput).toHaveValue(
-      values['Ear tag number']
-    )
-
-    await expect(lisFrontOfficeMovementDetailsPage.dateInput).toHaveValue(
-      values['Movement date']
+    await lisFrontOfficeMovementDetailsPage.verifyInputValues(
+      dataTable.rowsHash(),
+      {
+        'Ear tag number': lisFrontOfficeMovementDetailsPage.earTagInput,
+        'Movement date': lisFrontOfficeMovementDetailsPage.dateInput
+      }
     )
   }
 )

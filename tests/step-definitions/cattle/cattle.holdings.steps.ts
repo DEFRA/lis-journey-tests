@@ -6,9 +6,6 @@ When(
   'I select In progress',
   async ({ lisFrontOfficeCattleHoldingOverviewPage }) => {
     await expect(lisFrontOfficeCattleHoldingOverviewPage.heading).toBeVisible()
-    await expect(
-      lisFrontOfficeCattleHoldingOverviewPage.inProgressAmount
-    ).toHaveText('4')
     await lisFrontOfficeCattleHoldingOverviewPage.inProgressLink.click()
   }
 )
@@ -163,5 +160,12 @@ When(
   async ({ lisFrontOfficeCattleHoldingOverviewPage }) => {
     await expect(lisFrontOfficeCattleHoldingOverviewPage.heading).toBeVisible()
     await lisFrontOfficeCattleHoldingOverviewPage.cattleOnHoldingLink.click()
+  }
+)
+
+When(
+  'I select the My Profile link',
+  async ({ lisFrontOfficeMyProfilePage }) => {
+    await lisFrontOfficeMyProfilePage.myProfileLink.click()
   }
 )

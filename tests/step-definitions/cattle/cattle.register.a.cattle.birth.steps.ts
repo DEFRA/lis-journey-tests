@@ -105,13 +105,11 @@ Then(
   'I verify the Check calf details summary page has:',
   async ({ lisFrontOfficeCheckCalfDetailsPage }, dataTable: DataTable) => {
     await expect(lisFrontOfficeCheckCalfDetailsPage.heading).toBeVisible()
-    const expectedDetails = [
-      Object.fromEntries(
-        dataTable
-          .rows()
-          .map(([field, value]) => [field, resolveDisplayDate(value)])
-      )
-    ]
+    const expectedDetails = Object.fromEntries(
+      dataTable
+        .rows()
+        .map(([field, value]) => [field, resolveDisplayDate(value)])
+    )
     await lisFrontOfficeCheckCalfDetailsPage.verifySummaryDetails(
       expectedDetails
     )
@@ -283,7 +281,7 @@ Then(
   async ({ lisFrontOfficeSubmissionDetailsPage }, dataTable: DataTable) => {
     await expect(lisFrontOfficeSubmissionDetailsPage.heading).toBeVisible()
     const expectedDetails = Object.fromEntries(dataTable.rows())
-    await lisFrontOfficeSubmissionDetailsPage.verifySubmissionDetails(
+    await lisFrontOfficeSubmissionDetailsPage.verifySummaryDetails(
       expectedDetails
     )
   }

@@ -9,25 +9,6 @@ export class LisFrontOfficeSubmissionDetailsPage extends BasePage {
     this.heading = page.getByRole('heading', { name: 'Submission   details' })
   }
 
-  async verifySubmissionDetails(expectedDetails: Record<string, string>) {
-    const assertions: Promise<void>[] = []
-
-    for (const [key, expectedValue] of Object.entries(expectedDetails)) {
-      const detailRow = this.page.locator('.govuk-summary-list__row').filter({
-        has: this.page
-          .locator('.govuk-summary-list__key')
-          .getByText(key, { exact: true })
-      })
-      assertions.push(
-        expect(detailRow.locator('.govuk-summary-list__value')).toHaveText(
-          expectedValue
-        )
-      )
-    }
-
-    await Promise.all(assertions)
-  }
-
   async verifyRegisteredAnimals(expectedAnimals: Record<string, string>[]) {
     const animalsTable = this.page.locator('main .govuk-table').filter({
       has: this.page.getByRole('columnheader', {

@@ -1,7 +1,7 @@
 Feature: Cattle -  In Progress - Positive scenarios
 
     Background: Background name: Report a cattle movement
-        Given I log into the herokuapp mvp
+        Given I am authenticated as a front office user with a single CPH holding
         When I select In progress
 
     Scenario: Verify Births data

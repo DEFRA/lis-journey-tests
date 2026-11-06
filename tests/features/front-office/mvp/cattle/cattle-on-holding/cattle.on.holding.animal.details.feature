@@ -1,78 +1,8 @@
 @ui @frontoffice @dev
-Feature: LIS Front Office Home Page
-
-    @accessibility
-    Scenario: Home Page
-        Given I am on the LIS Front Office home page
-        Then the LIS Front Office home page should be loaded correctly
-        And the LIS Front Office home page should be accessible
-
-    @LREG-894
-    Scenario: Cattle Home - Help and Support links - Gov.uk guidance for cattle
-        Given I am authenticated as a front office user with a single CPH holding
-        When I click the GOV.UK guidance for cattle link
-        Then I should be navigated to the "Keeping cattle, bison and buffalo in England and Wales" page and the web address contains "keeping-cattle-bison-and-buffalo-in-england-and-wales"
-
-    @LREG-894
-    Scenario Outline: Cattle Home - Help and Support links - Contact BCMS
-        Given I am authenticated as a front office user with a single CPH holding
-        When I click the Contact BCMS link
-        Then I should be navigated to the "Latest from the British Cattle Movement Service" page and the web address contains "british-cattle-movement-service"
-
-    @LREG-531
-    Scenario: Cattle Home - View Holding Details - No CPH holdings
-        Given I am authenticated as a front office user with no CPH holding
-        Then I should be informed I have no holdings associated to my account
-
-    @LREG-531
-    Scenario: Cattle Home - View Holding Details - Multiple CPH holdings
-        Given I am authenticated as a front office user with multiple CPH holdings
-        Then I should see the following CPH holdings:
-            | CPH         | Holding name   | Postcode     | Role          |
-            | 22/002/0002 | Fairfield Farm | Not supplied | Owner, keeper |
-            | 22/003/0003 | Not supplied   | Not supplied | Owner, keeper |
-            | 22/004/0004 | Hilltop Farm   | Not supplied | Owner, keeper |
-            | 22/005/0005 | Riverside Farm | Not supplied | Owner, keeper |
-            | 22/006/0006 | Long Acre Farm | Not supplied | Owner, keeper |
-            | 22/007/0007 | Orchard Farm   | Not supplied | Owner, keeper |
-
-    @LREG-531
-    Scenario: Cattle Home - View Holding Details - Single CPH holding
-        Given I am authenticated as a front office user with a single CPH holding
-        Then I should see the Cattle overview page with the following details:
-            | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
-            | 22/001/0001 | Oakfield Farm | 35                | 0           | 0             |
-        When I click the Cattle on holding link
-        When I select the "Holding details" tab
-        Then the "Holding details" tab should be active
-        And the holding details caption should display "Oakfield Farm"
-        And the holding details heading should display "Holding details"
-        And I should see the following holding details for the CPH:
-            | CPH number  | Holding name  | Address                                                    | Herd mark |
-            | 22/001/0001 | Oakfield Farm | Oakfield FarmChurch LaneShrewsburyShropshireSY4 1ABEngland | UK 324537 |
-
-    @LREG-531
-    Scenario: Cattle Home - View Holding Details - Multiple CPH holding - Display CPH number as caption when holding name is missing
-        Given I am authenticated as a front office user with a multiple CPH holding
-        And I click the "22/004/0004" CPH number link
-        Then I should see the Cattle overview page with the following details:
-            | CPH         | Holding name | Cattle on holding | In Progress | Cattle Errors |
-            | 22/004/0004 | Hilltop Farm | 1                 | 0           | 0             |
-        When I click the Cattle on holding link
-        When I select the "Holding details" tab
-        Then the "Holding details" tab should be active
-        And I should see the following holding details for the CPH:
-            | CPH number  | Holding name | Address                                                     | Herd mark |
-            | 22/004/0004 | Hilltop Farm | Hilltop FarmRidge RoadLavendonBuckinghamshireMK1 1ACEngland | UK 324789 |
-
-    @LREG-531
-    Scenario: Cattle Home - View Holding Details - Single CPH holding - Should not be able to see any other holding that is not associated
-        Given I am authenticated as a front office user with a single CPH holding
-        When I navigate to the "cattle" holdings detail page for the CPH "22/003/0003"
-        Then I should not be able to view the CPH holding
+Feature: Cattle on holding - View Animals on holding
 
     @LREG-530
-    Scenario: Cattle Home - View Animals on holding - Single CPH holding
+    Scenario: Cattle on holding - View Animals on holding - Single CPH holding
         Given I am authenticated as a front office user with a single CPH holding
         Then I should see the Cattle overview page with the following details:
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
@@ -121,7 +51,7 @@ Feature: LIS Front Office Home Page
             | UK 300000 000024 | 11 Apr 2025   | formatDateYearMonth:11 Apr 2025 | 11 Apr 2025     | Male   | HFX, Holstein Friesian Cross |
 
     @LREG-706
-    Scenario: Cattle Home - View Cattle Details - Single CPH holding
+    Scenario: Cattle on holding - View Cattle Details - Single CPH holding
         Given I am authenticated as a front office user with a single CPH holding
         Then I should see the Cattle overview page with the following details:
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
@@ -138,7 +68,7 @@ Feature: LIS Front Office Home Page
             | UK 200000 000001 | 1 Feb 2023    | 5 Feb 2023      | 1 Feb 2023      | Male | Aberdeen Angus (AA) | Active        | Genetic  | UK 200000 000098    | UK 200000 000099 | Not required |
 
     @LREG-706
-    Scenario: Cattle Home - View Cattle Details - Multiple CPH holding
+    Scenario: Cattle on holding - View Cattle Details - Multiple CPH holding
         Given I am authenticated as a front office user with a multiple CPH holding
         And I click the "22/002/0002" CPH number link
         Then I should see the Cattle overview page with the following details:
@@ -156,7 +86,7 @@ Feature: LIS Front Office Home Page
             | UK 200000 000013 | 1 May 2023    | 1 May 2023      | 1 May 2023      | Female | Brown Swiss (BS) | Active        | Not supplied | Not supplied        | No sire details recorded. |
 
     @LREG-530
-    Scenario: Cattle Home - Search Animals on Holding - Result greater than 25 items
+    Scenario: Cattle on holding - Search Animals on Holding - Result greater than 25 items
         Given I am authenticated as a front office user with a single CPH holding
         Then I should see the Cattle overview page with the following details:
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
@@ -203,7 +133,7 @@ Feature: LIS Front Office Home Page
             | UK 300000 000024 | 11 Apr 2025   | formatDateYearMonth:11 Apr 2025 | 11 Apr 2025     | Male   | HFX, Holstein Friesian Cross |
 
     @LREG-530
-    Scenario Outline: Cattle Home - Search Animals on Holding using search term <searchTerm> - Result less than 25
+    Scenario Outline: Cattle on holding - Search Animals on Holding using search term <searchTerm> - Result less than 25
         Given I am authenticated as a front office user with a single CPH holding
         Then I should see the Cattle overview page with the following details:
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
@@ -222,7 +152,7 @@ Feature: LIS Front Office Home Page
             | UK200000000001   |
 
     @LREG-530
-    Scenario Outline: Cattle Home - Search Animals on Holding using search term <searchTerm> - no result returned
+    Scenario Outline: Cattle on holding - Search Animals on Holding using search term <searchTerm> - no result returned
         Given I am authenticated as a front office user with a single CPH holding
         Then I should see the Cattle overview page with the following details:
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
@@ -240,7 +170,7 @@ Feature: LIS Front Office Home Page
             | ma le      |
 
     @LREG-530
-    Scenario: Cattle Home - Search Animals on Holding using sex matches full sex not partial
+    Scenario: Cattle on holding - Search Animals on Holding using sex matches full sex not partial
         Given I am authenticated as a front office user with a single CPH holding
         Then I should see the Cattle overview page with the following details:
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
