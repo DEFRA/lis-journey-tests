@@ -89,6 +89,30 @@ export class BasePage {
     await Promise.all(assertions)
   }
 
+  async verifyTableValuesAreVisible(expectedValues: string[]) {
+    await Promise.all(
+      expectedValues.map((value) =>
+        expect(this.page.getByText(value)).toBeVisible()
+      )
+    )
+  }
+
+  // Used by the prototype journeys. MVP pages keep their own checks as the two apps can differ
+  async verifySummaryDetails(expectedDetails: Record<string, string>) {
+    await Promise.all(
+      Object.entries(expectedDetails).map(([key, expectedValue]) => {
+        const detailRow = this.page.locator('.govuk-summary-list__row').filter({
+          has: this.page
+            .locator('.govuk-summary-list__key')
+            .getByText(key, { exact: true })
+        })
+        return expect(
+          detailRow.locator('.govuk-summary-list__value')
+        ).toHaveText(expectedValue)
+      })
+    )
+  }
+
   async verifyError(messages: string[]) {
     await Promise.all(
       messages.map((message) =>

@@ -39,16 +39,11 @@ Then(
   'I verify the Check animal details summary page has:',
   async ({ lisFrontOfficeCheckAnimalDetailsPage }, dataTable: DataTable) => {
     await expect(lisFrontOfficeCheckAnimalDetailsPage.heading).toBeVisible()
-    const expectedDetails = [
-      Object.fromEntries(
-        dataTable
-          .rows()
-          .map(([field, value]) => [
-            field,
-            resolveDisplayDate(value, '2-digit')
-          ])
-      )
-    ]
+    const expectedDetails = Object.fromEntries(
+      dataTable
+        .rows()
+        .map(([field, value]) => [field, resolveDisplayDate(value, '2-digit')])
+    )
     await lisFrontOfficeCheckAnimalDetailsPage.verifySummaryDetails(
       expectedDetails
     )
@@ -126,14 +121,13 @@ When(
 Then(
   'the previously entered registered animal details are still populated:',
   async ({ lisFrontOfficeAnimalDetailsPage }, dataTable: DataTable) => {
-    const values = dataTable.rowsHash()
-
-    await expect(lisFrontOfficeAnimalDetailsPage.animalEarTagInput).toHaveValue(
-      values['Animal ear tag number']
-    )
-
-    await expect(lisFrontOfficeAnimalDetailsPage.dodInput).toHaveValue(
-      values['Date of death']
+    await lisFrontOfficeAnimalDetailsPage.verifyInputValues(
+      dataTable.rowsHash(),
+      {
+        'Animal ear tag number':
+          lisFrontOfficeAnimalDetailsPage.animalEarTagInput,
+        'Date of death': lisFrontOfficeAnimalDetailsPage.dodInput
+      }
     )
   }
 )
@@ -143,15 +137,13 @@ Then(
   async ({ lisFrontOfficeAnimalDetailsPage }, dataTable: DataTable) => {
     const values = dataTable.rowsHash()
 
-    await expect(lisFrontOfficeAnimalDetailsPage.animalEarTagInput).toHaveValue(
-      values['Animal ear tag number']
-    )
-    await expect(lisFrontOfficeAnimalDetailsPage.dobInput).toHaveValue(
-      values['Date of birth']
-    )
-    await expect(lisFrontOfficeAnimalDetailsPage.dodInput).toHaveValue(
-      values['Date of death']
-    )
+    await lisFrontOfficeAnimalDetailsPage.verifyInputValues(values, {
+      'Animal ear tag number':
+        lisFrontOfficeAnimalDetailsPage.animalEarTagInput,
+      'Date of birth': lisFrontOfficeAnimalDetailsPage.dobInput,
+      'Date of death': lisFrontOfficeAnimalDetailsPage.dodInput,
+      'Breed': lisFrontOfficeAnimalDetailsPage.breedInput
+    })
 
     let sexRadio
 
@@ -166,8 +158,5 @@ Then(
     }
 
     await expect(sexRadio).toBeChecked()
-    await expect(lisFrontOfficeAnimalDetailsPage.breedInput).toHaveValue(
-      values['Breed']
-    )
   }
 )

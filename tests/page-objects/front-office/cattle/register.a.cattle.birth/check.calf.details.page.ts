@@ -1,4 +1,4 @@
-import { expect, Locator, Page } from '@playwright/test'
+import { Locator, Page } from '@playwright/test'
 import { BasePage } from '../../../base.page'
 
 export class LisFrontOfficeCheckCalfDetailsPage extends BasePage {
@@ -19,25 +19,5 @@ export class LisFrontOfficeCheckCalfDetailsPage extends BasePage {
     })
 
     await sectionRow.getByRole('link', { name: /^Change/ }).click()
-  }
-
-  async verifySummaryDetails(expectedDetails: Record<string, string>[]) {
-    const assertions: Promise<void>[] = []
-
-    for (const detail of expectedDetails) {
-      for (const [sectionName, expectedValue] of Object.entries(detail)) {
-        const sectionRow = this.page
-          .locator('.govuk-summary-list__row')
-          .filter({
-            has: this.page
-              .locator('.govuk-summary-list__key')
-              .getByText(sectionName, { exact: true })
-          })
-        const value = sectionRow.locator('.govuk-summary-list__value')
-        assertions.push(expect(value).toHaveText(expectedValue))
-      }
-    }
-
-    await Promise.all(assertions)
   }
 }
