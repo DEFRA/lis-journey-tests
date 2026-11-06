@@ -23,7 +23,8 @@ When(
 Then(
   'I verify the Births table has:',
   async ({ lisFrontOfficeHoldingDetailsPage }, dataTable: DataTable) => {
-    await lisFrontOfficeHoldingDetailsPage.verifyBirthDetails(
+    await lisFrontOfficeHoldingDetailsPage.verifyTableDetails(
+      'births',
       dataTable.hashes()
     )
   }
@@ -32,7 +33,8 @@ Then(
 Then(
   'I verify the Movements table has:',
   async ({ lisFrontOfficeHoldingDetailsPage }, dataTable: DataTable) => {
-    await lisFrontOfficeHoldingDetailsPage.verifyMovementsDetails(
+    await lisFrontOfficeHoldingDetailsPage.verifyTableDetails(
+      'movements',
       dataTable.hashes()
     )
   }

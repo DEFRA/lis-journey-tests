@@ -59,28 +59,11 @@ export class LisFrontOfficeHoldingsPage extends BasePage {
     await Promise.all(assertions)
   }
 
-  async verifyBirthDetails(expectedDetails: Record<string, string>[]) {
-    const table = this.page.locator('#births table')
-    const rows = table.locator('tbody tr')
-
-    await expect(table.locator('thead th')).toHaveText(
-      Object.keys(expectedDetails[0])
-    )
-    await expect(rows).toHaveCount(expectedDetails.length)
-
-    await Promise.all(
-      expectedDetails.map((detail, index) => {
-        // Matches the start of each cell as Breed also has visually hidden text, e.g. "HER, Hereford"
-        const expectedCells = Object.values(detail).map(
-          (value) => new RegExp(String.raw`^${value}\b`)
-        )
-        return expect(rows.nth(index).locator('td')).toHaveText(expectedCells)
-      })
-    )
-  }
-
-  async verifyMovementsDetails(expectedDetails: Record<string, string>[]) {
-    const table = this.page.locator('#movements table')
+  async verifyTableDetails(
+    panelId: string,
+    expectedDetails: Record<string, string>[]
+  ) {
+    const table = this.page.locator(`#${panelId} table`)
     const rows = table.locator('tbody tr')
 
     await expect(table.locator('thead th')).toHaveText(
