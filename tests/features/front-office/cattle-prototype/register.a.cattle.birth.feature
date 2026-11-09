@@ -1,11 +1,11 @@
-Feature: Cattle -  Register a Cattle Birth - Positive scenarios
+Feature: Cattle - Register a Cattle Birth - Positive scenarios
 
-    Background:
+    Background: Sign in to the prototype and start Register a cattle birth
         Given I log into the herokuapp mvp
         And I select Register a cattle birth
 
     @LREG-781 @LREG-782 @LREG-783 @LREG-785
-    Scenario: Register a cattle birth via genetic dam with with sire details
+    Scenario: Register a cattle birth via genetic dam with sire details
         And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
         And I submit the dam details as "calf born via genetic dam"
         And I add the ear tag of the dam as "UK123456501101"
@@ -273,7 +273,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | Sire name                  | Sire Name 2    |
 
     @LREG-781 @LREG-782 @LREG-783 @LREG-785
-    Scenario: Register a cattle birth via genetic dam with with sire details and add another animal
+    Scenario: Register a cattle birth via genetic dam with sire details and add another animal
         And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
         And I submit the dam details as "calf born via genetic dam"
         And I add the ear tag of the dam as "UK123456501101"
@@ -313,26 +313,26 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
 
     # Cancel draft button not functional
     @fixme
-    Scenario: Register a cattle birth and cancel a draft registration
+    Scenario: Register a cattle birth - Cancel a draft registration and return to Register new cattle births
         And I select Cancel on Draft registrations
         And I confirm the cancellation
         Then I am returned to Register new cattle births page
 
     # Cancel draft button not functional
     @fixme
-    Scenario: Register a cattle birth, cancel a draft then abort cancellation
+    Scenario: Register a cattle birth - Go back from cancelling a draft registration
         And I select Cancel on Draft registrations
         And I select Go back on the cancellation confirmation page
         Then I am returned to Register cattle births page
 
     @fixme
-    Scenario: Register a cattle birth, continue a draft registration
+    Scenario: Register a cattle birth - Continuing a draft registration shows the status of each calf
         And I select Continue on Draft registrations
         Then I verify birth tag number "UK 312545 670001" is in "Ready to send" status
         Then I verify birth tag number "UK 312545 670002" is in "Incomplete" status
 
     @fixme
-    Scenario: Register a cattle birth open historical registration thats in Pending validation status
+    Scenario: Register a cattle birth - Opening a Pending validation registration from history shows its submission details and animals
         And I verify reference number "7KWM-3HTP" is "Pending validation"
         And I click on reference number "7KWM-3HTP" from the history registrations
         Then I verify the submission details page has:
@@ -350,7 +350,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | UK 123456 301553 | 5 Sep 2026    | 5 Sep 2026      | Female | HER   |
 
     @fixme
-    Scenario: Register a cattle birth open historical registration thats in Approved status
+    Scenario: Register a cattle birth - Opening an Approved registration from history shows its submission details and animal errors
         And I verify reference number "M6QA-2JVE" is "Approved"
         And I click on reference number "M6QA-2JVE" from the history registrations
         Then I verify the submission details page has:
@@ -368,7 +368,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
             | UK 123456 301545 | 30 Jul 2026   | 30 Jul 2026     | Female | LIM   | 0      |
 
     @LREG-781 @LREG-782 @LREG-783 @LREG-785
-    Scenario: Register a cattle birth via genetic dam with with sire details and then cancel
+    Scenario: Register a cattle birth via genetic dam with sire details and then cancel the registration
         And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
         And I submit the dam details as "calf born via genetic dam"
         And I add the ear tag of the dam as "UK123456501101"
@@ -378,7 +378,7 @@ Feature: Cattle -  Register a Cattle Birth - Positive scenarios
         Then I am returned to Register new cattle births page
 
     @LREG-781 @LREG-782 @LREG-783 @LREG-785
-    Scenario: Register a cattle birth via genetic dam with with sire details, cancel and then abort the cancellation
+    Scenario: Register a cattle birth via genetic dam with sire details, cancel and then abort the cancellation
         And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
         And I submit the dam details as "calf born via genetic dam"
         And I add the ear tag of the dam as "UK123456501101"

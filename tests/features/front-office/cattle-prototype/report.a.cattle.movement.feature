@@ -1,6 +1,6 @@
-Feature: Cattle -  Report a Cattle Movement - Positive scenarios
+Feature: Cattle - Report a Cattle Movement - Positive scenarios
 
-    Background: Background name: Report a cattle movement
+    Background: Sign in to the prototype and start Report a cattle movement
         Given I log into the herokuapp mvp
         When I select Report a cattle movement
 
@@ -121,7 +121,7 @@ Feature: Cattle -  Report a Cattle Movement - Positive scenarios
         When I send my movement report
         Then I confirm the Movement has been reported
 
-    Scenario: Change Animal 2 from Check Movement details page
+    Scenario: Change the ear tag of Animal 2 from Check Movement details page
         When I select "On movement" and continue
         When I submit movement details
             | Ear tag number | Movement date |
@@ -191,7 +191,7 @@ Feature: Cattle -  Report a Cattle Movement - Positive scenarios
         When I send my movement report
         Then I confirm the Movement has been reported
 
-    Scenario: Go back from the movement details summary and verify entered details remain
+    Scenario: Go back from Check Movement details page and verify the entered movement details remain
         When I select "On movement" and continue
         When I submit movement details
             | Ear tag number | Movement date |

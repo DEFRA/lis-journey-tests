@@ -1,6 +1,6 @@
 Feature: Cattle - Report a Cattle Movement - Movement date date picker
 
-    Background:
+    Background: Sign in to the prototype and start Report a cattle movement
         Given I log into the herokuapp mvp
         When I select Report a cattle movement
 

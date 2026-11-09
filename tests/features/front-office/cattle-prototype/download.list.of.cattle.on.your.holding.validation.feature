@@ -1,19 +1,19 @@
-Feature: Cattle -  Download a list of cattle on your holding - Negative scenarios
+Feature: Cattle - Download a list of cattle on your holding - Negative scenarios
 
-    Background: Background name: Report a cattle movement
+    Background: Sign in to the prototype and open Download a list of cattle on your holding
         Given I log into the herokuapp mvp
         When I select Download a list of cattle on your holding
 
     # Prototype downloads an empty report instead
     @fixme
-    Scenario: Deselect all columns and download
+    Scenario: Error shown when requesting an export with no columns selected
         When I clear the default options
         And I select Download
         Then I should see the error "Select at least one column to include in the report"
 
     # No date validation on the prototype, but added to test for future proofing
     @fixme
-    Scenario Outline: Date range - <case>
+    Scenario Outline: Date range error shown - <case>
         When I enter the date range from "<from>" to "<to>"
         And I select Download
         Then the "<field>" field shows the error "<error>"

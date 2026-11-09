@@ -2,7 +2,7 @@ Feature: Cattle - Report a Cattle Death - Date pickers
 
     # Registered animals (Yes) only have a Date of death field.
     # Unregistered animals (No) have both Date of birth and Date of death fields.
-    Background:
+    Background: Sign in to the prototype and start Report a cattle death
         Given I log into the herokuapp mvp
         When I select Report a cattle death
 

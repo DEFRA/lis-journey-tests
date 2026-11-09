@@ -9,8 +9,11 @@ const serverTimeout = 5 * 60 * 1000
 const ENV = process.env.ENVIRONMENT ?? 'local'
 const isLocal = ENV === 'local'
 
-const envFile =
-  ENV === 'docker' ? '.env.docker' : ENV === 'dev' ? '.env.dev' : '.env'
+const envFiles: Record<string, string> = {
+  docker: '.env.docker',
+  dev: '.env.dev'
+}
+const envFile = envFiles[ENV] ?? '.env'
 
 if (fs.existsSync(envFile)) {
   dotenv.config({ path: envFile, override: ENV === 'dev' })

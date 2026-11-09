@@ -2,7 +2,7 @@
 Feature: Cattle on holding - View Animals on holding
 
     @LREG-530
-    Scenario: Cattle on holding - View Animals on holding - Single CPH holding
+    Scenario: Cattle on holding - View Animals on holding - Single CPH holding - All animals on the holding are listed
         Given I am authenticated as a front office user with a single CPH holding
         Then I should see the Cattle overview page with the following details:
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
@@ -51,7 +51,7 @@ Feature: Cattle on holding - View Animals on holding
             | UK 300000 000024 | 11 Apr 2025   | formatDateYearMonth:11 Apr 2025 | 11 Apr 2025     | Male   | HFX, Holstein Friesian Cross |
 
     @LREG-706
-    Scenario: Cattle on holding - View Cattle Details - Single CPH holding
+    Scenario: Cattle on holding - View Cattle Details - Single CPH holding - Selecting an ear tag shows the animal's cattle details with sire details
         Given I am authenticated as a front office user with a single CPH holding
         Then I should see the Cattle overview page with the following details:
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
@@ -68,7 +68,7 @@ Feature: Cattle on holding - View Animals on holding
             | UK 200000 000001 | 1 Feb 2023    | 5 Feb 2023      | 1 Feb 2023      | Male | Aberdeen Angus (AA) | Active        | Genetic  | UK 200000 000098    | UK 200000 000099 | Not required |
 
     @LREG-706
-    Scenario: Cattle on holding - View Cattle Details - Multiple CPH holding
+    Scenario: Cattle on holding - View Cattle Details - Multiple CPH holdings - Selecting an ear tag shows the animal's cattle details with no sire details recorded
         Given I am authenticated as a front office user with a multiple CPH holding
         And I click the "22/002/0002" CPH number link
         Then I should see the Cattle overview page with the following details:
@@ -86,7 +86,7 @@ Feature: Cattle on holding - View Animals on holding
             | UK 200000 000013 | 1 May 2023    | 1 May 2023      | 1 May 2023      | Female | Brown Swiss (BS) | Active        | Not supplied | Not supplied        | No sire details recorded. |
 
     @LREG-530
-    Scenario: Cattle on holding - Search Animals on Holding - Result greater than 25 items
+    Scenario: Cattle on holding - Search Animals on Holding - Partial ear tag search with more than 25 results is shown across pages
         Given I am authenticated as a front office user with a single CPH holding
         Then I should see the Cattle overview page with the following details:
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
@@ -133,7 +133,7 @@ Feature: Cattle on holding - View Animals on holding
             | UK 300000 000024 | 11 Apr 2025   | formatDateYearMonth:11 Apr 2025 | 11 Apr 2025     | Male   | HFX, Holstein Friesian Cross |
 
     @LREG-530
-    Scenario Outline: Cattle on holding - Search Animals on Holding using search term <searchTerm> - Result less than 25
+    Scenario Outline: Cattle on holding - Search Animals on Holding - Ear tag search ignores spaces and letter case - <searchTerm>
         Given I am authenticated as a front office user with a single CPH holding
         Then I should see the Cattle overview page with the following details:
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
@@ -152,7 +152,7 @@ Feature: Cattle on holding - View Animals on holding
             | UK200000000001   |
 
     @LREG-530
-    Scenario Outline: Cattle on holding - Search Animals on Holding using search term <searchTerm> - no result returned
+    Scenario Outline: Cattle on holding - Search Animals on Holding - No results message for a search term with no matches - <searchTerm>
         Given I am authenticated as a front office user with a single CPH holding
         Then I should see the Cattle overview page with the following details:
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
@@ -170,7 +170,7 @@ Feature: Cattle on holding - View Animals on holding
             | ma le      |
 
     @LREG-530
-    Scenario: Cattle on holding - Search Animals on Holding using sex matches full sex not partial
+    Scenario: Cattle on holding - Search Animals on Holding - Searching "male" returns only male animals, not female
         Given I am authenticated as a front office user with a single CPH holding
         Then I should see the Cattle overview page with the following details:
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |

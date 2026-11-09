@@ -11,6 +11,22 @@ When(
 )
 
 When(
+  'I select Activity history',
+  async ({ lisFrontOfficeCattleHoldingOverviewPage }) => {
+    await expect(lisFrontOfficeCattleHoldingOverviewPage.heading).toBeVisible()
+    await lisFrontOfficeCattleHoldingOverviewPage.activityHistoryTab.click()
+  }
+)
+
+Then(
+  'I verify the Activity page has the CPH number {string} and the Holding name {string}',
+  async ({ page }, cphNumber: string, holdingName: string) => {
+    await expect(page.getByText(cphNumber)).toBeVisible()
+    await expect(page.getByRole('heading', { name: holdingName })).toBeVisible()
+  }
+)
+
+When(
   'I click the {string} tab',
   async ({ lisFrontOfficeHoldingDetailsPage }, tabName: string) => {
     await lisFrontOfficeHoldingDetailsPage.selectInProgressTab(tabName)
@@ -21,7 +37,7 @@ Then(
   'I verify the Births table has:',
   async ({ lisFrontOfficeHoldingDetailsPage }, dataTable: DataTable) => {
     await lisFrontOfficeHoldingDetailsPage.verifyTableDetails(
-      'births',
+      lisFrontOfficeHoldingDetailsPage.birthsTable,
       dataTable.hashes()
     )
   }
@@ -31,7 +47,7 @@ Then(
   'I verify the Movements table has:',
   async ({ lisFrontOfficeHoldingDetailsPage }, dataTable: DataTable) => {
     await lisFrontOfficeHoldingDetailsPage.verifyTableDetails(
-      'movements',
+      lisFrontOfficeHoldingDetailsPage.movementsTable,
       dataTable.hashes()
     )
   }
@@ -167,5 +183,22 @@ When(
   'I select the My Profile link',
   async ({ lisFrontOfficeMyProfilePage }) => {
     await lisFrontOfficeMyProfilePage.myProfileLink.click()
+  }
+)
+
+Then(
+  'I verify the Activity table has:',
+  async ({ lisFrontOfficeHoldingDetailsPage }, dataTable: DataTable) => {
+    await lisFrontOfficeHoldingDetailsPage.verifyTableDetails(
+      lisFrontOfficeHoldingDetailsPage.activityTable,
+      dataTable.hashes()
+    )
+  }
+)
+
+When(
+  'I select the {string} Activity date link',
+  async ({ page }, date: string) => {
+    await page.getByRole('link', { name: date }).click()
   }
 )

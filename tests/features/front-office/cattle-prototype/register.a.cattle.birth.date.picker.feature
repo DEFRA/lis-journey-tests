@@ -1,6 +1,6 @@
 Feature: Cattle - Register a Cattle Birth - Date of birth date picker
 
-    Background:
+    Background: Sign in to the prototype and start Register a cattle birth
         Given I log into the herokuapp mvp
         And I select Register a cattle birth
 

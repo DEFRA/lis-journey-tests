@@ -1,10 +1,10 @@
-Feature: Cattle -  Download a list of cattle on your holding - Positive scenarios
+Feature: Cattle - Download a list of cattle on your holding - Positive scenarios
 
-    Background: Background name: Report a cattle movement
+    Background: Sign in to the prototype and open Download a list of cattle on your holding
         Given I log into the herokuapp mvp
         When I select Download a list of cattle on your holding
 
-    Scenario: Select all columns and download
+    Scenario: Request an export with all columns selected
         When I select all columns
         When I select Download
         Then I verify a download has been requested
@@ -12,16 +12,16 @@ Feature: Cattle -  Download a list of cattle on your holding - Positive scenario
     Scenario: Verify each column can be selected and deselected
         When I verify each column can be selected and deselected
 
-    Scenario: Verify default column selections
+    Scenario: Verify only the default columns are selected when the page opens
         Then I verify the default column selections
 
-    Scenario: Verify a single column can be selected and download report
+    Scenario: Request an export with a single column selected
         When I clear the default options
         When I select only the "Breed name" column
         And I select Download
         Then I verify a download has been requested
 
-    Scenario: Verify multiple columns can be selected and download report
+    Scenario: Request an export with multiple columns selected
         When I clear the default options
         When I select only the "Dam type" and "Sire name" columns
         And I select Download
@@ -31,7 +31,7 @@ Feature: Cattle -  Download a list of cattle on your holding - Positive scenario
         When I Download default options
         Then I verify a download has been requested
 
-    Scenario: Request an export default options with a valid date range
+    Scenario: Request an export with default options and a valid date range
         When I enter the date range from "1/1/2026" to "3/3/2026"
         And I select Download
         Then I verify a download has been requested
