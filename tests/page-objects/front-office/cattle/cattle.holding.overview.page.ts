@@ -4,6 +4,7 @@ import { BasePage } from '../../base.page'
 export class LisFrontOfficeCattleHoldingOverviewPage extends BasePage {
   readonly heading: Locator
   readonly overviewTab: Locator
+  readonly activityHistoryTab: Locator
   readonly holdingDetailsTab: Locator
   readonly cattleOnHoldingAmount: Locator
   readonly cattleOnHoldingLink: Locator
@@ -22,6 +23,9 @@ export class LisFrontOfficeCattleHoldingOverviewPage extends BasePage {
     super(page)
     this.overviewTab = page.getByRole('link', { name: 'Overview' })
     this.holdingDetailsTab = page.getByRole('link', { name: 'Holding details' })
+    this.activityHistoryTab = page.getByRole('link', {
+      name: 'Activity history'
+    })
     this.heading = page.getByRole('heading', { name: 'Cattle' })
     this.cattleOnHoldingAmount = page.locator('.lis-status-card__number').nth(0)
     this.cattleOnHoldingLink = page.getByRole('link', {

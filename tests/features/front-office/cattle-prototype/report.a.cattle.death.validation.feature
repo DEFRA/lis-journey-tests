@@ -1,14 +1,14 @@
 Feature: Cattle - Report a Cattle Death - Validation
 
-    Background:
+    Background: Sign in to the prototype and start Report a cattle death
         Given I log into the herokuapp mvp
         When I select Report a cattle death
 
-    Scenario: Is the animal registered on your holding - Empty field validation
+    Scenario: Is the animal registered on your holding - Error shown when no option is selected
         And I continue from the "Is the animal registered on your holding?" page
         Then I should see the error "Select if the animal is already registered to your holding"
 
-    Scenario: Registered Animal details - Empty field validation
+    Scenario: Registered Animal details - Errors shown when the ear tag and date of death are empty
         When I select "Yes" to is the animal registered
         And I continue from the "Animal details" page
         Then I should see the errors:
@@ -55,7 +55,7 @@ Feature: Cattle - Report a Cattle Death - Validation
         Then the "Animal ear tag number" field shows the error "Maximum 64 characters"
         Then the "Date of death" field shows the error "Maximum 64 characters"
 
-    Scenario: Unregistered Animal details page - Empty field validation
+    Scenario: Unregistered Animal details - Errors shown when all fields are empty
         When I select "No" to is the animal registered
         And I continue from the "Animal details" page
         Then I should see the errors:
@@ -130,7 +130,7 @@ Feature: Cattle - Report a Cattle Death - Validation
         Then the "Animal ear tag number" field shows the error "Maximum 64 characters"
         Then the "Date of death" field shows the error "Maximum 64 characters"
 
-    Scenario: Report cattle deaths - empty field validation
+    Scenario: Report cattle deaths - Error shown when add more deaths is not answered
         When I select "Yes" to is the animal registered
         When I submit tag "UK123456301550" and date of death "01/01/2026"
         And I continue from the "Check animal details" page
@@ -138,7 +138,7 @@ Feature: Cattle - Report a Cattle Death - Validation
         Then I should see the errors:
             | Select yes to report more deaths, or no to continue |
 
-    Scenario: Report cattle deaths - dont add animal validation
+    Scenario: Report cattle deaths - Answering No to add more deaths shows the add at least one animal error
         When I select "Yes" to is the animal registered
         When I submit tag "UK123456301550" and date of death "01/01/2026"
         And I submit "No" for add more animals for deaths

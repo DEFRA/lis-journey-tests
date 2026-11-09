@@ -1,21 +1,21 @@
-Feature: Cattle -  Report a Cattle Movement - Negative scenarios
+Feature: Cattle - Report a Cattle Movement - Negative scenarios
 
-    Background: Background name: Report a cattle movement
+    Background: Sign in to the prototype and start Report a cattle movement
         Given I log into the herokuapp mvp
         When I select Report a cattle movement
 
-    Scenario: Select movement type - Empty fields
+    Scenario: Select movement type - Error shown when no movement type is selected
         When I continue from the "Select movement type" page
         Then I should see the errors:
             | Select if this is an on or off movement |
 
-    Scenario: Movement details - On Movement details  - Empty fields
+    Scenario: Movement details - On movement - Error shown when no ear tag is entered
         When I select "On movement" and continue
         When I continue from the "Movement details" page
         Then I should see the errors:
             | Enter at least one ear tag number |
 
-    Scenario: Movement details - Off Movement details - Empty fields
+    Scenario: Movement details - Off movement - Error shown when no ear tag is entered
         When I select "Off movement" and continue
         When I continue from the "Movement details" page
         Then I should see the errors:
@@ -74,7 +74,7 @@ Feature: Cattle -  Report a Cattle Movement - Negative scenarios
             | Off movement | ear tag but no date | UK324537113235 |               | Enter the movement date for animal 1  |
             | Off movement | date but no ear tag |                | 01/01/2025    | Enter the ear tag number for animal 1 |
 
-    Scenario: Movement details - Movement date error on the second animal
+    Scenario: Movement details - Future movement date on the second animal shows an error for animal 2
         When I select "On movement" and continue
         When I submit movement details
             | Ear tag number | Movement date |
@@ -82,7 +82,7 @@ Feature: Cattle -  Report a Cattle Movement - Negative scenarios
             | UK123456301551 | 1/1/2099      |
         Then I should see the error "Movement date for animal 2 must be today or in the past"
 
-    Scenario: Movement details - Same ear tag entered for two animals
+    Scenario: Movement details - Error shown when the same ear tag is entered for two animals
         When I select "On movement" and continue
         When I submit movement details
             | Ear tag number | Movement date |
@@ -92,7 +92,7 @@ Feature: Cattle -  Report a Cattle Movement - Negative scenarios
 
     # Reporting deadline not present in prototype, number of days and error message to be confirmed against the story
     @fixme
-    Scenario: Movement details - Movement date too far in the past
+    Scenario: Movement details - Error shown when the movement date is too far in the past
         When I select "On movement" and continue
         When I submit movement details
             | Ear tag number | Movement date |
@@ -109,7 +109,7 @@ Feature: Cattle -  Report a Cattle Movement - Negative scenarios
 
     # Hard limit not set in prototype
     @fixme
-    Scenario: Movement details - Add maximum number of animals
+    Scenario: Movement details - Error shown when more than 20 animals are added
         When I select "On movement" and continue
         When I submit movement details
             | Ear tag number | Movement date |

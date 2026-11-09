@@ -3,11 +3,20 @@ import { BasePage } from '../base.page'
 
 export class LisFrontOfficeHoldingsPage extends BasePage {
   readonly heading: Locator
+  readonly birthsTable: Locator
+  readonly movementsTable: Locator
+  readonly activityTable: Locator
+
   constructor(page: Page) {
     super(page)
     this.heading = page.getByRole('heading', {
       name: 'Holding details',
       exact: true
+    })
+    this.birthsTable = page.locator('#births table')
+    this.movementsTable = page.locator('#movements table')
+    this.activityTable = page.locator('table').filter({
+      has: page.getByRole('columnheader', { name: 'Activity', exact: true })
     })
   }
 
@@ -60,10 +69,9 @@ export class LisFrontOfficeHoldingsPage extends BasePage {
   }
 
   async verifyTableDetails(
-    panelId: string,
+    table: Locator,
     expectedDetails: Record<string, string>[]
   ) {
-    const table = this.page.locator(`#${panelId} table`)
     const rows = table.locator('tbody tr')
 
     await expect(table.locator('thead th')).toHaveText(
@@ -73,10 +81,16 @@ export class LisFrontOfficeHoldingsPage extends BasePage {
 
     await Promise.all(
       expectedDetails.map((detail, index) => {
-        // Matches the start of each cell as Breed also has visually hidden text, e.g. "HER, Hereford"
-        const expectedCells = Object.values(detail).map(
-          (value) => new RegExp(String.raw`^${value}\b`)
-        )
+        // Matches the start of each cell as some cells also have visually hidden text,
+        // e.g. Breed "HER, Hereford" or Date "22 Sep 2026 cattle birth registration".
+        // Values are escaped so text like "Delegate added (tony.wilson@gmail.com)" matches literally
+        const expectedCells = Object.values(detail).map((value) => {
+          const escapedValue = value.replaceAll(
+            /[.*+?^${}()|[\]\\]/g,
+            String.raw`\$&`
+          )
+          return new RegExp(String.raw`^${escapedValue}(?!\w)`)
+        })
         return expect(rows.nth(index).locator('td')).toHaveText(expectedCells)
       })
     )

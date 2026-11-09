@@ -1,9 +1,9 @@
 Feature: LIS Front Office - My Profile
 
-    Background: Background name: Report a cattle movement
+    Background: Sign in to the prototype
         Given I log into the herokuapp mvp
 
-    Scenario: Verify the My Profile page
+    Scenario: Verify the My Profile page shows the user's name, email address and phone number
         When I select the My Profile link
         Then the My Profile page should display the following information:
             | Field name    | Value                |

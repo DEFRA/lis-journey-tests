@@ -1,11 +1,11 @@
-Feature: Cattle -  Report a Cattle Death - Positive scenarios
+Feature: Cattle - Report a Cattle Death - Positive scenarios
 
-    Background:
+    Background: Sign in to the prototype and start Report a cattle death
         Given I log into the herokuapp mvp
         When I select Report a cattle death
 
     Scenario: Report a cattle death for a registered animal
-        When I select "No" to is the animal registered
+        When I select "Yes" to is the animal registered
         When I submit tag "UK123456301550" and date of death "01/01/2026"
         And I submit "No" for add more animals for deaths
         Then I verify the Check animal details summary page has:
@@ -44,7 +44,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
 
     # Error - When selecting No to animal registered submission goes to summary rather than animal details page
     @fixme
-    Scenario: Report a cattle death for registered animal then change the Registration status from the summary page
+    Scenario: Report a cattle death for a registered animal then change the Registration status from the summary page
         When I select "Yes" to is the animal registered
         When I submit tag "UK123456301550" and date of death "01/01/2026"
         Then I verify the Check animal details summary page has:
@@ -70,7 +70,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I send my cattle death report
         Then I verify that "1 cattle death reported"
 
-    Scenario: Report a cattle death for registered animal then change the Ear tag from the summary page
+    Scenario: Report a cattle death for a registered animal then change the Ear tag from the summary page
         When I select "Yes" to is the animal registered
         When I submit tag "UK123456301550" and date of death "01/01/2026"
         Then I verify the Check animal details summary page has:
@@ -91,7 +91,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I send my cattle death report
         Then I verify that "1 cattle death reported"
 
-    Scenario: Report a cattle death for registered animal then change the Date of death from the summary page
+    Scenario: Report a cattle death for a registered animal then change the Date of death from the summary page
         When I select "Yes" to is the animal registered
         When I submit tag "UK123456301550" and date of death "01/01/2026"
         Then I verify the Check animal details summary page has:
@@ -115,7 +115,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
 
     # Error - When selecting Yes to animal registered submission goes to summary rather than animal details page
     @fixme
-    Scenario: Report a cattle death for unregistered animal then change the Registration status from the summary page
+    Scenario: Report a cattle death for an unregistered animal then change the Registration status from the summary page
         When I select "No" to is the animal registered
         And I submit valid animal details with "UK123456301551", "11/2/2025","01/1/2026", "Female", and "Limousin (LIM)"
         Then I verify the Check animal details summary page has:
@@ -140,7 +140,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I send my cattle death report
         Then I verify that "1 cattle death reported"
 
-    Scenario: Report a cattle death for unregistered animal then change the Ear tag from the summary page
+    Scenario: Report a cattle death for an unregistered animal then change the Ear tag from the summary page
         When I select "No" to is the animal registered
         And I submit valid animal details with "UK123456301551", "11/2/2025","01/1/2026", "Female", and "Limousin (LIM)"
         Then I verify the Check animal details summary page has:
@@ -167,7 +167,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I send my cattle death report
         Then I verify that "1 cattle death reported"
 
-    Scenario: Report a cattle death for unregistered animal then change the Date of birth the Breed from the summary page
+    Scenario: Report a cattle death for an unregistered animal then change the Date of birth and Breed from the summary page
         When I select "No" to is the animal registered
         And I submit valid animal details with "UK123456301552", "11/2/2025","01/1/2026", "Female", and "Limousin (LIM)"
         Then I verify the Check animal details summary page has:
@@ -194,7 +194,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I send my cattle death report
         Then I verify that "1 cattle death reported"
 
-    Scenario: Report a cattle death for unregistered animal then change the Date of death from the summary page
+    Scenario: Report a cattle death for an unregistered animal then change the Date of death from the summary page
         When I select "No" to is the animal registered
         And I submit valid animal details with "UK123456301551", "11/2/2025","01/1/2026", "Female", and "Limousin (LIM)"
         Then I verify the Check animal details summary page has:
@@ -221,7 +221,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I send my cattle death report
         Then I verify that "1 cattle death reported"
 
-    Scenario: Report a cattle death for unregistered animal then change the Sex from the summary page
+    Scenario: Report a cattle death for an unregistered animal then change the Sex from the summary page
         When I select "No" to is the animal registered
         And I submit valid animal details with "UK123456301551", "11/2/2025","01/1/2026", "Female", and "Limousin (LIM)"
         Then I verify the Check animal details summary page has:
@@ -248,7 +248,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I send my cattle death report
         Then I verify that "1 cattle death reported"
 
-    Scenario: Report a cattle death for unregistered animal then change the Breed from the summary page
+    Scenario: Report a cattle death for an unregistered animal then change the Breed from the summary page
         When I select "No" to is the animal registered
         And I submit valid animal details with "UK123456301551", "11/2/2025","01/1/2026", "Female", and "Limousin (LIM)"
         Then I verify the Check animal details summary page has:
@@ -328,7 +328,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I send my cattle death report
         Then I verify that "2 cattle deaths reported"
 
-    Scenario: Report a cattle death for a unregistered animal and add another unregistered animal
+    Scenario: Report a cattle death for an unregistered animal and add another unregistered animal
         When I select "No" to is the animal registered
         And I submit valid animal details with "UK123456301550", "11/2/2025","01/1/2026", "Female", and "Limousin (LIM)"
         Then I verify the Check animal details summary page has:
@@ -359,7 +359,7 @@ Feature: Cattle -  Report a Cattle Death - Positive scenarios
         And I send my cattle death report
         Then I verify that "1 cattle death reported"
 
-    Scenario: Report a cattle death for a unregistered animal and add another registered animal
+    Scenario: Report a cattle death for an unregistered animal and add another registered animal
         When I select "No" to is the animal registered
         And I submit valid animal details with "UK123456301550", "11/2/2025","01/1/2026", "Female", and "Limousin (LIM)"
         Then I verify the Check animal details summary page has:
