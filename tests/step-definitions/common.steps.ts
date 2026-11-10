@@ -122,7 +122,7 @@ Then(
       .evaluateAll((cells) =>
         cells.map(
           (cell) =>
-            cell.getAttribute('data-sort-value') ?? cell.textContent!.trim()
+            (cell as HTMLElement).dataset.sortValue ?? cell.textContent!.trim()
         )
       )
 
