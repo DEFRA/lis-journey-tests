@@ -23,30 +23,63 @@ const summaryValue = (page: Page, key: string) =>
     })
     .locator('.govuk-summary-list__value')
 
-// The visible sortable table. Tabbed pages keep hidden tables in the page, so those are skipped
+// The visible sortable table: any table with aria-sort on its headers. That covers both
+// the prototype (MOJ sortable table, sorts in the browser with header buttons) and the
+// MVP (sorts on the server with header links). Hidden tables on tabbed pages are skipped
 const sortableTable = (page: Page) =>
   page
-    .locator('table[data-module="moj-sortable-table"]')
+    .locator('table')
+    .filter({ has: page.locator('th[aria-sort]') })
     .filter({ visible: true })
+
+// The header's button (prototype) or link (MVP)
+const sortControl = (page: Page, column: string) =>
+  page
+    .getByRole('button', { name: column, exact: true })
+    .or(page.getByRole('link', { name: column, exact: true }))
 
 const sortableHeader = (page: Page, column: string) =>
   sortableTable(page)
     .locator('thead th')
-    .filter({ has: page.getByRole('button', { name: column, exact: true }) })
+    .filter({ has: sortControl(page, column) })
 
-// Compares like the MOJ sortable table: numbers as numbers, everything else as text
-const compareSortValues = (a: string, b: string) => {
-  const numberA = Number(a)
-  const numberB = Number(b)
-  if (
-    a !== '' &&
-    b !== '' &&
-    !Number.isNaN(numberA) &&
-    !Number.isNaN(numberB)
-  ) {
-    return numberA - numberB
+const MONTHS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'
+]
+
+// Turns a cell into what a user would expect it to sort by:
+// numbers (incl. data-sort-value like 20250811), dates like "1 Feb 2023",
+// ages like "3 years, 9 months" (as total months), otherwise the text itself
+const toSortKey = (value: string): number | string => {
+  if (value !== '' && !Number.isNaN(Number(value))) return Number(value)
+
+  const date = /^(\d{1,2}) ([A-Z][a-z]{2}) (\d{4})$/.exec(value)
+  if (date && MONTHS.includes(date[2])) {
+    return Date.UTC(Number(date[3]), MONTHS.indexOf(date[2]), Number(date[1]))
   }
-  return a.localeCompare(b)
+
+  const age = /^(\d+) years?, (\d+) months?$/.exec(value)
+  if (age) return Number(age[1]) * 12 + Number(age[2])
+
+  return value
+}
+
+const compareSortValues = (a: string, b: string) => {
+  const keyA = toSortKey(a)
+  const keyB = toSortKey(b)
+  if (typeof keyA === 'number' && typeof keyB === 'number') return keyA - keyB
+  return String(keyA).localeCompare(String(keyB))
 }
 
 Then('I should see the heading {string}', async ({ page }, heading: string) => {
@@ -68,11 +101,12 @@ Then(
 
 // Each click flips the column between ascending and descending
 When('I sort the table by {string}', async ({ page }, column: string) => {
-  await sortableHeader(page, column).getByRole('button').click()
+  await sortableHeader(page, column).locator(sortControl(page, column)).click()
 })
 
 // Checks the order of whatever rows are there, so it works when the data changes.
-// Dates use their data-sort-value (e.g. 20250811) rather than the text shown
+// On paginated tables it checks the rows on the current page.
+// The aria-sort check waits for the sort (or the MVP page reload) to finish first
 Then(
   'the table is sorted by {string} in {string} order',
   async ({ page }, column: string, direction: string) => {

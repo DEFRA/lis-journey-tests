@@ -367,6 +367,26 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
             | UK 123456 301544 | 28 Jul 2026   | 28 Jul 2026     | Female | LIM   | 1      |
             | UK 123456 301545 | 30 Jul 2026   | 30 Jul 2026     | Female | LIM   | 0      |
 
+    # Uses the same history navigation as the scenario above, so it is @fixme until that works
+    @fixme
+    Scenario Outline: Register a cattle birth - The Animals registered table on an Approved registration sorts by <column>
+        And I verify reference number "M6QA-2JVE" is "Approved"
+        And I click on reference number "M6QA-2JVE" from the history registrations
+        When I sort the table by "<column>"
+        Then the table is sorted by "<column>" in "<firstClick>" order
+        When I sort the table by "<column>"
+        Then the table is sorted by "<column>" in "<secondClick>" order
+
+        # Ear tag number is assumed to load sorted ascending, like the other sortable tables, so the first click flips it
+        Examples:
+            | column          | firstClick | secondClick |
+            | Ear tag number  | descending | ascending   |
+            | Date of birth   | ascending  | descending  |
+            | Date on holding | ascending  | descending  |
+            | Sex             | ascending  | descending  |
+            | Breed           | ascending  | descending  |
+            | Errors          | ascending  | descending  |
+
     @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register a cattle birth via genetic dam with sire details and then cancel the registration
         And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
