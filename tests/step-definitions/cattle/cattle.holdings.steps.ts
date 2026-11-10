@@ -3,18 +3,10 @@ import { Then, When } from '../../fixtures/test.fixture'
 import { DataTable } from 'playwright-bdd'
 
 When(
-  'I select In progress',
-  async ({ lisFrontOfficeCattleHoldingOverviewPage }) => {
+  'I select {string} on the holding overview',
+  async ({ lisFrontOfficeCattleHoldingOverviewPage }, linkName: string) => {
     await expect(lisFrontOfficeCattleHoldingOverviewPage.heading).toBeVisible()
-    await lisFrontOfficeCattleHoldingOverviewPage.inProgressLink.click()
-  }
-)
-
-When(
-  'I select Activity history',
-  async ({ lisFrontOfficeCattleHoldingOverviewPage }) => {
-    await expect(lisFrontOfficeCattleHoldingOverviewPage.heading).toBeVisible()
-    await lisFrontOfficeCattleHoldingOverviewPage.activityHistoryTab.click()
+    await lisFrontOfficeCattleHoldingOverviewPage.selectLink(linkName)
   }
 )
 
@@ -53,14 +45,13 @@ Then(
   }
 )
 
-Then('I should see the message {string}', async ({ page }, message: string) => {
-  await expect(page.getByText(message)).toBeVisible()
-})
-
-When(
-  'I click on the {string} tag link',
-  async ({ lisFrontOfficeHoldingDetailsPage }, tag: string) => {
-    await lisFrontOfficeHoldingDetailsPage.clickOnTagLink(tag)
+Then(
+  'I verify the Cattle with errors table has:',
+  async ({ lisFrontOfficeHoldingDetailsPage }, dataTable: DataTable) => {
+    await lisFrontOfficeHoldingDetailsPage.verifyTableDetails(
+      lisFrontOfficeHoldingDetailsPage.cattleWithErrorsTable,
+      dataTable.hashes()
+    )
   }
 )
 
@@ -115,14 +106,6 @@ When(
   async ({ lisFrontOfficeCattleHoldingOverviewPage }) => {
     await expect(lisFrontOfficeCattleHoldingOverviewPage.heading).toBeVisible()
     await lisFrontOfficeCattleHoldingOverviewPage.contactBcmsLink.click()
-  }
-)
-
-Then(
-  'I should be navigated to the {string} page and the web address contains {string}',
-  async ({ page }, heading: string, urlFragment: string) => {
-    await expect(page.getByRole('heading', { name: heading })).toBeVisible()
-    expect(page.url()).toContain(urlFragment)
   }
 )
 
@@ -198,7 +181,7 @@ Then(
 
 When(
   'I select the {string} Activity date link',
-  async ({ page }, date: string) => {
-    await page.getByRole('link', { name: date }).click()
+  async ({ lisFrontOfficeCattleHoldingOverviewPage }, date: string) => {
+    await lisFrontOfficeCattleHoldingOverviewPage.selectLink(date)
   }
 )

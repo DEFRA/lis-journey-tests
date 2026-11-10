@@ -22,7 +22,7 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
             | Sire name                  | Sire Name                |
         And I continue from the "Check calf details" page
         And I verify birth tag number "UK123456301550" is "Ready to send"
-        And I click on the tag number "UK123456301550"
+        And I click on the "UK123456301550" ear tag link
         Then I verify the Check calf details summary page has:
             | Field                      | Expected value           |
             | Animal ear tag number      | UK123456301550           |

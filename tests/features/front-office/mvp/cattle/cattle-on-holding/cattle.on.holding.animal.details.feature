@@ -61,7 +61,7 @@ Feature: Cattle on holding - View Animals on holding
         And the Animals on Holding caption should display "Oakfield Farm"
         And the Animals on Holding heading should display "Animals on holding"
         And I should be able to search for an animal using ear tag, sex or breed
-        And I click on the Ear tag number "UK 200000 000001" link
+        And I click on the "UK 200000 000001" ear tag link
         And I should be navigated to the Cattle Details page
         Then I should see the following Cattle Details:
             | Ear tag number   | Date of birth | Date registered | Date on holding | Sex  | Breed               | Animal status | Dam type | Genetic dam ear tag | Sire ear tag     | Sire name    |
@@ -79,7 +79,7 @@ Feature: Cattle on holding - View Animals on holding
         And the Animals on Holding caption should display "Fairfield Farm"
         And the Animals on Holding heading should display "Animals on holding"
         And I should be able to search for an animal using ear tag, sex or breed
-        And I click on the Ear tag number "UK 200000 000013" link
+        And I click on the "UK 200000 000013" ear tag link
         And I should be navigated to the Cattle Details page
         Then I should see the following Cattle Details:
             | Ear tag number   | Date of birth | Date registered | Date on holding | Sex    | Breed            | Animal status | Dam type     | Genetic dam ear tag | Sire details              |

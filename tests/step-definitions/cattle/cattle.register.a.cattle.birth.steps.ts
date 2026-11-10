@@ -202,13 +202,6 @@ Then(
 )
 
 When(
-  'I click on the tag number {string}',
-  async ({ lisFrontOfficeRegisterNewCattleBirthPage }, tag: string) => {
-    await lisFrontOfficeRegisterNewCattleBirthPage.clickTagNumberLink(tag)
-  }
-)
-
-When(
   'I select Cancel on Draft registrations',
   async ({ lisFrontOfficeRegisterCattleBirthPage }) => {
     await lisFrontOfficeRegisterCattleBirthPage.cancelLink.click()

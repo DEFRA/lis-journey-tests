@@ -19,11 +19,6 @@ export class LisFrontOfficeCattleErrorRecordPage extends BasePage {
     })
   }
 
-  async clickTagNumberLink(reference: string) {
-    const link = this.page.getByRole('link', { name: reference })
-    await link.click()
-  }
-
   async verifyTagStatus(tagNumber: string, expectedStatus: string) {
     const row = this.page.getByRole('row').filter({
       has: this.page.getByRole('link', {

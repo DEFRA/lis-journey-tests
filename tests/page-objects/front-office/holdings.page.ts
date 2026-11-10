@@ -5,6 +5,7 @@ export class LisFrontOfficeHoldingsPage extends BasePage {
   readonly heading: Locator
   readonly birthsTable: Locator
   readonly movementsTable: Locator
+  readonly cattleWithErrorsTable: Locator
   readonly activityTable: Locator
 
   constructor(page: Page) {
@@ -15,6 +16,9 @@ export class LisFrontOfficeHoldingsPage extends BasePage {
     })
     this.birthsTable = page.locator('#births table')
     this.movementsTable = page.locator('#movements table')
+    this.cattleWithErrorsTable = page.getByRole('table', {
+      name: 'Cattle error records'
+    })
     this.activityTable = page.locator('table').filter({
       has: page.getByRole('columnheader', { name: 'Activity', exact: true })
     })
@@ -42,12 +46,6 @@ export class LisFrontOfficeHoldingsPage extends BasePage {
     const cphNumberLink = this.page.getByRole('link', { name: cphNumber })
     await cphNumberLink.waitFor({ state: 'visible' })
     await cphNumberLink.click()
-  }
-
-  async clickOnTagLink(tag: string) {
-    const tagLink = this.page.getByRole('link', { name: tag })
-    await tagLink.waitFor({ state: 'visible' })
-    await tagLink.click()
   }
 
   async verifyHoldingDetails(expectedDetails: Record<string, string>[]) {

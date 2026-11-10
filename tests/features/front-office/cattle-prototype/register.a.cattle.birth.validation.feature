@@ -136,7 +136,7 @@ Feature: Cattle - Register a Cattle Birth - Validation
         When I search for "101" in the "Animal ear tag number" field
         And I select "UK123456501101" from the "Animal ear tag number" field suggestions
         And I continue from the "Genetic dam details" page
-        Then I am on the "Sire details" page
+        Then I should see the heading "Sire details"
 
     @LREG-784
     #The errors match the story which is not the same as the prototype so this will fail until the correct errors are in mvp
