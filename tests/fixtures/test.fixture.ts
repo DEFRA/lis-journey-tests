@@ -2,6 +2,7 @@ import { request, Page } from '@playwright/test'
 import { test as base, createBdd } from 'playwright-bdd'
 import { LisFrontOfficeClient } from '../features/support/api/lis.front.office.client'
 import { LisBackOfficeClient } from '../features/support/api/lis.back.office.client'
+import { CattleApiClient } from '../features/support/api/cattle.api.client'
 import { LisFrontOfficeHomePage } from '../page-objects/front-office/home.page'
 import { LisBackOfficeHomePage } from '../page-objects/back-office/home.page'
 import { LisBackOfficeIdentityPage } from '../page-objects/back-office/identity.page'
@@ -46,6 +47,7 @@ const accessibilityTags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
 export const test = base.extend<{
   lisFrontOfficeClient: LisFrontOfficeClient
   lisBackOfficeClient: LisBackOfficeClient
+  cattleApiClient: CattleApiClient
   lisFrontOfficeHomePage: LisFrontOfficeHomePage
   lisBackOfficeHomePage: LisBackOfficeHomePage
   lisBackOfficeIdentityPage: LisBackOfficeIdentityPage
@@ -127,6 +129,10 @@ export const test = base.extend<{
     )
     await use(lisBackOfficeClient)
   },
+  cattleApiClient: async ({ $testInfo }, use) => {
+    await use(new CattleApiClient($testInfo))
+  },
+
   // eslint-disable-next-line no-empty-pattern
   lisFrontOfficeClient: async ({}, use) => {
     const apiContext = await request.newContext({})

@@ -261,3 +261,63 @@ Feature: Cattle - Register a Cattle Birth - Validation
         And I continue from the "Register new cattle births" page
         Then I should see the error "Select yes to add additional animals or no to continue"
 
+
+    # Ear tag formats from the BA. The validation is in the next release, so remove @fixme then.
+    # The ear tags are the BA's examples: replace them with the test data given with the release.
+    # - EU imports keep their original ear tag (non-EU imports are given new UK ear tags)
+    # - Pre-June 2000 UK ear tags were alphanumeric, e.g. UK AB1234 00123. They aren't issued any
+    #   more, but legacy ear tags are still in the systems and must be accepted
+    # Lookup fields need animals with these ear tags in the test data to select
+    @fixme
+    Scenario Outline: Calf Details - Animal ear tag number - <type> ear tag '<earTag>' is accepted
+        When I submit valid calf details with "<earTag>", "today", "Female", and "Baltata Romaneasca (BRO)"
+        Then I am on the "Dam details" page
+
+        Examples:
+            | type        | earTag          |
+            | EU import   | IE123456789012  |
+            | EU import   | FR123456789012  |
+            | EU import   | DE123456789012  |
+            | Pre-2000 UK | UK AB1234 00123 |
+
+    @fixme
+    Scenario Outline: Genetic Dam Details - Animal ear tag number - <type> ear tag '<earTag>' is accepted
+        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "calf born via genetic dam"
+        When I add the ear tag of the dam as "<earTag>"
+        Then I am on the "Sire details" page
+
+        Examples:
+            | type        | earTag          |
+            | EU import   | IE123456789012  |
+            | EU import   | FR123456789012  |
+            | EU import   | DE123456789012  |
+            | Pre-2000 UK | UK AB1234 00123 |
+
+    @fixme
+    Scenario Outline: Surrogate Dam Details - <type> ear tags '<geneticDam>' and '<surrogateDam>' are accepted
+        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "calf born via surrogate dam"
+        When I add a genetic dam ear tag number as "<geneticDam>" and a surrogate dam ear tag number as "<surrogateDam>"
+        Then I am on the "Sire details" page
+
+        Examples:
+            | type        | geneticDam      | surrogateDam    |
+            | EU import   | IE123456789012  | FR123456789012  |
+            | EU import   | DE123456789012  | IE123456789013  |
+            | Pre-2000 UK | UK AB1234 00123 | IE123456789012  |
+
+    @fixme
+    Scenario Outline: Sire Details - Sire ear tag number - <type> ear tag '<earTag>' is accepted
+        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "calf born via genetic dam"
+        And I add the ear tag of the dam as "UK123456501101"
+        When I add sire details with "<earTag>" and "Sire Name"
+        Then I am on the "Check calf details" page
+
+        Examples:
+            | type        | earTag          |
+            | EU import   | IE123456789012  |
+            | EU import   | FR123456789012  |
+            | EU import   | DE123456789012  |
+            | Pre-2000 UK | UK AB1234 00123 |
