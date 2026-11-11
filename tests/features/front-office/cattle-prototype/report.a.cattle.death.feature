@@ -15,7 +15,7 @@ Feature: Cattle - Report a Cattle Death - Positive scenarios
             | Date of death         | 01 January 2026 |
         And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301550" is "Ready to send"
-        And I click on the tag number "UK123456301550"
+        And I click on the "UK123456301550" ear tag link
         Then I verify the Check animal details summary page has:
             | Field                 | Expected value  |
             | Animal registered     | Yes             |

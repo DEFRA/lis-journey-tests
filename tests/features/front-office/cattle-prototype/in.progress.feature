@@ -2,7 +2,7 @@ Feature: Cattle - In Progress - Positive scenarios
 
     Background: Sign in to the prototype and open In progress
         Given I log into the herokuapp mvp
-        When I select In progress
+        When I select "In progress" on the holding overview
 
     Scenario: Verify the Births tab lists the cattle births in progress
         When I click the "Births" tab
@@ -16,7 +16,7 @@ Feature: Cattle - In Progress - Positive scenarios
     @fixme
     Scenario: Verify selecting an ear tag on the Births tab opens the birth record
         When I click the "Births" tab
-        When I click on the "UK 123456 301550" tag link
+        When I click on the "UK 123456 301550" ear tag link
         Then I verify the details
 
     Scenario: Verify the Movements tab lists the cattle movements in progress
@@ -29,7 +29,7 @@ Feature: Cattle - In Progress - Positive scenarios
     @fixme
     Scenario: Verify selecting an ear tag on the Movements tab opens the movement record
         When I click the "Movements" tab
-        When I click on the "UK 324537 113234" tag link
+        When I click on the "UK 324537 113234" ear tag link
         Then I verify the details
 
     Scenario: Verify the Deaths tab shows a message when no deaths are pending validation
@@ -40,5 +40,5 @@ Feature: Cattle - In Progress - Positive scenarios
     @fixme
     Scenario: Verify selecting an ear tag on the Deaths tab opens the death record
         When I click the "Deaths" tab
-        When I click on the "UK 324537 113234" tag link
+        When I click on the "UK 324537 113234" ear tag link
         Then I verify the details

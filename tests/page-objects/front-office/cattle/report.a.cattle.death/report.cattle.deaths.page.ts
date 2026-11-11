@@ -15,11 +15,6 @@ export class LisFrontOfficeReportCattleDeathsPage extends BasePage {
     this.noRadio = page.getByRole('radio', { name: 'No' })
   }
 
-  async clickTagNumberLink(reference: string) {
-    const link = this.page.getByRole('link', { name: reference })
-    await link.click()
-  }
-
   async submitAddMoreAnimals(addMoreAnimals: 'Yes' | 'No') {
     const radioButton = addMoreAnimals === 'Yes' ? this.yesRadio : this.noRadio
     await radioButton.check()

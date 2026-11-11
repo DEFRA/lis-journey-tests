@@ -2,7 +2,7 @@ Feature: Cattle - Activity History - Positive scenarios
 
     Background: Sign in to the prototype and open Activity history
         Given I log into the herokuapp mvp
-        When I select Activity history
+        When I select "Activity history" on the holding overview
         Then I verify the Activity page has the CPH number "12/345/0001" and the Holding name "Oakfield Farm"
 
     Scenario: Verify the Activity history lists the date, activity and reporter of each holding activity
@@ -35,7 +35,7 @@ Feature: Cattle - Activity History - Positive scenarios
     @fixme
     Scenario: Verify selecting an ear tag number on the Submission details page shows the animal details
         When I select the "22 Sep 2026" Activity date link
-        Then I click on the tag number "UK 123456 301550"
+        Then I click on the "UK 123456 301550" ear tag link
         Then I verify the Animals registered table has:
             | Ear tag number   | Date of birth | Date on holding | Sex  | Breed |
             | UK 123456 301550 | 2 Sep 2026    | 2 Sep 2026      | Male | HER   |
