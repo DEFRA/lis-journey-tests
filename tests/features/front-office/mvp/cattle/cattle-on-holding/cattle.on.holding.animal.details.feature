@@ -50,6 +50,28 @@ Feature: Cattle on holding - View Animals on holding
             | UK 300000 000023 | 6 Feb 2025    | formatDateYearMonth:6 Feb 2025  | 6 Feb 2025      | Female | LIM, Limousin                |
             | UK 300000 000024 | 11 Apr 2025   | formatDateYearMonth:11 Apr 2025 | 11 Apr 2025     | Male   | HFX, Holstein Friesian Cross |
 
+    Scenario Outline: Cattle on holding - View Animals on holding - Single CPH holding - The table sorts by <column>
+        Given I am authenticated as a front office user with a single CPH holding
+        Then I should see the Cattle overview page with the following details:
+            | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
+            | 22/001/0001 | Oakfield Farm | 35                | 0           | 0             |
+        When I click the Cattle on holding link
+        Then the "Animals on holding" tab should be active
+        When I sort the table by "<column>"
+        Then the table is sorted by "<column>" in "<firstClick>" order
+        When I sort the table by "<column>"
+        Then the table is sorted by "<column>" in "<secondClick>" order
+
+        # Ear tag number is already sorted ascending when the page loads, so the first click flips it
+        Examples:
+            | column          | firstClick | secondClick |
+            | Ear tag number  | descending | ascending   |
+            | Date of birth   | ascending  | descending  |
+            | Age             | ascending  | descending  |
+            | Date on holding | ascending  | descending  |
+            | Sex             | ascending  | descending  |
+            | Breed           | ascending  | descending  |
+
     @LREG-706
     Scenario: Cattle on holding - View Cattle Details - Single CPH holding - Selecting an ear tag shows the animal's cattle details with sire details
         Given I am authenticated as a front office user with a single CPH holding
@@ -61,7 +83,7 @@ Feature: Cattle on holding - View Animals on holding
         And the Animals on Holding caption should display "Oakfield Farm"
         And the Animals on Holding heading should display "Animals on holding"
         And I should be able to search for an animal using ear tag, sex or breed
-        And I click on the Ear tag number "UK 200000 000001" link
+        And I click on the "UK 200000 000001" ear tag link
         And I should be navigated to the Cattle Details page
         Then I should see the following Cattle Details:
             | Ear tag number   | Date of birth | Date registered | Date on holding | Sex  | Breed               | Animal status | Dam type | Genetic dam ear tag | Sire ear tag     | Sire name    |
@@ -79,7 +101,7 @@ Feature: Cattle on holding - View Animals on holding
         And the Animals on Holding caption should display "Fairfield Farm"
         And the Animals on Holding heading should display "Animals on holding"
         And I should be able to search for an animal using ear tag, sex or breed
-        And I click on the Ear tag number "UK 200000 000013" link
+        And I click on the "UK 200000 000013" ear tag link
         And I should be navigated to the Cattle Details page
         Then I should see the following Cattle Details:
             | Ear tag number   | Date of birth | Date registered | Date on holding | Sex    | Breed            | Animal status | Dam type     | Genetic dam ear tag | Sire details              |

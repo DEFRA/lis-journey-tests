@@ -38,12 +38,6 @@ When('I continue from the {string} page', async ({ page }, heading: string) => {
   await page.getByRole('button', { name: 'Continue' }).click()
 })
 
-Then('I am on the {string} page', async ({ page }, heading: string) => {
-  await expect(
-    page.getByRole('heading', { name: heading, exact: true })
-  ).toBeVisible()
-})
-
 // Types into a lookup field without picking a suggestion, e.g. for values with no results
 When(
   'I search for {string} in the {string} field',

@@ -258,12 +258,4 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
     const expectedSearchResultHint = `0 results for '${searchTerm}'`
     await expect(this.page.getByText(expectedSearchResultHint)).toBeVisible()
   }
-  async clickOnEarTagNumberLink(earTagNumber: string) {
-    const earTagLink = this.page.getByRole('link', {
-      name: earTagNumber,
-      exact: true
-    })
-    await earTagLink.scrollIntoViewIfNeeded()
-    await earTagLink.click()
-  }
 }

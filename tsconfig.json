@@ -11,7 +11,7 @@
     "moduleResolution": "NodeNext",
     "target": "ES2022",
     "types": ["node", "playwright"],
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "DOM"],
 
     // Recommended Options
     "strict": true,

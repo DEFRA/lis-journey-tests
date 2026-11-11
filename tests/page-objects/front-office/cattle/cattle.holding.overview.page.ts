@@ -56,4 +56,8 @@ export class LisFrontOfficeCattleHoldingOverviewPage extends BasePage {
     })
     this.contactBcmsLink = page.getByRole('link', { name: 'Contact BCMS' })
   }
+
+  async selectLink(linkName: string) {
+    await this.page.getByRole('link', { name: linkName }).click()
+  }
 }
