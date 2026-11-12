@@ -1,5 +1,5 @@
 # No In progress data in mvp
-@fixme
+@fixme @dev
 Feature: Cattle - In Progress - Positive scenarios
 
     Background: Sign in as a user with a single CPH holding and open In progress

@@ -41,7 +41,8 @@ if [ -n "$TEST_INPUT" ]; then
 fi
 
 if [ -z "$FILTER" ]; then
-  echo "No filters provided. Running all tests for environment: $ENVIRONMENT"
+  echo "No filters provided. Running all tests except cattle-prototype for environment: $ENVIRONMENT"
+  echo "(choose a profile to include the cattle-prototype tests)"
   npx bddgen && npx playwright test --config=playwright.config.ts || touch FAILED
 else
   echo "Running filtered tests with grep: $FILTER"

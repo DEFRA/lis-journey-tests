@@ -31,6 +31,13 @@ process.env.frontOfficeUrl = frontOfficeUrl
 process.env.backOfficeUrl = backOfficeUrl
 process.env.isCDPEnvironment = isCDPEnvironment.toString()
 
+// Allure adds to allure-results on every run and never clears it, so remove
+// the previous run's results here. Workers load this config too, so only do
+// it in the main process (workers have TEST_WORKER_INDEX set).
+if (!process.env.TEST_WORKER_INDEX) {
+  fs.rmSync('allure-results', { recursive: true, force: true })
+}
+
 const reporters: ReporterDescription[] = [
   ['list'], // CLI console output
   [
@@ -62,12 +69,21 @@ const testDir = defineBddConfig({
   steps: ['tests/step-definitions/**/*.ts', 'tests/fixtures/**/*.fixture.ts']
 })
 
+const isGitHubActions = process.env.GITHUB_ACTIONS === 'true'
+const prototypeSpecs =
+  '**/tests/features/front-office/cattle-prototype/**/*.feature.spec.js'
+
+const testIgnore: string[] = []
+// The prototype suite is opt-in: a CDP run with no profile skips it, so
+// nobody gets false negatives from it by accident. Choosing a profile
+// (PROFILE becomes --grep in entrypoint.sh) brings it back.
+if (isGitHubActions || (isCDPEnvironment && !process.env.PROFILE)) {
+  testIgnore.push(prototypeSpecs)
+}
+
 export default defineConfig({
   testDir,
-  testIgnore:
-    process.env.GITHUB_ACTIONS === 'true'
-      ? ['**/tests/features/front-office/cattle-prototype/**/*.feature.spec.js']
-      : [],
+  testIgnore,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

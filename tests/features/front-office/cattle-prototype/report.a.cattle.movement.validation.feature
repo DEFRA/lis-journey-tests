@@ -136,3 +136,28 @@ Feature: Cattle - Report a Cattle Movement - Negative scenarios
             | UK123456301570 | 01/01/2025    |
         Then I should see the error "You can only add a maximum of 20 animals"
 
+
+    # Ear tag formats from the BA. The validation is in the next release, so remove @fixme then.
+    # The ear tags are the BA's examples: replace them with the test data given with the release.
+    # - EU imports keep their original ear tag (non-EU imports are given new UK ear tags)
+    # - Pre-June 2000 UK ear tags were alphanumeric, e.g. UK AB1234 00123. They aren't issued any
+    #   more, but legacy ear tags are still in the systems and must be accepted
+    # Off movements need animals with these ear tags on the holding in the test data
+    @fixme
+    Scenario Outline: Movement details - <movementType> - Ear tag number - <type> ear tag '<earTag>' is accepted
+        When I select "<movementType>" and continue
+        When I submit movement details
+            | Ear tag number | Movement date |
+            | <earTag>       | 01/01/2025    |
+        Then I am on the "Check movement details" page
+
+        Examples:
+            | movementType | type        | earTag          |
+            | On movement  | EU import   | IE123456789012  |
+            | On movement  | EU import   | FR123456789012  |
+            | On movement  | EU import   | DE123456789012  |
+            | On movement  | Pre-2000 UK | UK AB1234 00123 |
+            | Off movement | EU import   | IE123456789012  |
+            | Off movement | EU import   | FR123456789012  |
+            | Off movement | EU import   | DE123456789012  |
+            | Off movement | Pre-2000 UK | UK AB1234 00123 |

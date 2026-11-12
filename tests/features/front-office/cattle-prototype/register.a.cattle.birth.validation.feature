@@ -104,16 +104,15 @@ Feature: Cattle - Register a Cattle Birth - Validation
         Then the "Animal ear tag number" field shows the error "Maximum 64 characters"
 
     @LREG-783
-    Scenario Outline: Genetic Dam Details - <field> - <case> - no results found
+    # The dam ear tag is not validated: the dam may be from another holding, dead, or imported,
+    # so it may not be in the herd or the UK database.
+    # The prototype only accepts a dam picked from the lookup, so this will fail until that changes
+    @fixme
+    Scenario: Genetic Dam Details - An ear tag that is not in the herd is accepted
         And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
         And I submit the dam details as "calf born via genetic dam"
-        When I search for "<value>" in the "<field>" field
-        Then the "<field>" field shows No results found
-
-        Examples:
-            | field                 | case                          | value          |
-            | Animal ear tag number | invalid format                | £$%^&&         |
-            | Animal ear tag number | valid format but doesnt exist | UK000000000000 |
+        When I add the ear tag of the dam as "UK000000000000"
+        Then I should see the heading "Sire details"
 
     @LREG-783
     Scenario Outline: Genetic Dam Details - <field> - search using <case> '<searchTerm>' - matching dams are suggested
@@ -173,14 +172,6 @@ Feature: Cattle - Register a Cattle Birth - Validation
             | Surrogate dam ear tag number | invalid format                | £$%^&&         |
             | Surrogate dam ear tag number | valid format but doesnt exist | UK000000000000 |
 
-        #Genetic dam ear tag number does not have lookup on prototype so this will fail until the lookup is added
-        @fixme
-        Examples:
-            | field                      | case                          | value          |
-            | Genetic dam ear tag number | invalid format                | £$%^&&         |
-            | Genetic dam ear tag number | valid format but doesnt exist | UK000000000000 |
-
-
     @LREG-784
     Scenario Outline: Surrogate Dam Details - <field> - search using <case> '<searchTerm>' - matching dams are suggested
         And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
@@ -195,12 +186,13 @@ Feature: Cattle - Register a Cattle Birth - Validation
             | Surrogate dam ear tag number | herd mark     | 123456         | UK123456601200 |
             | Surrogate dam ear tag number | full ear tag  | UK123456601200 | UK123456601200 |
 
-        #Genetic dam ear tag number does not have lookup on prototype so this will fail until the lookup is added
-        @fixme
-        Examples:
-            | Genetic dam ear tag number | last 3 digits | 102            | UK123456501102 |
-            | Genetic dam ear tag number | herd mark     | 123456         | UK123456501102 |
-            | Genetic dam ear tag number | full ear tag  | UK123456501102 | UK123456501102 |
+    @LREG-784
+    # The genetic dam ear tag is not validated, only the surrogate dam ear tag is
+    Scenario: Surrogate Dam Details - A genetic dam ear tag that is not in the herd is accepted
+        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "calf born via surrogate dam"
+        When I add a genetic dam ear tag number as "UK000000000000" and a surrogate dam ear tag number as "UK123456601200"
+        Then I should see the heading "Sire details"
 
     @LREG-784
     # This validation is not on the prototype so this will fail until it is added
@@ -211,46 +203,21 @@ Feature: Cattle - Register a Cattle Birth - Validation
         And I add a genetic dam ear tag number as "UK123456501101" and a surrogate dam ear tag number as "UK123456501101"
         Then I should see the error "The genetic dam and surrogate dam ear tag numbers cannot be the same"
 
-    #Max length errors not on prototype so this will fail
-    @fixme
-    Scenario: Sire Details - Max length errors
+    # The sire ear tag and name are optional free text, so they are not validated
+    Scenario Outline: Sire Details - <case> - is accepted
         And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
         And I submit the dam details as "calf born via genetic dam"
         And I add the ear tag of the dam as "UK123456501101"
-        When I enter 255 characters into the "Sire ear tag number (optional)" field
-        When I enter 255 characters into the "Sire name (optional)" field
-        And I continue from the "Sire details" page
-        Then the "Sire ear tag number (optional)" field shows the error "Maximum 64 characters"
-        Then the "Sire name (optional)" field shows the error "Maximum 64 characters"
-
-    Scenario Outline: Sire Details - <field> - <case> - no results found
-        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
-        And I submit the dam details as "calf born via genetic dam"
-        And I add the ear tag of the dam as "UK123456501101"
-        When I search for "<value>" in the "<field>" field
-        Then the "<field>" field shows No results found
+        When I add sire details with "<earTag>" and "<name>"
+        Then I should see the heading "Check calf details"
 
         Examples:
-            | field                          | case                          | value          |
-            | Sire ear tag number (optional) | invalid format                | £$%^&&         |
-            | Sire ear tag number (optional) | valid format but doesnt exist | UK000000000000 |
-            | Sire name (optional)           | invalid format                | £$%^&&         |
-
-    #Sire ear tag number does not have lookup on prototype so this will fail until the lookup is added
-    @fixme
-    Scenario Outline: Sire Details - <field> - search using <case> '<searchTerm>' - matching tags are suggested
-        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
-        And I submit the dam details as "calf born via genetic dam"
-        And I add the ear tag of the dam as "UK123456501101"
-        When I search for "<searchTerm>" in the "<field>" field
-        Then the "<field>" field suggests "<suggestion>"
-        And every suggestion in the "<field>" field contains "<searchTerm>"
-        And the "<field>" field shows no more than 10 suggestions
-        Examples: Partial and full ear tags
-            | field                          | case          | searchTerm     | suggestion     |
-            | Sire ear tag number (optional) | last 3 digits | 103            | UK123456501103 |
-            | Sire ear tag number (optional) | herd mark     | 123456         | UK123456501103 |
-            | Sire ear tag number (optional) | full ear tag  | UK123456501103 | UK123456501103 |
+            | case                         | earTag          | name      |
+            | ear tag not in the herd      | UK000000000000  | Sire Name |
+            | ear tag in an invalid format | £$%^&&          | Sire Name |
+            | name with special characters | UK123456501103  | £$%^&&    |
+            | EU import ear tag            | IE123456789012  | Sire Name |
+            | Pre-2000 UK ear tag          | UK AB1234 00123 | Sire Name |
 
     @LREG-781 @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register new cattle birth - Empty field error
@@ -261,3 +228,48 @@ Feature: Cattle - Register a Cattle Birth - Validation
         And I continue from the "Register new cattle births" page
         Then I should see the error "Select yes to add additional animals or no to continue"
 
+
+    # Ear tag formats from the BA. The validation is in the next release, so remove @fixme then.
+    # The ear tags are the BA's examples: replace them with the test data given with the release.
+    # - EU imports keep their original ear tag (non-EU imports are given new UK ear tags)
+    # - Pre-June 2000 UK ear tags were alphanumeric, e.g. UK AB1234 00123. They aren't issued any
+    #   more, but legacy ear tags are still in the systems and must be accepted
+    # Lookup fields need animals with these ear tags in the test data to select
+    @fixme
+    Scenario Outline: Calf Details - Animal ear tag number - <type> ear tag '<earTag>' is accepted
+        When I submit valid calf details with "<earTag>", "today", "Female", and "Baltata Romaneasca (BRO)"
+        Then I am on the "Dam details" page
+
+        Examples:
+            | type        | earTag          |
+            | EU import   | IE123456789012  |
+            | EU import   | FR123456789012  |
+            | EU import   | DE123456789012  |
+            | Pre-2000 UK | UK AB1234 00123 |
+
+    @fixme
+    Scenario Outline: Genetic Dam Details - Animal ear tag number - <type> ear tag '<earTag>' is accepted
+        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "calf born via genetic dam"
+        When I add the ear tag of the dam as "<earTag>"
+        Then I am on the "Sire details" page
+
+        Examples:
+            | type        | earTag          |
+            | EU import   | IE123456789012  |
+            | EU import   | FR123456789012  |
+            | EU import   | DE123456789012  |
+            | Pre-2000 UK | UK AB1234 00123 |
+
+    @fixme
+    Scenario Outline: Surrogate Dam Details - <type> ear tags '<geneticDam>' and '<surrogateDam>' are accepted
+        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "calf born via surrogate dam"
+        When I add a genetic dam ear tag number as "<geneticDam>" and a surrogate dam ear tag number as "<surrogateDam>"
+        Then I am on the "Sire details" page
+
+        Examples:
+            | type        | geneticDam      | surrogateDam    |
+            | EU import   | IE123456789012  | FR123456789012  |
+            | EU import   | DE123456789012  | IE123456789013  |
+            | Pre-2000 UK | UK AB1234 00123 | IE123456789012  |

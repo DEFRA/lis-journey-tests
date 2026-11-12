@@ -144,3 +144,34 @@ Feature: Cattle - Report a Cattle Death - Validation
         And I submit "No" for add more animals for deaths
         And I continue from the "Report cattle deaths" page
         Then I should see the summary error "Add at least one animal before continuing"
+    # Ear tag formats from the BA. The validation is in the next release, so remove @fixme then.
+    # The ear tags are the BA's examples: replace them with the test data given with the release.
+    # - EU imports keep their original ear tag (non-EU imports are given new UK ear tags)
+    # - Pre-June 2000 UK ear tags were alphanumeric, e.g. UK AB1234 00123. They aren't issued any
+    #   more, but legacy ear tags are still in the systems and must be accepted
+    # Registered animals need animals with these ear tags on the holding in the test data
+    @fixme
+    Scenario Outline: Registered Animal details - Animal ear tag number - <type> ear tag '<earTag>' is accepted
+        When I select "Yes" to is the animal registered
+        When I submit tag "<earTag>" and date of death "today"
+        Then I am on the "Check animal details" page
+
+        Examples:
+            | type        | earTag          |
+            | EU import   | IE123456789012  |
+            | EU import   | FR123456789012  |
+            | EU import   | DE123456789012  |
+            | Pre-2000 UK | UK AB1234 00123 |
+
+    @fixme
+    Scenario Outline: Unregistered Animal details - Animal ear tag number - <type> ear tag '<earTag>' is accepted
+        When I select "No" to is the animal registered
+        And I submit valid animal details with "<earTag>", "01/01/2025","today", "Female", and "Limousin (LIM)"
+        Then I am on the "Check animal details" page
+
+        Examples:
+            | type        | earTag          |
+            | EU import   | IE123456789012  |
+            | EU import   | FR123456789012  |
+            | EU import   | DE123456789012  |
+            | Pre-2000 UK | UK AB1234 00123 |
