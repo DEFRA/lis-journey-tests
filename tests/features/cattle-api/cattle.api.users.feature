@@ -1,6 +1,6 @@
 # User endpoints, which read from and write to KRDS.
 # Only checks that don't create user accounts, so nothing is left behind on CDP dev
-@api @cattleapi
+@api @cattleapi @dev
 Feature: Cattle API - Users
 
     Scenario: Get user details rejects a subject that isn't a valid ID

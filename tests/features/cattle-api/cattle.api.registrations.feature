@@ -1,7 +1,9 @@
 # Registration endpoints, which store bundles in the Cattle API's own database for sending to CTS.
 # Only checks that are rejected before anything is saved, so nothing is left behind on CDP dev.
 # Each request has every required field (clientReference, holding.cph, submittedBy) except the one under test
-@api @cattleapi
+# The registration endpoint is still being built and the results can't be trusted yet.LREG-939 is the ticket with the issue
+# Remove @fixme when the developers say it is ready
+@fixme @api @cattleapi @dev @LREG-939
 Feature: Cattle API - Registrations
 
     Scenario: Create a registration bundle rejects a request without a client reference

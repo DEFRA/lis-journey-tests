@@ -3,7 +3,7 @@
 # The timeout values themselves can't be triggered from outside the API, so these are regression checks:
 # each operation reaches its upstream service and the upstream response is passed back correctly.
 # Test data is the holding and cattle the MVP journey tests use, which exist locally and on CDP dev.
-@api @cattleapi
+@api @cattleapi @dev
 Feature: Cattle API - CADS and KRDS operations
 
     Scenario Outline: <operation> returns the upstream data

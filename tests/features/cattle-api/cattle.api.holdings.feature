@@ -1,7 +1,7 @@
 # Holding endpoints. Holding details and search come from KRDS, cattle from CADS and
 # bundles from the Cattle API's own database.
 # Test data is the holding the MVP journey tests use, which exists locally and on CDP dev.
-@api @cattleapi
+@api @cattleapi @dev
 Feature: Cattle API - Holdings
 
     Scenario: Search holdings by name

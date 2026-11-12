@@ -1,4 +1,4 @@
-@api @cattleapi
+@api @cattleapi @dev
 Feature: Cattle API
 
     Scenario: The health check responds without an API key

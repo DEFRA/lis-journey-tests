@@ -1,6 +1,6 @@
 # Cattle endpoints, which read from CADS.
 # Test data is the holding and cattle the MVP journey tests use, which exist locally and on CDP dev.
-@api @cattleapi
+@api @cattleapi @dev
 Feature: Cattle API - Cattle
 
     Scenario: Get the cattle on a holding

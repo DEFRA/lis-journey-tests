@@ -31,6 +31,13 @@ process.env.frontOfficeUrl = frontOfficeUrl
 process.env.backOfficeUrl = backOfficeUrl
 process.env.isCDPEnvironment = isCDPEnvironment.toString()
 
+// Allure adds to allure-results on every run and never clears it, so remove
+// the previous run's results here. Workers load this config too, so only do
+// it in the main process (workers have TEST_WORKER_INDEX set).
+if (!process.env.TEST_WORKER_INDEX) {
+  fs.rmSync('allure-results', { recursive: true, force: true })
+}
+
 const reporters: ReporterDescription[] = [
   ['list'], // CLI console output
   [
