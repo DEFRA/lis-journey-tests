@@ -53,14 +53,14 @@ When(
 
 Then(
   'the Cattle API responds with status {int}',
-  async ({ cattleApiClient }, status: number) => {
+  ({ cattleApiClient }, status: number) => {
     expect(cattleApiClient.status).toBe(status)
   }
 )
 
 Then(
   'the Cattle API responds with status {int} and the response contains {string}',
-  async ({ cattleApiClient }, status: number, text: string) => {
+  ({ cattleApiClient }, status: number, text: string) => {
     expect(cattleApiClient.status).toBe(status)
     expect(cattleApiClient.body).toContain(text)
   }
@@ -68,7 +68,7 @@ Then(
 
 Then(
   'the Cattle API responds with status {int} and the response is {string}',
-  async ({ cattleApiClient }, status: number, expected: string) => {
+  ({ cattleApiClient }, status: number, expected: string) => {
     expect(cattleApiClient.status).toBe(status)
     expect(cattleApiClient.body.trim()).toBe(expected)
   }
@@ -77,7 +77,7 @@ Then(
 // A top-level field, e.g. "pageSize" or "earTag"
 Then(
   'the Cattle API response field {string} is {string}',
-  async ({ cattleApiClient }, field: string, expected: string) => {
+  ({ cattleApiClient }, field: string, expected: string) => {
     const json = cattleApiClient.json() as Record<string, unknown>
     expect(String(json[field])).toBe(expected)
   }
@@ -85,7 +85,7 @@ Then(
 
 Then(
   'the Cattle API response has {int} items',
-  async ({ cattleApiClient }, count: number) => {
+  ({ cattleApiClient }, count: number) => {
     expect(cattleApiClient.items()).toHaveLength(count)
   }
 )
@@ -94,7 +94,7 @@ Then(
 // Ignores case, so "female" matches "Female"
 Then(
   'every item in the Cattle API response has {string} equal to {string}',
-  async ({ cattleApiClient }, field: string, expected: string) => {
+  ({ cattleApiClient }, field: string, expected: string) => {
     const items = cattleApiClient.items()
     expect(items.length).toBeGreaterThan(0)
     for (const item of items) {
@@ -105,7 +105,7 @@ Then(
 
 Then(
   'every item in the Cattle API response has {string} containing {string}',
-  async ({ cattleApiClient }, field: string, expected: string) => {
+  ({ cattleApiClient }, field: string, expected: string) => {
     const items = cattleApiClient.items()
     expect(items.length).toBeGreaterThan(0)
     for (const item of items) {
@@ -118,7 +118,7 @@ Then(
 
 Then(
   'the Cattle API response contains {string}',
-  async ({ cattleApiClient }, text: string) => {
+  ({ cattleApiClient }, text: string) => {
     expect(cattleApiClient.body).toContain(text)
   }
 )
@@ -126,10 +126,11 @@ Then(
 // Order is "ascending" or "descending". Needs at least 2 items to prove anything
 Then(
   'the Cattle API response items are sorted by {string} in {string} order',
-  async ({ cattleApiClient }, field: string, order: string) => {
+  ({ cattleApiClient }, field: string, order: string) => {
     const values = cattleApiClient.items().map((item) => String(item[field]))
     expect(values.length).toBeGreaterThan(1)
-    const sorted = [...values].sort((a, b) => a.localeCompare(b))
-    expect(values).toEqual(order === 'descending' ? sorted.reverse() : sorted)
+    const direction = order === 'descending' ? -1 : 1
+    const sorted = [...values].sort((a, b) => direction * a.localeCompare(b))
+    expect(values).toEqual(sorted)
   }
 )
