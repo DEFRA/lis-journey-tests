@@ -21,11 +21,11 @@ Feature: Cattle API - Cattle
             | ear tag part | earTag=UK2000 | earTag    | containing | UK2000 |
 
     Scenario: Filter the cattle on a holding by ear tag, breed and sex together
-        When I send a GET request to "/v1/holdings/22/001/0001/cattle?earTag=UK2000&breed=AA&sex=female" on the Cattle API
+        When I send a GET request to "/v1/holdings/22/001/0001/cattle?earTag=UK2000&breed=AA&sex=male" on the Cattle API
         Then the Cattle API responds with status 200
         And every item in the Cattle API response has "earTag" containing "UK2000"
         And every item in the Cattle API response has "breedCode" equal to "AA"
-        And every item in the Cattle API response has "sex" equal to "female"
+        And every item in the Cattle API response has "sex" equal to "male"
 
     Scenario: Filter the cattle on a holding with no match returns an empty list
         When I send a GET request to "/v1/holdings/22/001/0001/cattle?earTag=UK999" on the Cattle API
