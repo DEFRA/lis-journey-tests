@@ -34,16 +34,16 @@ Feature: Cattle - Report a Cattle Death - Validation
 
         Examples:
             | case                      | earTag         | dod        | error                                                     |
-            | date of death in future   | UK123456301550 | 1/1/2099   | Date of death needs to be in the past                     |
-            | date of death is tomorrow | UK123456301550 | tomorrow   | Date of death needs to be in the past                     |
-            | US style date of death    | UK123456301550 | 12/20/2025 | Date of death must be a real date, for example 01/05/2026 |
-            | Non leap year             | UK123456301550 | 29/02/2023 | Date of death must be a real date, for example 01/05/2026 |
+            | date of death in future   | UK324537100001 | 1/1/2099   | Date of death needs to be in the past                     |
+            | date of death is tomorrow | UK324537100001 | tomorrow   | Date of death needs to be in the past                     |
+            | US style date of death    | UK324537100001 | 12/20/2025 | Date of death must be a real date, for example 01/05/2026 |
+            | Non leap year             | UK324537100001 | 29/02/2023 | Date of death must be a real date, for example 01/05/2026 |
 
         @fixme
         # Invalid date of death validation is not present in prototype, but added to test for future proofing
         Examples:
             | case                  | earTag         | dod     | error                                                     |
-            | invalid date of death | UK123456301550 | ABCDEFG | Date of death must be a real date, for example 01/05/2026 |
+            | invalid date of death | UK324537100001 | ABCDEFG | Date of death must be a real date, for example 01/05/2026 |
 
     #Max length validation not present in prototype, but added to test for future proofing
     @fixme
@@ -84,17 +84,17 @@ Feature: Cattle - Report a Cattle Death - Validation
 
         Examples:
             | case                      | earTag         | dob        | dod        | sex    | breed          | error                                                     |
-            | date of death in future   | UK123456301550 | 01/01/2025 | 1/1/2099   | Female | Limousin (LIM) | Date of death needs to be in the past                     |
-            | date of death is tomorrow | UK123456301550 | 01/01/2025 | tomorrow   | Female | Limousin (LIM) | Date of death needs to be in the past                     |
-            | US style date of death    | UK123456301550 | 01/01/2025 | 12/20/2025 | Female | Limousin (LIM) | Date of death must be a real date, for example 01/05/2026 |
-            | Non leap year             | UK123456301550 | 01/01/2025 | 29/02/2026 | Female | Limousin (LIM) | Date of death must be a real date, for example 01/05/2026 |
-            | Death before birth date   | UK123456301550 | 01/01/2025 | 22/02/2023 | Female | Limousin (LIM) | Date of death cannot be before the date of birth          |
+            | date of death in future   | UK324537100001 | 01/01/2025 | 1/1/2099   | Female | Limousin (LIM) | Date of death needs to be in the past                     |
+            | date of death is tomorrow | UK324537100001 | 01/01/2025 | tomorrow   | Female | Limousin (LIM) | Date of death needs to be in the past                     |
+            | US style date of death    | UK324537100001 | 01/01/2025 | 12/20/2025 | Female | Limousin (LIM) | Date of death must be a real date, for example 01/05/2026 |
+            | Non leap year             | UK324537100001 | 01/01/2025 | 29/02/2026 | Female | Limousin (LIM) | Date of death must be a real date, for example 01/05/2026 |
+            | Death before birth date   | UK324537100001 | 01/01/2025 | 22/02/2023 | Female | Limousin (LIM) | Date of death cannot be before the date of birth          |
 
         @fixme
         # Invalid date of death validation is not present in prototype, but added to test for future proofing
         Examples:
             | case                  | earTag         | dob        | dod     | sex  | breed          | error                                                     |
-            | invalid date of death | UK123456301550 | 01/01/2025 | ABCDEFG | Male | Limousin (LIM) | Date of death must be a real date, for example 01/05/2026 |
+            | invalid date of death | UK324537100001 | 01/01/2025 | ABCDEFG | Male | Limousin (LIM) | Date of death must be a real date, for example 01/05/2026 |
 
     # Checks only the Date of birth error, as a future birth date may also trigger the date of death error
     Scenario Outline: Unregistered Animal details - Date Of Birth errors - <case>
@@ -104,11 +104,11 @@ Feature: Cattle - Report a Cattle Death - Validation
 
         Examples:
             | case                      | earTag         | dob        | dod   | sex    | breed          | error                                                     |
-            | date of birth in future   | UK123456301550 | 1/1/2099   | today | Female | Limousin (LIM) | Date of birth must be today or in the past                |
-            | date of birth is tomorrow | UK123456301550 | tomorrow   | today | Female | Limousin (LIM) | Date of birth must be today or in the past                |
-            | invalid date of birth     | UK123456301550 | ABCDEFG    | today | Female | Limousin (LIM) | Date of birth must be a real date, for example 01/05/2026 |
-            | US style date of birth    | UK123456301550 | 12/20/2025 | today | Female | Limousin (LIM) | Date of birth must be a real date, for example 01/05/2026 |
-            | Non leap year             | UK123456301550 | 29/02/2023 | today | Female | Limousin (LIM) | Date of birth must be a real date, for example 01/05/2026 |
+            | date of birth in future   | UK324537100001 | 1/1/2099   | today | Female | Limousin (LIM) | Date of birth must be today or in the past                |
+            | date of birth is tomorrow | UK324537100001 | tomorrow   | today | Female | Limousin (LIM) | Date of birth must be today or in the past                |
+            | invalid date of birth     | UK324537100001 | ABCDEFG    | today | Female | Limousin (LIM) | Date of birth must be a real date, for example 01/05/2026 |
+            | US style date of birth    | UK324537100001 | 12/20/2025 | today | Female | Limousin (LIM) | Date of birth must be a real date, for example 01/05/2026 |
+            | Non leap year             | UK324537100001 | 29/02/2023 | today | Female | Limousin (LIM) | Date of birth must be a real date, for example 01/05/2026 |
 
     Scenario Outline: Unregistered Animal details - Breed - <case> - no results found
         When I select "No" to is the animal registered
@@ -132,7 +132,7 @@ Feature: Cattle - Report a Cattle Death - Validation
 
     Scenario: Report cattle deaths - Error shown when add more deaths is not answered
         When I select "Yes" to is the animal registered
-        When I submit tag "UK123456301550" and date of death "01/01/2026"
+        When I submit tag "UK324537100001" and date of death "01/01/2026"
         And I continue from the "Check animal details" page
         And I continue from the "Report cattle deaths" page
         Then I should see the errors:
@@ -140,7 +140,7 @@ Feature: Cattle - Report a Cattle Death - Validation
 
     Scenario: Report cattle deaths - Answering No to add more deaths shows the add at least one animal error
         When I select "Yes" to is the animal registered
-        When I submit tag "UK123456301550" and date of death "01/01/2026"
+        When I submit tag "UK324537100001" and date of death "01/01/2026"
         And I submit "No" for add more animals for deaths
         And I continue from the "Report cattle deaths" page
         Then I should see the summary error "Add at least one animal before continuing"
@@ -154,7 +154,7 @@ Feature: Cattle - Report a Cattle Death - Validation
     Scenario Outline: Registered Animal details - Animal ear tag number - <type> ear tag '<earTag>' is accepted
         When I select "Yes" to is the animal registered
         When I submit tag "<earTag>" and date of death "today"
-        Then I am on the "Check animal details" page
+        Then I should see the heading "Check animal details"
 
         Examples:
             | type        | earTag          |
@@ -167,7 +167,7 @@ Feature: Cattle - Report a Cattle Death - Validation
     Scenario Outline: Unregistered Animal details - Animal ear tag number - <type> ear tag '<earTag>' is accepted
         When I select "No" to is the animal registered
         And I submit valid animal details with "<earTag>", "01/01/2025","today", "Female", and "Limousin (LIM)"
-        Then I am on the "Check animal details" page
+        Then I should see the heading "Check animal details"
 
         Examples:
             | type        | earTag          |

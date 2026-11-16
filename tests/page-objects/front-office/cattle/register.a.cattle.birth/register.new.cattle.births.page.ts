@@ -3,6 +3,7 @@ import { BasePage } from '../../../base.page'
 
 export class LisFrontOfficeRegisterNewCattleBirthPage extends BasePage {
   readonly heading: Locator
+  readonly animalsTable: Locator
   readonly yesRadio: Locator
   readonly noRadio: Locator
 
@@ -11,8 +12,13 @@ export class LisFrontOfficeRegisterNewCattleBirthPage extends BasePage {
     this.heading = page.getByRole('heading', {
       name: 'Register new cattle births'
     })
-    this.yesRadio = page.getByRole('radio', { name: 'Yes' })
-    this.noRadio = page.getByRole('radio', { name: 'No' })
+    // The table is named by its visually hidden caption
+    this.animalsTable = page.getByRole('table', {
+      name: 'Animals in this registration'
+    })
+    const addMoreAnimals = page.getByRole('group', { name: 'Add more animals' })
+    this.yesRadio = addMoreAnimals.getByRole('radio', { name: 'Yes' })
+    this.noRadio = addMoreAnimals.getByRole('radio', { name: 'No' })
   }
 
   async submitAddMoreAnimals(addMoreAnimals: 'Yes' | 'No') {
@@ -21,14 +27,16 @@ export class LisFrontOfficeRegisterNewCattleBirthPage extends BasePage {
     await this.continueButton.click()
   }
 
+  // Tag numbers are shown spaced, e.g. "UK 324537 100001"
   async verifyTagStatus(tagNumber: string, expectedStatus: string) {
-    const row = this.page.getByRole('row').filter({
+    const row = this.animalsTable.getByRole('row').filter({
       has: this.page.getByRole('link', {
         name: tagNumber,
         exact: true
       })
     })
 
-    await expect(row.locator('.govuk-tag')).toHaveText(expectedStatus)
+    // Columns are Tag number then Status
+    await expect(row.getByRole('cell').nth(1)).toHaveText(expectedStatus)
   }
 }

@@ -49,7 +49,7 @@ Then(
   'I submit the dam details as {string}',
   async (
     { lisFrontOfficeDamDetailsPage },
-    damDetails: 'calf born via genetic dam' | 'calf born via surrogate dam'
+    damDetails: 'Calf born via genetic dam' | 'Calf born via surrogate dam'
   ) => {
     await expect(lisFrontOfficeDamDetailsPage.heading).toBeVisible()
     await lisFrontOfficeDamDetailsPage.submitDamDetails(damDetails)
@@ -178,7 +178,7 @@ When(
   'I select {string} on the cancellation confirmation page',
   async (
     { lisFrontOfficeCancelThisRegistrationPage },
-    confirmation: 'Continue' | 'Cancel'
+    confirmation: 'Yes' | 'No'
   ) => {
     await expect(lisFrontOfficeCancelThisRegistrationPage.heading).toBeVisible()
     await lisFrontOfficeCancelThisRegistrationPage.confirmCancellation(
@@ -324,6 +324,7 @@ When(
   async ({ lisFrontOfficeRegisterCalfDetailsPage }, dataTable: DataTable) => {
     await expect(lisFrontOfficeRegisterCalfDetailsPage.heading).toBeVisible()
     const values = dataTable.rowsHash()
+    values['Date of birth'] = resolveInputDate(values['Date of birth'])
 
     await lisFrontOfficeRegisterCalfDetailsPage.verifySexSelected(values['Sex'])
 

@@ -1,7 +1,8 @@
+@ui @frontoffice @dev  @cattlebirth @cattlebirthnegative
 Feature: Cattle - Register a Cattle Birth - Validation
 
     Background: Sign in to the prototype and start Register a cattle birth
-        Given I log into the herokuapp mvp
+        Given I am authenticated as a front office user with a single CPH holding
         And I select Register a cattle birth
 
     @LREG-781
@@ -20,11 +21,11 @@ Feature: Cattle - Register a Cattle Birth - Validation
 
         Examples:
             | case                            | earTag         | dob        | sex    | breed           | error                                                     |
-            | date of birth in future         | UK123456301550 | 1/1/2099   | Female | Danish Red (DR) | Date of birth must be today or in the past                |
-            | date of birth is tomorrow       | UK123456301550 | tomorrow   | Female | Danish Red (DR) | Date of birth must be today or in the past                |
-            | invalid date of birth in future | UK123456301550 | ABCDEFG    | Female | Danish Red (DR) | Date of birth must be a real date, for example 01/05/2026 |
-            | US style date of birth          | UK123456301550 | 12/20/2025 | Female | Danish Red (DR) | Date of birth must be a real date, for example 01/05/2026 |
-            | Non leap year                   | UK123456301550 | 29/02/2023 | Female | Danish Red (DR) | Date of birth must be a real date, for example 01/05/2026 |
+            | date of birth in future         | UK324537100001 | 1/1/2099   | Female | Danish Red (DR) | Date of birth must be today or in the past                |
+            | date of birth is tomorrow       | UK324537100001 | tomorrow   | Female | Danish Red (DR) | Date of birth must be today or in the past                |
+            | invalid date of birth in future | UK324537100001 | ABCDEFG    | Female | Danish Red (DR) | Date of birth must be a real date, for example 01/05/2026 |
+            | US style date of birth          | UK324537100001 | 12/20/2025 | Female | Danish Red (DR) | Date of birth must be a real date, for example 01/05/2026 |
+            | Non leap year                   | UK324537100001 | 29/02/2023 | Female | Danish Red (DR) | Date of birth must be a real date, for example 01/05/2026 |
 
     @LREG-781
     #Max length errors not on prototype so this will fail
@@ -59,9 +60,9 @@ Feature: Cattle - Register a Cattle Birth - Validation
         And the "<field>" field shows no more than 10 suggestions
         Examples: Partial and full ear tags
             | field                 | case          | searchTerm     | suggestion     |
-            | Animal ear tag number | last 3 digits | 550            | UK123456301550 |
-            | Animal ear tag number | herd mark     | 123456         | UK123456301550 |
-            | Animal ear tag number | full ear tag  | UK123456301550 | UK123456301550 |
+            | Animal ear tag number | last 3 digits | 550            | UK324537100001 |
+            | Animal ear tag number | herd mark     | 123456         | UK324537100001 |
+            | Animal ear tag number | full ear tag  | UK324537100001 | UK324537100001 |
 
     @LREG-781
     Scenario Outline: Calf Details - Breed - search using <case> '<searchTerm>' - matching breeds are suggested
@@ -75,20 +76,20 @@ Feature: Cattle - Register a Cattle Birth - Validation
 
     @LREG-781
     Scenario: Calf Details - Date of birth more than 27 days in the past - late registration error
-        When I enter calf details with "UK123456301550", "28 days ago", "Female", and "Danish Red (DR)"
+        When I enter calf details with "UK324537100001", "28 days ago", "Female", and "Danish Red (DR)"
         Then I should see the error "Date of birth is more than 27 days ago. This is a late registration"
 
     @LREG-782
     Scenario: Dam Details - Empty field errors
-        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
         When I continue from the "Dam details" page
         Then I should see the errors:
             | Select if the calf was born via a genetic or surrogate dam |
 
     @LREG-783
     Scenario: Genetic Dam Details - Empty field errors
-        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
-        And I submit the dam details as "calf born via genetic dam"
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
         When I continue from the "Genetic dam details" page
         Then I should see the errors:
             | Enter all or part of the genetic dam ear tag number and select from the list |
@@ -97,8 +98,8 @@ Feature: Cattle - Register a Cattle Birth - Validation
     #Max length errors not on prototype so this will fail
     @fixme
     Scenario: Genetic Dam Details - Max length errors
-        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
-        And I submit the dam details as "calf born via genetic dam"
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
         When I enter 255 characters into the "Animal ear tag number" field
         And I continue from the "Genetic dam details" page
         Then the "Animal ear tag number" field shows the error "Maximum 64 characters"
@@ -109,31 +110,31 @@ Feature: Cattle - Register a Cattle Birth - Validation
     # The prototype only accepts a dam picked from the lookup, so this will fail until that changes
     @fixme
     Scenario: Genetic Dam Details - An ear tag that is not in the herd is accepted
-        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
-        And I submit the dam details as "calf born via genetic dam"
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
         When I add the ear tag of the dam as "UK000000000000"
         Then I should see the heading "Sire details"
 
     @LREG-783
     Scenario Outline: Genetic Dam Details - <field> - search using <case> '<searchTerm>' - matching dams are suggested
-        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
-        And I submit the dam details as "calf born via genetic dam"
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
         When I search for "<searchTerm>" in the "<field>" field
         Then the "<field>" field suggests "<suggestion>"
         And every suggestion in the "<field>" field contains "<searchTerm>"
         And the "<field>" field shows no more than 10 suggestions
         Examples: Partial and full ear tags
             | field                 | case          | searchTerm     | suggestion     |
-            | Animal ear tag number | last 3 digits | 101            | UK123456501101 |
-            | Animal ear tag number | herd mark     | 123456         | UK123456501101 |
-            | Animal ear tag number | full ear tag  | UK123456501101 | UK123456501101 |
+            | Animal ear tag number | last 3 digits | 101            | UK200000000007 |
+            | Animal ear tag number | herd mark     | 123456         | UK200000000007 |
+            | Animal ear tag number | full ear tag  | UK200000000007 | UK200000000007 |
 
     @LREG-783
     Scenario: Genetic Dam Details - Select a dam from the suggestions and continue
-        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
-        And I submit the dam details as "calf born via genetic dam"
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
         When I search for "101" in the "Animal ear tag number" field
-        And I select "UK123456501101" from the "Animal ear tag number" field suggestions
+        And I select "UK200000000007" from the "Animal ear tag number" field suggestions
         And I continue from the "Genetic dam details" page
         Then I should see the heading "Sire details"
 
@@ -141,8 +142,8 @@ Feature: Cattle - Register a Cattle Birth - Validation
     #The errors match the story which is not the same as the prototype so this will fail until the correct errors are in mvp
     @fixme
     Scenario: Surrogate Dam Details - Empty field errors
-        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
-        And I submit the dam details as "calf born via surrogate dam details"
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via surrogate dam details"
         When I continue from the "Genetic and surrogate dam details" page
         Then I should see the errors:
             | Enter the full animal ear tag number of the genetic dam   |
@@ -152,8 +153,8 @@ Feature: Cattle - Register a Cattle Birth - Validation
     #Max length errors not on prototype so this will fail
     @fixme
     Scenario: Surrogate Dam Details - Max length errors
-        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
-        And I submit the dam details as "calf born via surrogate dam details"
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via surrogate dam details"
         When I enter 255 characters into the "Genetic dam ear tag number" field
         When I enter 255 characters into the "Surrogate dam ear tag number" field
         And I continue from the "Genetic and surrogate dam" page
@@ -162,8 +163,8 @@ Feature: Cattle - Register a Cattle Birth - Validation
 
     @LREG-784
     Scenario Outline: Surrogate Dam Details - <field> - <case> - no results found
-        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
-        And I submit the dam details as "calf born via surrogate dam"
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via surrogate dam"
         When I search for "<value>" in the "<field>" field
         Then the "<field>" field shows No results found
 
@@ -174,40 +175,40 @@ Feature: Cattle - Register a Cattle Birth - Validation
 
     @LREG-784
     Scenario Outline: Surrogate Dam Details - <field> - search using <case> '<searchTerm>' - matching dams are suggested
-        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
-        And I submit the dam details as "calf born via surrogate dam"
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via surrogate dam"
         When I search for "<searchTerm>" in the "<field>" field
         Then the "<field>" field suggests "<suggestion>"
         And every suggestion in the "<field>" field contains "<searchTerm>"
         And the "<field>" field shows no more than 10 suggestions
         Examples: Partial and full ear tags
             | field                        | case          | searchTerm     | suggestion     |
-            | Surrogate dam ear tag number | last 3 digits | 200            | UK123456601200 |
-            | Surrogate dam ear tag number | herd mark     | 123456         | UK123456601200 |
-            | Surrogate dam ear tag number | full ear tag  | UK123456601200 | UK123456601200 |
+            | Surrogate dam ear tag number | last 3 digits | 200            | UK300000000023 |
+            | Surrogate dam ear tag number | herd mark     | 123456         | UK300000000023 |
+            | Surrogate dam ear tag number | full ear tag  | UK300000000023 | UK300000000023 |
 
     @LREG-784
     # The genetic dam ear tag is not validated, only the surrogate dam ear tag is
     Scenario: Surrogate Dam Details - A genetic dam ear tag that is not in the herd is accepted
-        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
-        And I submit the dam details as "calf born via surrogate dam"
-        When I add a genetic dam ear tag number as "UK000000000000" and a surrogate dam ear tag number as "UK123456601200"
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via surrogate dam"
+        When I add a genetic dam ear tag number as "UK000000000000" and a surrogate dam ear tag number as "UK300000000023"
         Then I should see the heading "Sire details"
 
     @LREG-784
     # This validation is not on the prototype so this will fail until it is added
     @fixme
     Scenario: Surrogate Dam Details - Entering the same ear tag for both genetic and surrogate dam
-        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
-        And I submit the dam details as "calf born via surrogate dam"
-        And I add a genetic dam ear tag number as "UK123456501101" and a surrogate dam ear tag number as "UK123456501101"
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via surrogate dam"
+        And I add a genetic dam ear tag number as "UK200000000007" and a surrogate dam ear tag number as "UK200000000007"
         Then I should see the error "The genetic dam and surrogate dam ear tag numbers cannot be the same"
 
     # The sire ear tag and name are optional free text, so they are not validated
     Scenario Outline: Sire Details - <case> - is accepted
-        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
-        And I submit the dam details as "calf born via genetic dam"
-        And I add the ear tag of the dam as "UK123456501101"
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
+        And I add the ear tag of the dam as "UK200000000007"
         When I add sire details with "<earTag>" and "<name>"
         Then I should see the heading "Check calf details"
 
@@ -215,16 +216,16 @@ Feature: Cattle - Register a Cattle Birth - Validation
             | case                         | earTag          | name      |
             | ear tag not in the herd      | UK000000000000  | Sire Name |
             | ear tag in an invalid format | £$%^&&          | Sire Name |
-            | name with special characters | UK123456501103  | £$%^&&    |
+            | name with special characters | UK200000000007  | £$%^&&    |
             | EU import ear tag            | IE123456789012  | Sire Name |
             | Pre-2000 UK ear tag          | UK AB1234 00123 | Sire Name |
 
     @LREG-781 @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register new cattle birth - Empty field error
-        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
-        And I submit the dam details as "calf born via genetic dam"
-        And I add the ear tag of the dam as "UK123456501101"
-        And I add sire details with "UK123456501103" and "Sire Name"
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
+        And I add the ear tag of the dam as "UK200000000007"
+        And I add sire details with "UK200000000008" and "Sire Name"
         And I continue from the "Register new cattle births" page
         Then I should see the error "Select yes to add additional animals or no to continue"
 
@@ -238,7 +239,7 @@ Feature: Cattle - Register a Cattle Birth - Validation
     @fixme
     Scenario Outline: Calf Details - Animal ear tag number - <type> ear tag '<earTag>' is accepted
         When I submit valid calf details with "<earTag>", "today", "Female", and "Baltata Romaneasca (BRO)"
-        Then I am on the "Dam details" page
+        Then I should see the heading "Dam details"
 
         Examples:
             | type        | earTag          |
@@ -249,10 +250,10 @@ Feature: Cattle - Register a Cattle Birth - Validation
 
     @fixme
     Scenario Outline: Genetic Dam Details - Animal ear tag number - <type> ear tag '<earTag>' is accepted
-        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
-        And I submit the dam details as "calf born via genetic dam"
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
         When I add the ear tag of the dam as "<earTag>"
-        Then I am on the "Sire details" page
+        Then I should see the heading "Sire details"
 
         Examples:
             | type        | earTag          |
@@ -263,10 +264,10 @@ Feature: Cattle - Register a Cattle Birth - Validation
 
     @fixme
     Scenario Outline: Surrogate Dam Details - <type> ear tags '<geneticDam>' and '<surrogateDam>' are accepted
-        And I submit valid calf details with "UK123456301550", "11/2/2025", "Female", and "Baltata Romaneasca (BRO)"
-        And I submit the dam details as "calf born via surrogate dam"
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via surrogate dam"
         When I add a genetic dam ear tag number as "<geneticDam>" and a surrogate dam ear tag number as "<surrogateDam>"
-        Then I am on the "Sire details" page
+        Then I should see the heading "Sire details"
 
         Examples:
             | type        | geneticDam      | surrogateDam    |

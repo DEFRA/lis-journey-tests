@@ -117,3 +117,8 @@ Then(
     ).toContainText(error)
   }
 )
+
+Then('I navigate back to Check Calf Details page', async ({ page }) => {
+  await page.goBack()
+  await page.goBack()
+})

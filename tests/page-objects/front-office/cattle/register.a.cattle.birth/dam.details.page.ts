@@ -12,18 +12,18 @@ export class LisFrontOfficeDamDetailsPage extends BasePage {
       name: 'Dam details'
     })
     this.calfBornViaGeneticDamRadio = page.getByRole('radio', {
-      name: 'calf born via genetic dam',
+      name: 'Calf born via genetic dam',
       exact: true
     })
     this.calfBornViaSurrogateDamRadio = page.getByRole('radio', {
-      name: 'calf born via surrogate dam'
+      name: 'Calf born via surrogate dam'
     })
   }
 
   async submitDamDetails(
-    damType: 'calf born via genetic dam' | 'calf born via surrogate dam'
+    damType: 'Calf born via genetic dam' | 'Calf born via surrogate dam'
   ) {
-    if (damType === 'calf born via genetic dam') {
+    if (damType === 'Calf born via genetic dam') {
       await this.calfBornViaGeneticDamRadio.check()
     } else {
       await this.calfBornViaSurrogateDamRadio.check()
@@ -32,9 +32,9 @@ export class LisFrontOfficeDamDetailsPage extends BasePage {
   }
 
   async verifyDamTypeSelected(damType: string) {
-    if (damType === 'calf born via genetic dam') {
+    if (damType === 'Calf born via genetic dam') {
       await expect(this.calfBornViaGeneticDamRadio).toBeChecked()
-    } else if (damType === 'calf born via surrogate dam') {
+    } else if (damType === 'Calf born via surrogate dam') {
       await expect(this.calfBornViaSurrogateDamRadio).toBeChecked()
     } else {
       throw new Error(`Unexpected dam type: "${damType}"`)

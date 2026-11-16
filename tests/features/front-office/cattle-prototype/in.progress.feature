@@ -9,7 +9,7 @@ Feature: Cattle - In Progress - Positive scenarios
         Then I verify the Births table has:
             | Ear tag number   | Date of birth | Sex    | Breed | Date submitted |
             | UK 123456 301550 | 2 Sep 2026    | Female | HER   | 10 Sep 2026    |
-            | UK 123456 301551 | 2 Sep 2026    | Male   | HER   | 10 Sep 2026    |
+            | UK 324537 100002 | 2 Sep 2026    | Male   | HER   | 10 Sep 2026    |
             | UK 123456 301552 | 5 Sep 2026    | Female | HER   | 10 Sep 2026    |
 
     # Click on the tag disabled in prototype

@@ -27,7 +27,7 @@ Feature: Cattle - Activity History - Positive scenarios
         Then I verify the Animals registered table has:
             | Ear tag number   | Date of birth | Date on holding | Sex    | Breed |
             | UK 123456 301550 | 2 Sep 2026    | 2 Sep 2026      | Male   | HER   |
-            | UK 123456 301551 | 2 Sep 2026    | 2 Sep 2026      | Female | HER   |
+            | UK 324537 100002 | 2 Sep 2026    | 2 Sep 2026      | Female | HER   |
             | UK 123456 301552 | 5 Sep 2026    | 5 Sep 2026      | Male   | HER   |
             | UK 123456 301553 | 5 Sep 2026    | 5 Sep 2026      | Female | HER   |
 

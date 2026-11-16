@@ -1,7 +1,8 @@
+@ui @frontoffice @dev @cattlebirth @cattlebirthpositive
 Feature: Cattle - Register a Cattle Birth - Date of birth date picker
 
     Background: Sign in to the prototype and start Register a cattle birth
-        Given I log into the herokuapp mvp
+        Given I am authenticated as a front office user with a single CPH holding
         And I select Register a cattle birth
 
     @LREG-781

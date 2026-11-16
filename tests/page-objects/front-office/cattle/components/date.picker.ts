@@ -1,7 +1,7 @@
 import { expect, Locator, Page } from '@playwright/test'
 import { runInOrder } from '../../../../utils/run.in.order'
 
-// The MOJ date picker attached to a date input, e.g. Date of birth.
+// The LIS date picker attached to a date input, e.g. Date of birth.
 // Dates are d/m/yyyy, which matches the data-testid on each day button.
 export class DatePicker {
   readonly input: Locator
@@ -13,15 +13,16 @@ export class DatePicker {
   readonly closeButton: Locator
 
   constructor(page: Page, input: Locator) {
-    // Scope to the picker wrapping this input, so pages with several date fields work
-    const datePicker = page.locator('.moj-datepicker').filter({ has: input })
+    // Scope to the picker wrapping this input, so pages with several date fields work.
+    // The wrapper has no role or label, so this is the one place a class is needed
+    const datePicker = page.locator('.lis-date-picker').filter({ has: input })
 
     this.input = input
     this.chooseDateButton = datePicker.getByRole('button', {
       name: 'Choose date'
     })
     this.dialog = datePicker.getByRole('dialog')
-    this.monthYearTitle = this.dialog.locator('.moj-js-datepicker-month-year')
+    this.monthYearTitle = this.dialog.getByRole('heading', { level: 2 })
     this.previousMonthButton = this.dialog.getByRole('button', {
       name: 'Previous month'
     })
@@ -102,9 +103,10 @@ export class DatePicker {
     await expect(this.dayButton(date)).toBeFocused()
   }
 
+  // The selected day has no aria attribute, only a class
   async verifyDateIsSelected(date: string) {
     await expect(this.dayButton(date)).toHaveClass(
-      /moj-datepicker__button--selected/
+      /lis-date-picker__button--selected/
     )
   }
 }

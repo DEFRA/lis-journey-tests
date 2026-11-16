@@ -18,6 +18,8 @@ export class LisFrontOfficeSireDetailsPage extends BasePage {
   }
 
   async submitSireDetails(sireEarTagNumber?: string, sireName?: string) {
+    // await this.sireEarTagNumberInput.clear()
+    // await this.sireNameInput.clear()
     if (sireEarTagNumber !== undefined) {
       await this.sireEarTagNumberInput.fill(sireEarTagNumber)
     }
