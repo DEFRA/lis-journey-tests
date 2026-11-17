@@ -22,6 +22,14 @@ When(
   }
 )
 
+When(
+  'I clear the calf details',
+  async ({ lisFrontOfficeRegisterCalfDetailsPage }) => {
+    await expect(lisFrontOfficeRegisterCalfDetailsPage.heading).toBeVisible()
+    await lisFrontOfficeRegisterCalfDetailsPage.clearCalfDetails()
+  }
+)
+
 Then(
   'I should see the errors:',
   async ({ lisFrontOfficeRegisterCalfDetailsPage }, dataTable: DataTable) => {
@@ -42,6 +50,13 @@ Then(
     await lisFrontOfficeRegisterCalfDetailsPage.verifyFieldAndSummaryErrors([
       errorMessage
     ])
+  }
+)
+
+Then(
+  'I should see the warning {string}',
+  async ({ page }, errorMessage: string) => {
+    await expect(page.getByText(errorMessage)).toBeVisible()
   }
 )
 

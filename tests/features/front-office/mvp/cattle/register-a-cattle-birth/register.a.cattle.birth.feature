@@ -812,3 +812,157 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
         And I submit the dam details as "Calf born via surrogate dam"
         Then the "Genetic and surrogate dam details" page caption shows "Official animal ear tag number: UK 324537 100001"
+
+    @LREG-781
+    Scenario Outline: Calf Details - <field> - search using <case> '<searchTerm>' - matching tags are suggested
+        When I search for "<searchTerm>" in the "<field>" field
+        Then the "<field>" field suggests "<suggestion>"
+        And every suggestion in the "<field>" field contains "<searchTerm>"
+        And the "<field>" field shows no more than 10 suggestions
+        Examples: Partial and full ear tags
+            | field                 | case          | searchTerm     | suggestion     |
+            | Animal ear tag number | last 3 digits | 001            | UK324537100001 |
+            | Animal ear tag number | herd mark     | 3245371        | UK324537100001 |
+            | Animal ear tag number | full ear tag  | UK324537100001 | UK324537100001 |
+
+    @LREG-781
+    Scenario Outline: Calf Details - Breed - search using <case> '<searchTerm>' - matching breeds are suggested
+        When I search for "<searchTerm>" in the "Breed" field
+        Then the "Breed" field suggests "<suggestion>"
+        And every suggestion in the "Breed" field contains "<searchTerm>"
+        Examples: Partial breed names and breed codes
+            | case            | searchTerm | suggestion      |
+            | breed code      | DR         | Danish Red (DR) |
+            | first 3 letters | Dan        | Danish Red (DR) |
+
+    @LREG-783
+    # The dam ear tag is not validated: the dam may be from another holding, dead, or imported,
+    # so it may not be in the herd or the UK database.
+    # The prototype only accepts a dam picked from the lookup, so this will fail until that changes
+    @fixme
+    Scenario: Genetic Dam Details - An ear tag that is not in the herd is accepted
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
+        When I add the ear tag of the dam as "UK000000000000"
+        Then I should see the heading "Sire details"
+
+    @LREG-783
+    Scenario Outline: Genetic Dam Details - <field> - search using <case> '<searchTerm>' - matching dams are suggested
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
+        When I search for "<searchTerm>" in the "<field>" field
+        Then the "<field>" field suggests "<suggestion>"
+        And every suggestion in the "<field>" field contains "<searchTerm>"
+        And the "<field>" field shows no more than 10 suggestions
+        Examples: Partial and full ear tags
+            | field                 | case          | searchTerm     | suggestion     |
+            | Animal ear tag number | last 3 digits | 007            | UK200000000007 |
+            | Animal ear tag number | herd mark     | 200000         | UK200000000007 |
+            | Animal ear tag number | full ear tag  | UK200000000007 | UK200000000007 |
+
+    @LREG-783
+    Scenario: Genetic Dam Details - Animal ear tag number - typing more of the ear tag narrows the suggestions
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
+        Then searching "1" then "UK200000000007" in the "Animal ear tag number" field suggests fewer matches
+
+    @LREG-783
+    Scenario: Genetic Dam Details - Select a dam from the suggestions and continue
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
+        When I search for "001" in the "Animal ear tag number" field
+        And I select "UK300000000011" from the "Animal ear tag number" field suggestions
+        And I continue from the "Genetic dam details" page
+        Then I should see the heading "Sire details"
+
+    @LREG-784
+    Scenario Outline: Surrogate Dam Details - <field> - search using <case> '<searchTerm>' - matching dams are suggested
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via surrogate dam"
+        When I search for "<searchTerm>" in the "<field>" field
+        Then the "<field>" field suggests "<suggestion>"
+        And every suggestion in the "<field>" field contains "<searchTerm>"
+        And the "<field>" field shows no more than 10 suggestions
+        Examples: Partial and full ear tags
+            | field                        | case          | searchTerm     | suggestion     |
+            | Surrogate dam ear tag number | last 3 digits | 023            | UK300000000023 |
+            | Surrogate dam ear tag number | herd mark     | 300000         | UK300000000023 |
+            | Surrogate dam ear tag number | full ear tag  | UK300000000023 | UK300000000023 |
+
+    @LREG-784
+    Scenario: Surrogate Dam Details - Select a surrogate dam from the suggestions and continue
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via surrogate dam"
+        When I search for "UK200000000007" in the "Genetic dam ear tag number (optional)" field
+        And I search for "200" in the "Surrogate dam ear tag number" field
+        And I select "UK200000000009" from the "Surrogate dam ear tag number" field suggestions
+        And I continue from the "Genetic and surrogate dam details" page
+        Then I should see the heading "Sire details"
+
+    @LREG-784
+    # The genetic dam ear tag is not validated, only the surrogate dam ear tag is
+    Scenario: Surrogate Dam Details - A genetic dam ear tag that is not in the herd is accepted
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via surrogate dam"
+        When I add a genetic dam ear tag number as "UK000000000000" and a surrogate dam ear tag number as "UK300000000023"
+        Then I should see the heading "Sire details"
+
+    # The sire ear tag and name are optional free text, so they are not validated
+    Scenario Outline: Sire Details - <case> - is accepted
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
+        And I add the ear tag of the dam as "UK200000000007"
+        When I add sire details with "<earTag>" and "<name>"
+        Then I should see the heading "Check calf details"
+
+        Examples:
+            | case                         | earTag          | name      |
+            | ear tag not in the herd      | UK000000000000  | Sire Name |
+            | name with special characters | UK200000000007  | £$%^&&    |
+            | EU import ear tag            | IE123456789012  | Sire Name |
+            | Pre-2000 UK ear tag          | UK AB1234 00123 | Sire Name |
+
+    # Ear tag formats from the BA. The validation is in the next release, so remove @fixme then.
+    # The ear tags are the BA's examples: replace them with the test data given with the release.
+    # - EU imports keep their original ear tag (non-EU imports are given new UK ear tags)
+    # - Pre-June 2000 UK ear tags were alphanumeric, e.g. UK AB1234 00123. They aren't issued any
+    #   more, but legacy ear tags are still in the systems and must be accepted
+    # Lookup fields need animals with these ear tags in the test data to select
+    @fixme
+    Scenario Outline: Calf Details - Animal ear tag number - <type> ear tag '<earTag>' is accepted
+        When I submit valid calf details with "<earTag>", "today", "Female", and "Baltata Romaneasca (BRO)"
+        Then I should see the heading "Dam details"
+
+        Examples:
+            | type        | earTag          |
+            | EU import   | IE123456789012  |
+            | EU import   | FR123456789012  |
+            | EU import   | DE123456789012  |
+            | Pre-2000 UK | UK AB1234 00123 |
+
+    @fixme
+    Scenario Outline: Genetic Dam Details - Animal ear tag number - <type> ear tag '<earTag>' is accepted
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
+        When I add the ear tag of the dam as "<earTag>"
+        Then I should see the heading "Sire details"
+
+        Examples:
+            | type        | earTag          |
+            | EU import   | IE123456789012  |
+            | EU import   | FR123456789012  |
+            | EU import   | DE123456789012  |
+            | Pre-2000 UK | UK AB1234 00123 |
+
+    @fixme
+    Scenario Outline: Surrogate Dam Details - <type> ear tags '<geneticDam>' and '<surrogateDam>' are accepted
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via surrogate dam"
+        When I add a genetic dam ear tag number as "<geneticDam>" and a surrogate dam ear tag number as "<surrogateDam>"
+        Then I should see the heading "Sire details"
+
+        Examples:
+            | type        | geneticDam      | surrogateDam   |
+            | EU import   | IE123456789012  | FR123456789012 |
+            | EU import   | DE123456789012  | IE123456789013 |
+            | Pre-2000 UK | UK AB1234 00123 | IE123456789012 |

@@ -155,6 +155,10 @@ Then(
   }
 )
 
+When('I select the {string} radio', async ({ page }, option: string) => {
+  await page.getByRole('radio', { name: option, exact: true }).check()
+})
+
 // For radios, the label is the option, e.g. "Male"
 Then('the {string} field has focus', async ({ page }, label: string) => {
   await expect(fieldByLabel(page, label)).toBeFocused()

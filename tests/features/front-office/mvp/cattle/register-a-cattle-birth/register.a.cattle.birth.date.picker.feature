@@ -4,6 +4,8 @@ Feature: Cattle - Register a Cattle Birth - Date of birth date picker
     Background: Sign in to the prototype and start Register a cattle birth
         Given I am authenticated as a front office user with a single CPH holding
         And I select Register a cattle birth
+        # The page keeps the date of birth from an earlier registration
+        And I clear the "Date of birth" field
 
     @LREG-781
     Scenario: Select todays date from the date picker
@@ -81,13 +83,15 @@ Feature: Cattle - Register a Cattle Birth - Date of birth date picker
         And the "Date of birth" field shows ""
 
     @LREG-781
-    # With no sex selected, Tab lands on the first radio (Male) and the next Tab leaves the group
+    # Tab lands on the selected radio and the next Tab leaves the group. The page keeps the sex
+    # from an earlier registration and a radio can't be unselected, so Female is selected first
     Scenario: Calf details fields are in keyboard tab order
-        When I focus the "Animal ear tag number" field
+        When I select the "Female" radio
+        And I focus the "Animal ear tag number" field
         Then pressing Tab moves focus through:
             | Role     | Name          |
             | textbox  | Date of birth |
             | button   | Choose date   |
-            | radio    | Male          |
+            | radio    | Female        |
             | combobox | Breed         |
             | button   | Continue      |

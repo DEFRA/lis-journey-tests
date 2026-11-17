@@ -9,7 +9,7 @@ Feature: Cattle - In Progress - Positive scenarios
         Then I verify the Births table has:
             | Ear tag number   | Date of birth | Sex    | Breed | Date submitted |
             | UK 123456 301550 | 2 Sep 2026    | Female | HER   | 10 Sep 2026    |
-            | UK 324537 100002 | 2 Sep 2026    | Male   | HER   | 10 Sep 2026    |
+            | UK 123456 301551 | 2 Sep 2026    | Male   | HER   | 10 Sep 2026    |
             | UK 123456 301552 | 5 Sep 2026    | Female | HER   | 10 Sep 2026    |
 
     # Click on the tag disabled in prototype
@@ -34,7 +34,7 @@ Feature: Cattle - In Progress - Positive scenarios
 
     Scenario: Verify the Deaths tab shows a message when no deaths are pending validation
         When I click the "Deaths" tab
-        Then I should see the message "There are no deaths pending validation"
+        Then I should see the message "There are no death reports in progress."
 
     # No deaths records in prototype
     @fixme

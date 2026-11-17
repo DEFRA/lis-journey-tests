@@ -37,6 +37,14 @@ export class LisFrontOfficeRegisterCalfDetailsPage extends BasePage {
     await this.continueButton.click()
   }
 
+  // The page keeps the calf details from an earlier registration, so the text fields
+  // are cleared. The sex radios can't be unselected, so a kept sex stays selected
+  async clearCalfDetails() {
+    await this.animalEarTagInput.clear()
+    await this.dateInput.clear()
+    await this.breedInput.clear()
+  }
+
   async selectSexOfCalf(sexOfCalf: string) {
     if (sexOfCalf === 'Male') {
       await this.maleRadio.check()

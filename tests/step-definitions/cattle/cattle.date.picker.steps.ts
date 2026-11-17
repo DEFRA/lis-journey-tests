@@ -20,6 +20,10 @@ When(
   }
 )
 
+When('I clear the {string} field', async ({ page }, field: string) => {
+  await DatePicker.forField(page, field).input.clear()
+})
+
 When('I open the {string} date picker', async ({ page }, field: string) => {
   await DatePicker.forField(page, field).open()
 })
