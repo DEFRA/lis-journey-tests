@@ -39,4 +39,11 @@ export class LisFrontOfficeRegisterNewCattleBirthPage extends BasePage {
     // Columns are Tag number then Status
     await expect(row.getByRole('cell').nth(1)).toHaveText(expectedStatus)
   }
+
+  // Also passes when the table isn't shown, e.g. after the last animal is cancelled
+  async verifyTagNotListed(tagNumber: string) {
+    await expect(
+      this.animalsTable.getByRole('link', { name: tagNumber, exact: true })
+    ).toHaveCount(0)
+  }
 }

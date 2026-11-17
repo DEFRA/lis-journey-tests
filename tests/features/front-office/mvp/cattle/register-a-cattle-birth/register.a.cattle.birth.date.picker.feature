@@ -8,12 +8,19 @@ Feature: Cattle - Register a Cattle Birth - Date of birth date picker
     @LREG-781
     Scenario: Select todays date from the date picker
         When I select "today" from the "Date of birth" date picker
-        Then the "Date of birth" field shows "today"
+        Then the "Date of birth" date picker is closed
+        And the "Date of birth" field shows "today"
 
     @LREG-781
     Scenario: Select a date from a previous month in the date picker
         When I select "40 days ago" from the "Date of birth" date picker
-        Then the "Date of birth" field shows "40 days ago"
+        Then the "Date of birth" date picker is closed
+        And the "Date of birth" field shows "40 days ago"
+
+    @LREG-781
+    Scenario: The date picker opens on the current month
+        When I open the "Date of birth" date picker
+        Then the "Date of birth" date picker shows the month of "today"
 
     @LREG-781
     Scenario: Todays date is highlighted in the date picker
@@ -72,3 +79,15 @@ Feature: Cattle - Register a Cattle Birth - Date of birth date picker
         Then the "Date of birth" date picker is closed
         And the "Date of birth" date picker button has focus
         And the "Date of birth" field shows ""
+
+    @LREG-781
+    # With no sex selected, Tab lands on the first radio (Male) and the next Tab leaves the group
+    Scenario: Calf details fields are in keyboard tab order
+        When I focus the "Animal ear tag number" field
+        Then pressing Tab moves focus through:
+            | Role     | Name          |
+            | textbox  | Date of birth |
+            | button   | Choose date   |
+            | radio    | Male          |
+            | combobox | Breed         |
+            | button   | Continue      |

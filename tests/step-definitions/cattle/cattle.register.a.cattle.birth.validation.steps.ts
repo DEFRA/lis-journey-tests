@@ -31,6 +31,11 @@ Then(
   }
 )
 
+// GOV.UK Frontend moves focus to the error summary when the page loads with errors
+Then('the error summary has focus', async ({ page }) => {
+  await expect(page.locator('.govuk-error-summary')).toBeFocused()
+})
+
 Then(
   'I should see the error {string}',
   async ({ lisFrontOfficeRegisterCalfDetailsPage }, errorMessage: string) => {

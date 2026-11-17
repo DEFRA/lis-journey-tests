@@ -62,6 +62,8 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK 200000 000008 |
             | Sire name                  | Sire Name        |
         And I change the "Animal ear tag number" of the calf
+        # Change links don't focus the field yet: uncomment when the BA confirms it is needed
+        # And the "Animal ear tag number" field has focus
         And I submit valid calf details with "UK324537100001", "27 days ago", "Male", and "Danish Red (DR)"
         Then I verify the Check calf details summary page has:
             | Field                      | Expected value   |
@@ -101,6 +103,8 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK 200000 000008 |
             | Sire name                  | Sire Name        |
         And I change the "Date of birth" of the calf
+        # Change links don't focus the field yet: uncomment when the BA confirms it is needed
+        # And the "Date of birth" field has focus
         And I submit valid calf details with "UK324537100001", "20 days ago", "Male", and "Danish Red (DR)"
         Then I verify the Check calf details summary page has:
             | Field                      | Expected value   |
@@ -140,6 +144,8 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK 200000 000008 |
             | Sire name                  | Sire Name        |
         And I change the "Sex" of the calf
+        # Change links don't focus the field yet: uncomment when the BA confirms it is needed
+        # And the "Male" field has focus
         And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Danish Red (DR)"
         Then I verify the Check calf details summary page has:
             | Field                      | Expected value   |
@@ -179,6 +185,8 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK 200000 000008 |
             | Sire name                  | Sire Name        |
         And I change the "Breed" of the calf
+        # Change links don't focus the field yet: uncomment when the BA confirms it is needed
+        # And the "Breed" field has focus
         And I submit valid calf details with "UK324537100001", "27 days ago", "Male", and "Yak (YK)"
         Then I verify the Check calf details summary page has:
             | Field                      | Expected value   |
@@ -218,6 +226,8 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK 200000 000008  |
             | Sire name                  | Sire Name         |
         And I change the "Dam type" of the calf
+        # Change links don't focus the field yet: uncomment when the BA confirms it is needed
+        # And the "Calf born via genetic dam" field has focus
         And I submit the dam details as "Calf born via surrogate dam"
         And I add a genetic dam ear tag number as "UK200000000007" and a surrogate dam ear tag number as "UK300000000023"
         Then I verify the Check calf details summary page has:
@@ -259,6 +269,8 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK 200000 000008  |
             | Sire name                  | Sire Name         |
         And I change the "Genetic dam ear tag number" of the calf
+        # Change links don't focus the field yet: uncomment when the BA confirms it is needed
+        # And the "Animal ear tag number" field has focus
         And I add the ear tag of the dam as "UK200000000007"
         Then I verify the Check calf details summary page has:
             | Field                      | Expected value    |
@@ -298,6 +310,8 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK 200000 000008 |
             | Sire name                  | Sire Name        |
         And I change the "Sire ear tag number" of the calf
+        # Change links don't focus the field yet: uncomment when the BA confirms it is needed
+        # And the "Sire ear tag number (optional)" field has focus
         And I submit the sire ear tag number as "UK123456501105"
         Then I verify the Check calf details summary page has:
             | Field                      | Expected value   |
@@ -337,6 +351,8 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK 200000 000008 |
             | Sire name                  | Sire Name        |
         And I change the "Sire name" of the calf
+        # Change links don't focus the field yet: uncomment when the BA confirms it is needed
+        # And the "Sire name" field has focus
         And I submit the sire name as "Sire Name 2"
         Then I verify the Check calf details summary page has:
             | Field                      | Expected value   |
@@ -500,6 +516,63 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I select "No" on the cancellation confirmation page
         Then I am returned to Check calf details summary page
 
+    # The cancel draft scenarios below need the draft functionality, which is not on the MVP yet: remove @fixme then
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785
+    @fixme
+    Scenario: Register a cattle birth via genetic dam with sire details, cancel - the draft is discarded
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
+        And I add the ear tag of the dam as "UK200000000007"
+        And I add sire details with "UK200000000008" and "Sire Name"
+        And I cancel the cattle birth registration
+        And I select "Yes" on the cancellation confirmation page
+        Then I am returned to Register new cattle births page
+        And birth tag number "UK 324537 100001" is not listed
+
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785
+    @fixme
+    Scenario: Register a cattle birth via genetic dam with sire details, abort the cancellation - the draft is kept
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
+        And I add the ear tag of the dam as "UK200000000007"
+        And I add sire details with "UK200000000008" and "Sire Name"
+        And I cancel the cattle birth registration
+        And I select "No" on the cancellation confirmation page
+        Then I verify the Check calf details summary page has:
+            | Field                      | Expected value           |
+            | Animal ear tag number      | UK 324537 100001         |
+            | Date of birth              | 27 days ago              |
+            | Sex                        | Female                   |
+            | Breed                      | Baltata Romaneasca (BRO) |
+            | Dam type                   | Genetic                  |
+            | Genetic dam ear tag number | UK 200000 000007         |
+            | Sire ear tag number        | UK 200000 000008         |
+            | Sire name                  | Sire Name                |
+
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785
+    @fixme
+    Scenario: Register a cattle birth via genetic dam with sire details, cancel and then go Back - the draft is kept
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
+        And I add the ear tag of the dam as "UK200000000007"
+        And I add sire details with "UK200000000008" and "Sire Name"
+        And I cancel the cattle birth registration
+        And I select Back on the cancellation confirmation page
+        Then I verify the Check calf details summary page has:
+            | Field                      | Expected value           |
+            | Animal ear tag number      | UK 324537 100001         |
+            | Date of birth              | 27 days ago              |
+            | Sex                        | Female                   |
+            | Breed                      | Baltata Romaneasca (BRO) |
+            | Dam type                   | Genetic                  |
+            | Genetic dam ear tag number | UK 200000 000007         |
+            | Sire ear tag number        | UK 200000 000008         |
+            | Sire name                  | Sire Name                |
+        # Clears the test data
+        And I cancel the cattle birth registration
+        And I select "Yes" on the cancellation confirmation page
+        Then I am returned to Register new cattle births page
+
     @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register a cattle birth via genetic dam with no sire details
         And I submit valid calf details with "UK324537100001", "27 days ago", "Male", and "Guernsey (GU)"
@@ -604,6 +677,8 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
             | Sire ear tag number          | UK 200000 000008  |
             | Sire name                    | Sire Name         |
         And I change the "Surrogate dam ear tag number" of the calf
+        # Change links don't focus the field yet: uncomment when the BA confirms it is needed
+        # And the "Surrogate dam ear tag number" field has focus
         And I add a genetic dam ear tag number as "UK200000000007" and a surrogate dam ear tag number as "UK300000000021"
         Then I verify the Check calf details summary page has:
             | Field                        | Expected value    |
@@ -720,3 +795,20 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
 # Sending the report is not on the MVP until next sprint: uncomment these two steps then
 # And I send my cattle birth report
 # Then I verify that "1 cattle birth registered"
+
+    @LREG-782
+    Scenario: Register a cattle birth - Dam details caption shows the calf ear tag number
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        Then the "Dam details" page caption shows "Official animal ear tag number: UK 324537 100001"
+
+    @LREG-783
+    Scenario: Register a cattle birth - Genetic dam details caption shows the calf ear tag number
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
+        Then the "Genetic dam details" page caption shows "Official animal ear tag number: UK 324537 100001"
+
+    @LREG-784
+    Scenario: Register a cattle birth - Genetic and surrogate dam details caption shows the calf ear tag number
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via surrogate dam"
+        Then the "Genetic and surrogate dam details" page caption shows "Official animal ear tag number: UK 324537 100001"

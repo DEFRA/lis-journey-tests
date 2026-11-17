@@ -66,6 +66,12 @@ export class DatePicker {
       monthButton.click()
     )
 
+    await this.verifyShowsMonthOf(date)
+  }
+
+  // Checks the title, e.g. "November 2026", without moving to the month
+  async verifyShowsMonthOf(date: string) {
+    const [, month, year] = date.split('/').map(Number)
     await expect(this.monthYearTitle).toHaveText(
       new Date(year, month - 1).toLocaleDateString('en-GB', {
         month: 'long',

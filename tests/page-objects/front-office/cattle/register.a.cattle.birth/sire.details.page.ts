@@ -17,15 +17,22 @@ export class LisFrontOfficeSireDetailsPage extends BasePage {
     this.sireNameInput = page.getByRole('textbox', { name: 'Sire name' })
   }
 
+  // A field left out keeps its current value, e.g. to change only the ear tag
   async submitSireDetails(sireEarTagNumber?: string, sireName?: string) {
-    // await this.sireEarTagNumberInput.clear()
-    // await this.sireNameInput.clear()
     if (sireEarTagNumber !== undefined) {
       await this.sireEarTagNumberInput.fill(sireEarTagNumber)
     }
     if (sireName !== undefined) {
       await this.sireNameInput.fill(sireName)
     }
+    await this.continueButton.click()
+  }
+
+  // The page keeps the sire details from an earlier registration,
+  // so both fields are cleared rather than just left alone
+  async submitNoSireDetails() {
+    await this.sireEarTagNumberInput.clear()
+    await this.sireNameInput.clear()
     await this.continueButton.click()
   }
 }

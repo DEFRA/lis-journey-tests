@@ -55,7 +55,6 @@ Then(
     await lisFrontOfficeDamDetailsPage.submitDamDetails(damDetails)
   }
 )
-
 When(
   'I add the ear tag of the dam as {string}',
   async ({ lisFrontOfficeGeneticDamDetailsPage, page }, earTag: string) => {
@@ -82,7 +81,7 @@ When(
 
 When('I add no sire details', async ({ lisFrontOfficeSireDetailsPage }) => {
   await expect(lisFrontOfficeSireDetailsPage.heading).toBeVisible()
-  await lisFrontOfficeSireDetailsPage.submitSireDetails()
+  await lisFrontOfficeSireDetailsPage.submitNoSireDetails()
 })
 
 When(
@@ -184,6 +183,27 @@ When(
     await lisFrontOfficeCancelThisRegistrationPage.confirmCancellation(
       confirmation
     )
+  }
+)
+
+When(
+  'I select Back on the cancellation confirmation page',
+  async ({ lisFrontOfficeCancelThisRegistrationPage }) => {
+    await expect(lisFrontOfficeCancelThisRegistrationPage.heading).toBeVisible()
+    await lisFrontOfficeCancelThisRegistrationPage.backLink.click()
+  }
+)
+
+// The URL is a guess: replace it with the real cancel page URL if this fails
+When('I open the cancel registration page directly', async ({ page }) => {
+  await page.goto('/cattle/births/cancel-registration')
+})
+
+Then(
+  'birth tag number {string} is not listed',
+  async ({ lisFrontOfficeRegisterNewCattleBirthPage }, tag: string) => {
+    await expect(lisFrontOfficeRegisterNewCattleBirthPage.heading).toBeVisible()
+    await lisFrontOfficeRegisterNewCattleBirthPage.verifyTagNotListed(tag)
   }
 )
 

@@ -90,6 +90,15 @@ Then(
 )
 
 Then(
+  'the {string} date picker shows the month of {string}',
+  async ({ page }, field: string, date: string) => {
+    await DatePicker.forField(page, field).verifyShowsMonthOf(
+      resolveInputDate(date)
+    )
+  }
+)
+
+Then(
   '{string} is selected in the {string} date picker',
   async ({ page }, date: string, field: string) => {
     await DatePicker.forField(page, field).verifyDateIsSelected(
