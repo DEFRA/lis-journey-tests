@@ -70,6 +70,25 @@ Then(
   }
 )
 
+// Only the status is checked on CDP, because there the response can come from the
+// platform in front of the API rather than the API itself
+Then(
+  'the Cattle API responds with status {int} and the response contains {string} locally, and status {int} on CDP',
+  (
+    { cattleApiClient },
+    localStatus: number,
+    text: string,
+    cdpStatus: number
+  ) => {
+    if (isCattleApiOnCdp) {
+      expect(cattleApiClient.status).toBe(cdpStatus)
+    } else {
+      expect(cattleApiClient.status).toBe(localStatus)
+      expect(cattleApiClient.body).toContain(text)
+    }
+  }
+)
+
 Then(
   'the Cattle API responds with status {int} and the response contains {string}',
   ({ cattleApiClient }, status: number, text: string) => {

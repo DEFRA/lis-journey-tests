@@ -33,6 +33,7 @@ Feature: Cattle API
         When I send a GET request to "/v1/holdings" on the Cattle API with an invalid API key
         Then the Cattle API responds with status 401
 
-    Scenario: A request without a request ID is rejected
+    # On CDP the platform adds a request ID to requests that leave it out, so the API accepts them
+    Scenario: A request without a request ID is rejected locally and accepted on CDP
         When I send a GET request to "/v1/holdings" on the Cattle API without a request ID
-        Then the Cattle API responds with status 400 and the response contains "missing_header"
+        Then the Cattle API responds with status 400 and the response contains "missing_header" locally, and status 200 on CDP

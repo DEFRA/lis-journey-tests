@@ -10,8 +10,10 @@ const baseUrl = (
   `https://lis-api-cattle.${process.env.ENVIRONMENT ?? 'dev'}.cdp-int.defra.cloud`
 ).replace(/\/$/, '')
 
-// True when the tests are calling the Cattle API on CDP rather than a local one
-export const isCattleApiOnCdp = !process.env.LIS_CATTLE_API_BASE_URL
+// True when the tests are calling the Cattle API on CDP rather than a local one.
+// Decided from the address, as the base URL may be set on CDP as well as locally
+const localHosts = ['localhost', '127.0.0.1', 'host.docker.internal']
+export const isCattleApiOnCdp = !localHosts.includes(new URL(baseUrl).hostname)
 
 // The API key is only ever read from the env file (.env.dev locally, suite secrets on CDP).
 // It is never printed, logged or attached to reports

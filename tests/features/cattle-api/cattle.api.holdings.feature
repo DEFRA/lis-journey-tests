@@ -65,7 +65,11 @@ Feature: Cattle API - Holdings
             | a page size over 100 | pageSize=101         | Page size must be between 1 and 100.          |
             | an unknown sort      | sort=up              | Sort must be either                           |
             | an unknown order     | order=colour         | Order must be one of                          |
-            | invalid characters   | search=%3Cscript%3E  | Search contains invalid characters.           |
+
+    # On CDP the platform firewall blocks script-like input with a 403 before it reaches the API
+    Scenario: Search holdings rejects invalid characters
+        When I send a GET request to "/v1/holdings?search=%3Cscript%3E" on the Cattle API
+        Then the Cattle API responds with status 400 and the response contains "Search contains invalid characters." locally, and status 403 on CDP
 
     Scenario: Get the details of a holding
         When I send a GET request to "/v1/holdings/22/001/0001" on the Cattle API
