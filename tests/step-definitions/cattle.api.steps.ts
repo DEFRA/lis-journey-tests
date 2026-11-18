@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test'
 import { Then, When } from '../fixtures/test.fixture'
+import { isCattleApiOnCdp } from '../features/support/api/cattle.api.client'
 
 // Generic steps for the Cattle API. Requests and responses are handled by
 // CattleApiClient (tests/features/support/api/cattle.api.client.ts)
@@ -55,6 +56,17 @@ Then(
   'the Cattle API responds with status {int}',
   ({ cattleApiClient }, status: number) => {
     expect(cattleApiClient.status).toBe(status)
+  }
+)
+
+// For responses that differ between the local stack and CDP, e.g. where a local stub
+// and the real upstream service behave differently
+Then(
+  'the Cattle API responds with status {int} locally and {int} on CDP',
+  ({ cattleApiClient }, localStatus: number, cdpStatus: number) => {
+    expect(cattleApiClient.status).toBe(
+      isCattleApiOnCdp ? cdpStatus : localStatus
+    )
   }
 )
 
