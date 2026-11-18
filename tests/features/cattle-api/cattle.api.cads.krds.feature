@@ -27,7 +27,12 @@ Feature: Cattle API - CADS and KRDS operations
             | operation                  | path                                              |
             | KRDS - holding details     | /v1/holdings/99/999/9999                          |
             | KRDS - user details        | /v1/users/00000000-0000-4000-8000-000000000000    |
-            | CADS - cattle details      | /v1/cattle/UK999999999999                         |
+
+    # Locally the stub CADS returns 404 and the API passes it back. On CDP the API returns 500 for
+    # the same request, so this checks for the behaviour seen on each until the difference is explained
+    Scenario: CADS - cattle details for an unknown ear tag
+        When I send a GET request to "/v1/cattle/UK999999999999" on the Cattle API
+        Then the Cattle API responds with status 404 locally and 500 on CDP
 
     # CADS treats a holding it doesn't know as one with no animals, so this is an empty list, not a 404
     Scenario: CADS - cattle on a holding returns an empty list for an unknown holding
