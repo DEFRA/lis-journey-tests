@@ -12,7 +12,7 @@ Given('I log into the herokuapp mvp', async ({ page }) => {
   }
 
   await page.goto(
-    'https://livestock-traceability-4f1c92f377cb.herokuapp.com/mvp-front-office/v8/my-holdings/holding-overview?holding-id=holding-001'
+    'https://livestock-traceability-4f1c92f377cb.herokuapp.com/mvp-front-office/v7/my-holdings/holding-overview?holding-id=holding-001'
   )
   await page.getByRole('textbox', { name: 'Password' }).fill(password)
   await page.getByRole('button', { name: 'Continue' }).click()

@@ -10,9 +10,10 @@ Feature: Cattle - Report a Cattle Movement - Positive scenarios
             | Ear tag number | Movement date |
             | UK324537100001 | 01/01/2025    |
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value                      |
-            | Movement type | On movement                         |
-            | Animal 1      | UK324537100001 Moved 1 January 2025 |
+            | Field                   | Expected value |
+            | Movement type           | On movement    |
+            | Animal 1 ear tag number | UK324537100001 |
+            | Animal 1 movement date  | 1 January 2025 |
         When I continue from the "Check movement details" page
         When I send my movement report
         Then I confirm the Movement has been reported
@@ -23,9 +24,10 @@ Feature: Cattle - Report a Cattle Movement - Positive scenarios
             | Ear tag number | Movement date |
             | UK324537113235 | 01/01/2025    |
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value                      |
-            | Movement type | Off movement                        |
-            | Animal 1      | UK324537113235 Moved 1 January 2025 |
+            | Field                   | Expected value |
+            | Movement type           | Off movement   |
+            | Animal 1 ear tag number | UK324537113235 |
+            | Animal 1 movement date  | 1 January 2025 |
         When I continue from the "Check movement details" page
         When I send my movement report
         Then I confirm the Movement has been reported
@@ -37,10 +39,12 @@ Feature: Cattle - Report a Cattle Movement - Positive scenarios
             | UK324537100001 | 01/01/2025    |
             | UK123456301551 | 21/10/2025    |
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value                       |
-            | Movement type | On movement                          |
-            | Animal 1      | UK324537100001 Moved 1 January 2025  |
-            | Animal 2      | UK123456301551 Moved 21 October 2025 |
+            | Field                   | Expected value  |
+            | Movement type           | On movement     |
+            | Animal 1 ear tag number | UK324537100001  |
+            | Animal 1 movement date  | 1 January 2025  |
+            | Animal 2 ear tag number | UK123456301551  |
+            | Animal 2 movement date  | 21 October 2025 |
         When I continue from the "Check movement details" page
         When I send my movement report
         Then I confirm the Movement has been reported
@@ -52,10 +56,12 @@ Feature: Cattle - Report a Cattle Movement - Positive scenarios
             | UK324537113235 | 01/01/2025    |
             | UK324537113236 | 21/10/2025    |
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value                       |
-            | Movement type | Off movement                         |
-            | Animal 1      | UK324537113235 Moved 1 January 2025  |
-            | Animal 2      | UK324537113236 Moved 21 October 2025 |
+            | Field                   | Expected value  |
+            | Movement type           | Off movement    |
+            | Animal 1 ear tag number | UK324537113235  |
+            | Animal 1 movement date  | 1 January 2025  |
+            | Animal 2 ear tag number | UK324537113236  |
+            | Animal 2 movement date  | 21 October 2025 |
         When I continue from the "Check movement details" page
         When I send my movement report
         Then I confirm the Movement has been reported
@@ -66,15 +72,17 @@ Feature: Cattle - Report a Cattle Movement - Positive scenarios
             | Ear tag number | Movement date |
             | UK324537113235 | 01/01/2025    |
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value                      |
-            | Movement type | On movement                         |
-            | Animal 1      | UK324537113235 Moved 1 January 2025 |
+            | Field                   | Expected value |
+            | Movement type           | On movement    |
+            | Animal 1 ear tag number | UK324537113235 |
+            | Animal 1 movement date  | 1 January 2025 |
         When I select change for "Movement type"
         When I select "Off movement" and continue
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value                      |
-            | Movement type | Off movement                        |
-            | Animal 1      | UK324537113235 Moved 1 January 2025 |
+            | Field                   | Expected value |
+            | Movement type           | Off movement   |
+            | Animal 1 ear tag number | UK324537113235 |
+            | Animal 1 movement date  | 1 January 2025 |
         When I continue from the "Check movement details" page
         When I send my movement report
         Then I confirm the Movement has been reported
@@ -85,17 +93,19 @@ Feature: Cattle - Report a Cattle Movement - Positive scenarios
             | Ear tag number | Movement date |
             | UK324537113235 | 01/01/2025    |
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value                      |
-            | Movement type | On movement                         |
-            | Animal 1      | UK324537113235 Moved 1 January 2025 |
+            | Field                   | Expected value |
+            | Movement type           | On movement    |
+            | Animal 1 ear tag number | UK324537113235 |
+            | Animal 1 movement date  | 1 January 2025 |
         When I select change for "Animal 1"
         When I submit movement details
             | Ear tag number | Movement date |
             | UK324537113236 | 01/01/2025    |
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value                      |
-            | Movement type | On movement                         |
-            | Animal 1      | UK324537113236 Moved 1 January 2025 |
+            | Field                   | Expected value |
+            | Movement type           | On movement    |
+            | Animal 1 ear tag number | UK324537113236 |
+            | Animal 1 movement date  | 1 January 2025 |
         When I continue from the "Check movement details" page
         When I send my movement report
         Then I confirm the Movement has been reported
@@ -106,17 +116,19 @@ Feature: Cattle - Report a Cattle Movement - Positive scenarios
             | Ear tag number | Movement date |
             | UK324537113235 | 01/01/2025    |
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value                      |
-            | Movement type | On movement                         |
-            | Animal 1      | UK324537113235 Moved 1 January 2025 |
+            | Field                   | Expected value |
+            | Movement type           | On movement    |
+            | Animal 1 ear tag number | UK324537113235 |
+            | Animal 1 movement date  | 1 January 2025 |
         When I select change for "Animal 1"
         When I submit movement details
             | Ear tag number | Movement date |
             | UK324537113235 | 11/11/2025    |
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value                        |
-            | Movement type | On movement                           |
-            | Animal 1      | UK324537113235 Moved 11 November 2025 |
+            | Field                   | Expected value   |
+            | Movement type           | On movement      |
+            | Animal 1 ear tag number | UK324537113235   |
+            | Animal 1 movement date  | 11 November 2025 |
         When I continue from the "Check movement details" page
         When I send my movement report
         Then I confirm the Movement has been reported
@@ -128,20 +140,24 @@ Feature: Cattle - Report a Cattle Movement - Positive scenarios
             | UK324537100001 | 01/01/2025    |
             | UK123456301551 | 21/10/2025    |
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value                       |
-            | Movement type | On movement                          |
-            | Animal 1      | UK324537100001 Moved 1 January 2025  |
-            | Animal 2      | UK123456301551 Moved 21 October 2025 |
+            | Field                   | Expected value  |
+            | Movement type           | On movement     |
+            | Animal 1 ear tag number | UK324537100001  |
+            | Animal 1 movement date  | 1 January 2025  |
+            | Animal 2 ear tag number | UK123456301551  |
+            | Animal 2 movement date  | 21 October 2025 |
         When I select change for "Animal 2"
         When I submit movement details
             | Ear tag number | Movement date |
             | UK324537100001 | 01/01/2025    |
             | UK123456301552 | 21/10/2025    |
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value                       |
-            | Movement type | On movement                          |
-            | Animal 1      | UK324537100001 Moved 1 January 2025  |
-            | Animal 2      | UK123456301552 Moved 21 October 2025 |
+            | Field                   | Expected value  |
+            | Movement type           | On movement     |
+            | Animal 1 ear tag number | UK324537100001  |
+            | Animal 1 movement date  | 1 January 2025  |
+            | Animal 2 ear tag number | UK123456301552  |
+            | Animal 2 movement date  | 21 October 2025 |
         When I continue from the "Check movement details" page
         When I send my movement report
         Then I confirm the Movement has been reported
@@ -152,19 +168,22 @@ Feature: Cattle - Report a Cattle Movement - Positive scenarios
             | Ear tag number | Movement date |
             | UK324537113235 | 01/01/2025    |
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value                      |
-            | Movement type | On movement                         |
-            | Animal 1      | UK324537113235 Moved 1 January 2025 |
+            | Field                   | Expected value |
+            | Movement type           | On movement    |
+            | Animal 1 ear tag number | UK324537113235 |
+            | Animal 1 movement date  | 1 January 2025 |
         When I select change for "Animal 1"
         When I submit movement details
             | Ear tag number | Movement date |
             | UK324537113235 | 11/11/2025    |
             | UK324537113236 | 10/10/2025    |
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value                        |
-            | Movement type | On movement                           |
-            | Animal 1      | UK324537113235 Moved 11 November 2025 |
-            | Animal 2      | UK324537113236 Moved 10 October 2025  |
+            | Field                   | Expected value   |
+            | Movement type           | On movement      |
+            | Animal 1 ear tag number | UK324537113235   |
+            | Animal 1 movement date  | 11 November 2025 |
+            | Animal 2 ear tag number | UK324537113236   |
+            | Animal 2 movement date  | 10 October 2025  |
         When I continue from the "Check movement details" page
         When I send my movement report
         Then I confirm the Movement has been reported
@@ -176,17 +195,20 @@ Feature: Cattle - Report a Cattle Movement - Positive scenarios
             | UK324537100001 | 01/01/2025    |
             | UK123456301551 | 21/10/2025    |
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value                       |
-            | Movement type | On movement                          |
-            | Animal 1      | UK324537100001 Moved 1 January 2025  |
-            | Animal 2      | UK123456301551 Moved 21 October 2025 |
+            | Field                   | Expected value  |
+            | Movement type           | On movement     |
+            | Animal 1 ear tag number | UK324537100001  |
+            | Animal 1 movement date  | 1 January 2025  |
+            | Animal 2 ear tag number | UK123456301551  |
+            | Animal 2 movement date  | 21 October 2025 |
         When I select change for "Animal 1"
         When I remove "Animal 2"
         When I continue from the "Movement details" page
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value                      |
-            | Movement type | On movement                         |
-            | Animal 1      | UK324537100001 Moved 1 January 2025 |
+            | Field                   | Expected value |
+            | Movement type           | On movement    |
+            | Animal 1 ear tag number | UK324537100001 |
+            | Animal 1 movement date  | 1 January 2025 |
         When I continue from the "Check movement details" page
         When I send my movement report
         Then I confirm the Movement has been reported
@@ -197,18 +219,20 @@ Feature: Cattle - Report a Cattle Movement - Positive scenarios
             | Ear tag number | Movement date |
             | UK324537100001 | 01/01/2025    |
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value                      |
-            | Movement type | On movement                         |
-            | Animal 1      | UK324537100001 Moved 1 January 2025 |
+            | Field                   | Expected value |
+            | Movement type           | On movement    |
+            | Animal 1 ear tag number | UK324537100001 |
+            | Animal 1 movement date  | 1 January 2025 |
         When I select Back from the Check movement details page
         And the previously entered movement animal details are still populated:
             | Ear tag number | UK324537100001 |
             | Movement date  | 01/01/2025     |
         When I continue from the "Movement details" page
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value                      |
-            | Movement type | On movement                         |
-            | Animal 1      | UK324537100001 Moved 1 January 2025 |
+            | Field                   | Expected value |
+            | Movement type           | On movement    |
+            | Animal 1 ear tag number | UK324537100001 |
+            | Animal 1 movement date  | 1 January 2025 |
         When I continue from the "Check movement details" page
         When I send my movement report
         Then I confirm the Movement has been reported
@@ -219,9 +243,10 @@ Feature: Cattle - Report a Cattle Movement - Positive scenarios
             | Ear tag number | Movement date |
             | UK324537100001 | today         |
         When I verify the Check movement details page displays the following details
-            | Field         | Expected value             |
-            | Movement type | On movement                |
-            | Animal 1      | UK324537100001 Moved today |
+            | Field                   | Expected value |
+            | Movement type           | On movement    |
+            | Animal 1 ear tag number | UK324537100001 |
+            | Animal 1 movement date  | today          |
         When I continue from the "Check movement details" page
         When I send my movement report
         Then I confirm the Movement has been reported

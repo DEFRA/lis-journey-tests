@@ -12,7 +12,7 @@ Feature: Cattle - Cattle with errors - Positive scenarios
             | UK 324537 467888 | 13 Aug 2025 | Dam is too young  | Action needed    |
             | UK 324537 467889 | 14 Aug 2025 | Excessive calving | Action needed    |
 
-    # Not in v8 of protoytype, so commented out for now
+    # Not in v7 of protoytype, so commented out for now
     # Scenario: Verify the embedded links on main cattle error page
     #     Then I verify the "bcmsenquiries@rpa.gov.uk" email link is present
     #     Then I verify the "Find out about call charges" link opens the "Call charges and phone numbers" page in a new tab and contains url "call-charges"
