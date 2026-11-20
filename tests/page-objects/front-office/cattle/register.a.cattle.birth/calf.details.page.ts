@@ -45,6 +45,19 @@ export class LisFrontOfficeRegisterCalfDetailsPage extends BasePage {
     await this.breedInput.clear()
   }
 
+  // Temporary hack: the page keeps the sex from an earlier registration, and a radio
+  // can't be unticked by clicking, so untick them in the browser. Remove when tests can
+  // create their own test users/sessions instead of reusing the same user
+  async clearSexOfCalf() {
+    await Promise.all(
+      [this.maleRadio, this.femaleRadio].map((radio) =>
+        radio.evaluate((input: HTMLInputElement) => {
+          input.checked = false
+        })
+      )
+    )
+  }
+
   async selectSexOfCalf(sexOfCalf: string) {
     if (sexOfCalf === 'Male') {
       await this.maleRadio.check()

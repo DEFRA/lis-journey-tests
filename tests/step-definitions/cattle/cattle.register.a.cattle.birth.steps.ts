@@ -116,6 +116,16 @@ Then(
 )
 
 Then(
+  'the Check calf details summary page does not show {string}',
+  async ({ page, lisFrontOfficeCheckCalfDetailsPage }, field: string) => {
+    await expect(lisFrontOfficeCheckCalfDetailsPage.heading).toBeVisible()
+    await expect(
+      page.locator('.govuk-summary-list__key').getByText(field, { exact: true })
+    ).toHaveCount(0)
+  }
+)
+
+Then(
   'I verify birth tag number {string} is {string}',
   async (
     { lisFrontOfficeRegisterNewCattleBirthPage },
@@ -418,6 +428,24 @@ When(
   async ({ lisFrontOfficeDamDetailsPage }, damType: string) => {
     await expect(lisFrontOfficeDamDetailsPage.heading).toBeVisible()
     await lisFrontOfficeDamDetailsPage.verifyDamTypeSelected(damType)
+  }
+)
+
+When(
+  'I select Back from the Calf details page',
+  async ({ lisFrontOfficeRegisterCalfDetailsPage }) => {
+    await expect(lisFrontOfficeRegisterCalfDetailsPage.heading).toBeVisible()
+    await lisFrontOfficeRegisterCalfDetailsPage.backLink.click()
+  }
+)
+
+// The Register a cattle birth link is how the journey was started, so it shows we're back
+Then(
+  'I am returned to the holding overview page',
+  async ({ lisFrontOfficeCattleHoldingOverviewPage }) => {
+    await expect(
+      lisFrontOfficeCattleHoldingOverviewPage.registerCattleBirthLink
+    ).toBeVisible()
   }
 )
 

@@ -49,11 +49,11 @@ Feature: Cattle - Report a Cattle Movement - Negative scenarios
 
         Examples:
             | movementType | case                      | value          | movement date | error                                                                 |
-            | On movement  | movement date in future   | UK324537100001 | 1/1/2099      | Movement date for animal 1 must be today or in the past               |
-            | On movement  | movement date is tomorrow | UK324537100001 | tomorrow      | Movement date for animal 1 must be today or in the past               |
-            | On movement  | US style movement date    | UK324537100001 | 12/20/2025    | Movement date for animal 1 must be a real date, for example 27/3/2026 |
-            | On movement  | Non leap year             | UK324537100001 | 29/02/2023    | Movement date for animal 1 must be a real date, for example 27/3/2026 |
-            | On movement  | Invalid format            | UK324537100001 | ABCDEFG       | Movement date for animal 1 must be a real date, for example 27/3/2026 |
+            | On movement  | movement date in future   | UK123456301550 | 1/1/2099      | Movement date for animal 1 must be today or in the past               |
+            | On movement  | movement date is tomorrow | UK123456301550 | tomorrow      | Movement date for animal 1 must be today or in the past               |
+            | On movement  | US style movement date    | UK123456301550 | 12/20/2025    | Movement date for animal 1 must be a real date, for example 27/3/2026 |
+            | On movement  | Non leap year             | UK123456301550 | 29/02/2023    | Movement date for animal 1 must be a real date, for example 27/3/2026 |
+            | On movement  | Invalid format            | UK123456301550 | ABCDEFG       | Movement date for animal 1 must be a real date, for example 27/3/2026 |
             | Off movement | movement date in future   | UK324537113235 | 1/1/2099      | Movement date for animal 1 must be today or in the past               |
             | Off movement | movement date is tomorrow | UK324537113235 | tomorrow      | Movement date for animal 1 must be today or in the past               |
             | Off movement | US style movement date    | UK324537113235 | 12/20/2025    | Movement date for animal 1 must be a real date, for example 27/3/2026 |
@@ -69,7 +69,7 @@ Feature: Cattle - Report a Cattle Movement - Negative scenarios
 
         Examples:
             | movementType | case                | value          | movement date | error                                 |
-            | On movement  | ear tag but no date | UK324537100001 |               | Enter the movement date for animal 1  |
+            | On movement  | ear tag but no date | UK123456301550 |               | Enter the movement date for animal 1  |
             | On movement  | date but no ear tag |                | 01/01/2025    | Enter the ear tag number for animal 1 |
             | Off movement | ear tag but no date | UK324537113235 |               | Enter the movement date for animal 1  |
             | Off movement | date but no ear tag |                | 01/01/2025    | Enter the ear tag number for animal 1 |
@@ -78,7 +78,7 @@ Feature: Cattle - Report a Cattle Movement - Negative scenarios
         When I select "On movement" and continue
         When I submit movement details
             | Ear tag number | Movement date |
-            | UK324537100001 | 01/01/2025    |
+            | UK123456301550 | 01/01/2025    |
             | UK123456301551 | 1/1/2099      |
         Then I should see the error "Movement date for animal 2 must be today or in the past"
 
@@ -86,8 +86,8 @@ Feature: Cattle - Report a Cattle Movement - Negative scenarios
         When I select "On movement" and continue
         When I submit movement details
             | Ear tag number | Movement date |
-            | UK324537100001 | 01/01/2025    |
-            | UK324537100001 | 01/01/2025    |
+            | UK123456301550 | 01/01/2025    |
+            | UK123456301550 | 01/01/2025    |
         Then I should see the error "The ear tag number for animal 2 has already been added to this movement"
 
     # Reporting deadline not present in prototype, number of days and error message to be confirmed against the story
@@ -96,7 +96,7 @@ Feature: Cattle - Report a Cattle Movement - Negative scenarios
         When I select "On movement" and continue
         When I submit movement details
             | Ear tag number | Movement date |
-            | UK324537100001 | 1/1/2000      |
+            | UK123456301550 | 1/1/2000      |
         Then I should see the error "Movement date for animal 1 is too far in the past"
 
     # Max length validation not present in prototype, but added to test for future proofing
@@ -113,11 +113,11 @@ Feature: Cattle - Report a Cattle Movement - Negative scenarios
         When I select "On movement" and continue
         When I submit movement details
             | Ear tag number | Movement date |
-            | UK324537100001 | 01/01/2025    |
+            | UK123456301550 | 01/01/2025    |
             | UK123456301551 | 01/01/2025    |
             | UK123456301552 | 01/01/2025    |
             | UK123456301553 | 01/01/2025    |
-            | UK324537100010 | 01/01/2025    |
+            | UK123456301554 | 01/01/2025    |
             | UK123456301555 | 01/01/2025    |
             | UK123456301556 | 01/01/2025    |
             | UK123456301557 | 01/01/2025    |
@@ -149,7 +149,7 @@ Feature: Cattle - Report a Cattle Movement - Negative scenarios
         When I submit movement details
             | Ear tag number | Movement date |
             | <earTag>       | 01/01/2025    |
-        Then I should see the heading "Check movement details"
+        Then I am on the "Check movement details" page
 
         Examples:
             | movementType | type        | earTag          |

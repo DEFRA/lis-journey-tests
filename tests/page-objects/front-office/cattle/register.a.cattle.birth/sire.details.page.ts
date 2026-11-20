@@ -14,7 +14,9 @@ export class LisFrontOfficeSireDetailsPage extends BasePage {
     this.sireEarTagNumberInput = page.getByRole('textbox', {
       name: 'Sire ear tag number (optional)'
     })
-    this.sireNameInput = page.getByRole('textbox', { name: 'Sire name' })
+    this.sireNameInput = page.getByRole('textbox', {
+      name: 'Sire name (optional)'
+    })
   }
 
   // A field left out keeps its current value, e.g. to change only the ear tag

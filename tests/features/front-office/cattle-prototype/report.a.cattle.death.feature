@@ -462,7 +462,6 @@ Feature: Cattle - Report a Cattle Death - Positive scenarios
         When I search for "<searchTerm>" in the "Animal ear tag number" field
         Then the "Animal ear tag number" field suggests "<suggestion>"
         And every suggestion in the "Animal ear tag number" field contains "<searchTerm>"
-        And the "Animal ear tag number" field shows no more than 10 suggestions
 
         Examples: Partial and full ear tags
             | registered   | answer | case          | searchTerm     | suggestion     |

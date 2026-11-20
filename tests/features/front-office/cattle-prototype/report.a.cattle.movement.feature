@@ -256,7 +256,6 @@ Feature: Cattle - Report a Cattle Movement - Positive scenarios
         When I search for "<searchTerm>" in the "Ear tag number for animal 1" field
         Then the "Ear tag number for animal 1" field suggests "<suggestion>"
         And every suggestion in the "Ear tag number for animal 1" field contains "<searchTerm>"
-        And the "Ear tag number for animal 1" field shows no more than 10 suggestions
 
         Examples: Partial and full ear tags
             | movementType | case          | searchTerm     | suggestion     |

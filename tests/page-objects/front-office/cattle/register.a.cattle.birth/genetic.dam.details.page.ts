@@ -25,4 +25,9 @@ export class LisFrontOfficeGeneticDamDetailsPage extends BasePage {
     )
     await this.continueButton.click()
   }
+
+  // The page keeps the dam ear tag from an earlier registration, so it is cleared
+  async clearGeneticDamDetails() {
+    await this.animalEarTagInput.clear()
+  }
 }

@@ -31,6 +31,20 @@ export class LisFrontOfficeDamDetailsPage extends BasePage {
     await this.continueButton.click()
   }
 
+  // Temporary hack: the page keeps the dam type from an earlier registration, and a radio
+  // can't be unticked by clicking, so untick them in the browser. Remove when tests can
+  // create their own test users/sessions instead of reusing the same user
+  async clearDamDetails() {
+    await Promise.all(
+      [this.calfBornViaGeneticDamRadio, this.calfBornViaSurrogateDamRadio].map(
+        (radio) =>
+          radio.evaluate((input: HTMLInputElement) => {
+            input.checked = false
+          })
+      )
+    )
+  }
+
   async verifyDamTypeSelected(damType: string) {
     if (damType === 'Calf born via genetic dam') {
       await expect(this.calfBornViaGeneticDamRadio).toBeChecked()

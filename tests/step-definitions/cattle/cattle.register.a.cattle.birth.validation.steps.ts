@@ -30,6 +30,39 @@ When(
   }
 )
 
+// Temporary: every test reuses the same user, so the page keeps the sex from an earlier run.
+// Remove this step when tests can create their own test users/sessions
+When(
+  'I clear the sex of the calf',
+  async ({ lisFrontOfficeRegisterCalfDetailsPage }) => {
+    await expect(lisFrontOfficeRegisterCalfDetailsPage.heading).toBeVisible()
+    await lisFrontOfficeRegisterCalfDetailsPage.clearSexOfCalf()
+  }
+)
+
+// Temporary: every test reuses the same user, so the page keeps the dam type from an earlier run.
+// Remove this step when tests can create their own test users/sessions
+When('I clear the dam details', async ({ lisFrontOfficeDamDetailsPage }) => {
+  await expect(lisFrontOfficeDamDetailsPage.heading).toBeVisible()
+  await lisFrontOfficeDamDetailsPage.clearDamDetails()
+})
+
+When(
+  'I clear the genetic dam details',
+  async ({ lisFrontOfficeGeneticDamDetailsPage }) => {
+    await expect(lisFrontOfficeGeneticDamDetailsPage.heading).toBeVisible()
+    await lisFrontOfficeGeneticDamDetailsPage.clearGeneticDamDetails()
+  }
+)
+
+When(
+  'I clear the surrogate dam details',
+  async ({ lisFrontOfficeSurrogateDamDetailsPage }) => {
+    await expect(lisFrontOfficeSurrogateDamDetailsPage.heading).toBeVisible()
+    await lisFrontOfficeSurrogateDamDetailsPage.clearSurrogateDamDetails()
+  }
+)
+
 Then(
   'I should see the errors:',
   async ({ lisFrontOfficeRegisterCalfDetailsPage }, dataTable: DataTable) => {

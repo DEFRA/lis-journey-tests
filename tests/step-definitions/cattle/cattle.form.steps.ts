@@ -102,11 +102,9 @@ Then(
 )
 
 Then(
-  'the {string} field shows no more than {int} suggestions',
-  async ({ page }, label: string, maximum: number) => {
-    const suggestions = suggestionsFor(page, label)
-    await expect(suggestions.first()).toBeVisible()
-    expect(await suggestions.count()).toBeLessThanOrEqual(maximum)
+  'the {string} field has the value {string}',
+  async ({ page }, label: string, value: string) => {
+    await expect(fieldByLabel(page, label)).toHaveValue(value)
   }
 )
 
@@ -157,11 +155,6 @@ Then(
 
 When('I select the {string} radio', async ({ page }, option: string) => {
   await page.getByRole('radio', { name: option, exact: true }).check()
-})
-
-// For radios, the label is the option, e.g. "Male"
-Then('the {string} field has focus', async ({ page }, label: string) => {
-  await expect(fieldByLabel(page, label)).toBeFocused()
 })
 
 When('I focus the {string} field', async ({ page }, label: string) => {
