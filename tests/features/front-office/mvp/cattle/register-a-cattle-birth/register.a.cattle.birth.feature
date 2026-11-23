@@ -37,11 +37,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I continue from the "Check calf details" page
         And I submit "No" for add more animals for births
         And I send my cattle birth report
-        # Temp workaround to clear test data
-        Then I navigate back to Check Calf Details page
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
     # Sending the report is not on the MVP until next sprint: uncomment these two steps then
     # Then I verify that "1 cattle birth registered"
 
@@ -76,11 +71,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I continue from the "Check calf details" page
         And I submit "No" for add more animals for births
         And I send my cattle birth report
-        # Temp workaround to clear test data
-        Then I navigate back to Check Calf Details page
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
     # Sending the report is not on the MVP until next sprint: uncomment these two steps then
     # Then I verify that "1 cattle birth registered"
 
@@ -115,11 +105,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I continue from the "Check calf details" page
         And I submit "No" for add more animals for births
         And I send my cattle birth report
-        # Temp workaround to clear test data
-        Then I navigate back to Check Calf Details page
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
     # Sending the report is not on the MVP until next sprint: uncomment these two steps then
     # Then I verify that "1 cattle birth registered"
 
@@ -154,11 +139,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I continue from the "Check calf details" page
         And I submit "No" for add more animals for births
         And I send my cattle birth report
-        # Temp workaround to clear test data
-        Then I navigate back to Check Calf Details page
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
     # Sending the report is not on the MVP until next sprint: uncomment these two steps then
     # Then I verify that "1 cattle birth registered"
 
@@ -193,11 +173,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I continue from the "Check calf details" page
         And I submit "No" for add more animals for births
         And I send my cattle birth report
-        # Temp workaround to clear test data
-        Then I navigate back to Check Calf Details page
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
     # Sending the report is not on the MVP until next sprint: uncomment these two steps then
     # Then I verify that "1 cattle birth registered"
 
@@ -234,11 +209,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I continue from the "Check calf details" page
         And I submit "No" for add more animals for births
         And I send my cattle birth report
-        # Temp workaround to clear test data
-        Then I navigate back to Check Calf Details page
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
     # Sending the report is not on the MVP until next sprint: uncomment these two steps then
     # Then I verify that "1 cattle birth registered"
 
@@ -273,11 +243,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I continue from the "Check calf details" page
         And I submit "No" for add more animals for births
         And I send my cattle birth report
-        # Temp workaround to clear test data
-        Then I navigate back to Check Calf Details page
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
     # Sending the report is not on the MVP until next sprint: uncomment these two steps then
     # Then I verify that "1 cattle birth registered"
 
@@ -312,11 +277,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I continue from the "Check calf details" page
         And I submit "No" for add more animals for births
         And I send my cattle birth report
-        # Temp workaround to clear test data
-        Then I navigate back to Check Calf Details page
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
     # Sending the report is not on the MVP until next sprint: uncomment these two steps then
     # Then I verify that "1 cattle birth registered"
 
@@ -351,11 +311,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I continue from the "Check calf details" page
         And I submit "No" for add more animals for births
         And I send my cattle birth report
-        # Temp workaround to clear test data
-        Then I navigate back to Check Calf Details page
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
     # Sending the report is not on the MVP until next sprint: uncomment these two steps then
     # Then I verify that "1 cattle birth registered"
 
@@ -396,11 +351,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I verify birth tag number "UK 324537 100002" is "Ready to send"
         And I submit "No" for add more animals for births
         And I send my cattle birth report
-        # Temp workaround to clear test data
-        Then I navigate back to Check Calf Details page
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
     # Sending the report is not on the MVP until next sprint: uncomment these two steps then
     # Then I verify that "2 cattle births registered"
 
@@ -578,11 +528,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I verify birth tag number "UK 324537 100001" is "Ready to send"
         And I submit "No" for add more animals for births
         And I send my cattle birth report
-        # Temp workaround to clear test data
-        Then I navigate back to Check Calf Details page
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
     # Sending the report is not on the MVP until next sprint: uncomment these two steps then
     # Then I verify that "1 cattle birth registered"
 
@@ -607,11 +552,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I verify birth tag number "UK 324537 100001" is "Ready to send"
         And I submit "No" for add more animals for births
         And I send my cattle birth report
-        # Temp workaround to clear test data
-        Then I navigate back to Check Calf Details page
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
     # Sending the report is not on the MVP until next sprint: uncomment these two steps then
     # Then I verify that "1 cattle birth registered"
 
@@ -636,11 +576,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I verify birth tag number "UK 324537 100001" is "Ready to send"
         And I submit "No" for add more animals for births
         And I send my cattle birth report
-        # Temp workaround to clear test data
-        Then I navigate back to Check Calf Details page
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
     # Sending the report is not on the MVP until next sprint: uncomment these two steps then
     # Then I verify that "1 cattle birth registered"
 
@@ -677,11 +612,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I continue from the "Check calf details" page
         And I submit "No" for add more animals for births
         And I send my cattle birth report
-        # Temp workaround to clear test data
-        Then I navigate back to Check Calf Details page
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
     # Sending the report is not on the MVP until next sprint: uncomment these two steps then
     # Then I verify that "1 cattle birth registered"
 
@@ -704,10 +634,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
             | Surrogate dam ear tag number | UK 300000 000023  |
             | Sire ear tag number          | UK 200000 000008  |
             | Sire name                    | Sire Name         |
-        # Temp workaround to clear test data
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
 
     @LREG-781 @LREG-782 @LREG-783 @LREG-784 @LREG-785
     Scenario: Register a cattle birth via surrogate dam then change the Dam type to genetic from the summary page
@@ -729,10 +655,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
             | Sire ear tag number        | UK 200000 000008  |
             | Sire name                  | Sire Name         |
         And the Check calf details summary page does not show "Surrogate dam ear tag number"
-        # Temp workaround to clear test data
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
 
     @LREG-781 @LREG-782 @LREG-784 @LREG-785
     # The genetic dam ear tag is optional on the surrogate dam page, and shows "Not provided" when left empty
@@ -752,10 +674,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
             | Surrogate dam ear tag number | UK 300000 000023  |
             | Sire ear tag number          | UK 200000 000008  |
             | Sire name                    | Sire Name         |
-        # Temp workaround to clear test data
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
 
     @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Go back from Register cattle birth via genetic dam page and verify entered details remain
@@ -839,16 +757,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I select Back from the Calf details page
         Then I am returned to Register new cattle births page
         And I verify birth tag number "UK 324537 100001" is "Incomplete"
-        # Temp workaround to clear test data. Assumes the ear tag link opens Calf details with the
-        # details kept: update these steps if it opens a different page
-        When I click on the "UK 324537 100001" ear tag link
-        And I continue from the "Calf details" page
-        And I submit the dam details as "Calf born via genetic dam"
-        And I add the ear tag of the dam as "UK200000000007"
-        And I add no sire details
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
 
     @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register a cattle birth with todays date as date of birth
@@ -870,11 +778,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I verify birth tag number "UK 324537 100001" is "Ready to send"
         And I submit "No" for add more animals for births
         And I send my cattle birth report
-        # Temp workaround to clear test data
-        Then I navigate back to Check Calf Details page
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
     # Sending the report is not on the MVP until next sprint: uncomment these two steps then
     # Then I verify that "1 cattle birth registered"
 
@@ -938,11 +841,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I submit "Yes" for add more animals for births
         When I search for "3245371" in the "Animal ear tag number" field
         Then the "Animal ear tag number" field does not suggest "UK324537100001"
-        # Temp workaround to clear test data
-        Then I navigate back to Check Calf Details page alt
-        And I cancel the cattle birth registration
-        And I select "Yes" on the cancellation confirmation page
-        Then I am returned to Register new cattle births page
 
     @LREG-781
     # A breed typed without picking a suggestion is matched when the form is submitted. This is the

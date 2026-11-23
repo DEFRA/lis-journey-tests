@@ -8,9 +8,7 @@ Feature: Cattle on holding - View Animals on holding
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
             | 22/001/0001 | Oakfield Farm | 35                | 0           | 0             |
         When I click the Cattle on holding link
-        Then the "Animals on holding" tab should be active
-        And the Animals on Holding caption should display "Oakfield Farm"
-        And the Animals on Holding heading should display "Animals on holding"
+        And the heading should display "Cattle on holding"
         And I should be able to search for an animal using ear tag, sex or breed
         And I should see the following Animals on Holding:
             | Ear tag number   | Date of birth | Age                             | Date on holding | Sex    | Breed                        |
@@ -56,7 +54,6 @@ Feature: Cattle on holding - View Animals on holding
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
             | 22/001/0001 | Oakfield Farm | 35                | 0           | 0             |
         When I click the Cattle on holding link
-        Then the "Animals on holding" tab should be active
         When I sort the table by "<column>"
         Then the table is sorted by "<column>" in "<firstClick>" order
         When I sort the table by "<column>"
@@ -79,9 +76,7 @@ Feature: Cattle on holding - View Animals on holding
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
             | 22/001/0001 | Oakfield Farm | 35                | 0           | 0             |
         When I click the Cattle on holding link
-        Then the "Animals on holding" tab should be active
-        And the Animals on Holding caption should display "Oakfield Farm"
-        And the Animals on Holding heading should display "Animals on holding"
+        And the heading should display "Cattle on holding"
         And I should be able to search for an animal using ear tag, sex or breed
         And I click on the "UK 200000 000001" ear tag link
         And I should be navigated to the Cattle Details page
@@ -97,9 +92,7 @@ Feature: Cattle on holding - View Animals on holding
             | CPH         | Holding name   | Cattle on holding | In Progress | Cattle Errors |
             | 22/002/0002 | Fairfield Farm | 1                 | 0           | 0             |
         When I click the Cattle on holding link
-        Then the "Animals on holding" tab should be active
-        And the Animals on Holding caption should display "Fairfield Farm"
-        And the Animals on Holding heading should display "Animals on holding"
+        And the heading should display "Cattle on holding"
         And I should be able to search for an animal using ear tag, sex or breed
         And I click on the "UK 200000 000013" ear tag link
         And I should be navigated to the Cattle Details page
@@ -114,7 +107,6 @@ Feature: Cattle on holding - View Animals on holding
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
             | 22/001/0001 | Oakfield Farm | 35                | 0           | 0             |
         When I click the Cattle on holding link
-        Then the "Animals on holding" tab should be active
         And I search using search term '00000'
         Then I should see the following search results for '00000':
             | Ear tag number   | Date of birth | Age                             | Date on holding | Sex    | Breed                        |
@@ -161,7 +153,6 @@ Feature: Cattle on holding - View Animals on holding
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
             | 22/001/0001 | Oakfield Farm | 35                | 0           | 0             |
         When I click the Cattle on holding link
-        Then the "Animals on holding" tab should be active
         And I search using search term '<searchTerm>'
         Then I should see the following search results for '<searchTerm>':
             | Ear tag number   | Date of birth | Age                            | Date on holding | Sex  | Breed              |
@@ -180,7 +171,6 @@ Feature: Cattle on holding - View Animals on holding
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
             | 22/001/0001 | Oakfield Farm | 35                | 0           | 0             |
         When I click the Cattle on holding link
-        Then the "Animals on holding" tab should be active
         And I search using search term '<searchTerm>'
         Then I should see no results returned for search term '<searchTerm>'
         Examples: Search terms that return no result
@@ -198,7 +188,6 @@ Feature: Cattle on holding - View Animals on holding
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
             | 22/001/0001 | Oakfield Farm | 35                | 0           | 0             |
         When I click the Cattle on holding link
-        Then the "Animals on holding" tab should be active
         And I search using search term 'male'
         Then I should see the following search results for 'male':
             | Ear tag number   | Date of birth | Age                             | Date on holding | Sex  | Breed                        |

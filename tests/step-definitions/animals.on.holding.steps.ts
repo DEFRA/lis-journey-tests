@@ -12,7 +12,7 @@ Then(
 )
 
 Then(
-  'the Animals on Holding heading should display {string}',
+  'the heading should display {string}',
   async ({ lisFrontOfficeAnimalsOnHoldingPage }, expectedHeading: string) => {
     await expect(lisFrontOfficeAnimalsOnHoldingPage.heading).toHaveText(
       expectedHeading
