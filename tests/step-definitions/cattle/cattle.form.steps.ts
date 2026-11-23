@@ -183,4 +183,10 @@ Then(
 Then('I navigate back to Check Calf Details page', async ({ page }) => {
   await page.goBack()
   await page.goBack()
+  await page.goBack()
+})
+
+Then('I navigate back to Check Calf Details page alt', async ({ page }) => {
+  await page.goBack()
+  await page.goBack()
 })
