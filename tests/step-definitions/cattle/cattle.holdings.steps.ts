@@ -77,6 +77,16 @@ Then(
   }
 )
 
+Then(
+  'I should see the following correspondence details for the CPH:',
+  async ({ lisFrontOfficeHoldingDetailsPage }, dataTable: DataTable) => {
+    await lisFrontOfficeHoldingDetailsPage.verifyHoldingDetails(
+      dataTable.hashes(),
+      'Correspondence details'
+    )
+  }
+)
+
 When(
   'I click the {string} CPH number link',
   async ({ lisFrontOfficeHoldingDetailsPage }, cphNumber: string) => {
