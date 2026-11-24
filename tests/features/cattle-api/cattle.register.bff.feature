@@ -1,14 +1,15 @@
 # Submission endpoints of the cattle register BFF (lis-be4fe-cattle-register), which the
 # register a cattle birth journey uses to keep a draft for a holding.
-# Local only: the BFF runs in the lis-dev stack on port 8089 (LIS_CATTLE_REGISTER_BFF_BASE_URL).
+# Locally the BFF runs in the lis-dev stack on port 8089 (LIS_CATTLE_REGISTER_BFF_BASE_URL).
 # Uses holding 03/202/0021 and its unallocated ear tags UK324798100001-10, which no other test
 # uses, so these drafts can't clash with the browser journeys on 22/001/0001.
-# A holding has one draft at a time, so the scenarios run one after another (@mode:serial).
+# A holding has one draft at a time, so the scenarios run one after another (@mode:default).
+# Unlike @mode:serial, a failing scenario doesn't skip the ones after it, as none depends on another.
 # Each animal saved is deleted when its test ends. The draft itself stays (there is no endpoint
 # to delete it) and is continued by the next run.
 # Submitting a draft (POST /submission/{cph}/{id}) isn't tested: it sends the bundle to the
 # Cattle API, whose registrations endpoint isn't ready yet
-@api @cattleregisterbff @dev @mode:serial
+@api @cattleregisterbff @dev @mode:default
 Feature: Cattle register BFF - Submissions
 
     Scenario: The health check responds without an API key
