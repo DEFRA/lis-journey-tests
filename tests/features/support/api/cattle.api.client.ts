@@ -153,7 +153,7 @@ export class CattleServiceClient {
       throw new Error(`The response has no "${fieldPath}" to save`)
     }
     if (typeof value === 'object') {
-      throw new Error(
+      throw new TypeError(
         `"${fieldPath}" is a list or object, so it can't be saved as text`
       )
     }
