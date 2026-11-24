@@ -20,6 +20,10 @@ When(
   }
 )
 
+When('I clear the {string} field', async ({ page }, field: string) => {
+  await DatePicker.forField(page, field).input.clear()
+})
+
 When('I open the {string} date picker', async ({ page }, field: string) => {
   await DatePicker.forField(page, field).open()
 })
@@ -84,6 +88,15 @@ Then(
   '{string} is shown as today in the {string} date picker',
   async ({ page }, date: string, field: string) => {
     await DatePicker.forField(page, field).verifyDateIsToday(
+      resolveInputDate(date)
+    )
+  }
+)
+
+Then(
+  'the {string} date picker shows the month of {string}',
+  async ({ page }, field: string, date: string) => {
+    await DatePicker.forField(page, field).verifyShowsMonthOf(
       resolveInputDate(date)
     )
   }

@@ -1,18 +1,28 @@
+@ui @frontoffice @dev @cattlebirth @cattlebirthpositive
 Feature: Cattle - Register a Cattle Birth - Date of birth date picker
 
-    Background: Sign in to the prototype and start Register a cattle birth
-        Given I log into the herokuapp mvp
+    Background: Sign in to the MVP and start Register a cattle birth
+        Given I am authenticated as a front office user with a single CPH holding
         And I select Register a cattle birth
+        # The page keeps the date of birth from an earlier registration
+        And I clear the "Date of birth" field
 
     @LREG-781
     Scenario: Select todays date from the date picker
         When I select "today" from the "Date of birth" date picker
-        Then the "Date of birth" field shows "today"
+        Then the "Date of birth" date picker is closed
+        And the "Date of birth" field shows "today"
 
     @LREG-781
     Scenario: Select a date from a previous month in the date picker
         When I select "40 days ago" from the "Date of birth" date picker
-        Then the "Date of birth" field shows "40 days ago"
+        Then the "Date of birth" date picker is closed
+        And the "Date of birth" field shows "40 days ago"
+
+    @LREG-781
+    Scenario: The date picker opens on the current month
+        When I open the "Date of birth" date picker
+        Then the "Date of birth" date picker shows the month of "today"
 
     @LREG-781
     Scenario: Todays date is highlighted in the date picker
@@ -71,3 +81,17 @@ Feature: Cattle - Register a Cattle Birth - Date of birth date picker
         Then the "Date of birth" date picker is closed
         And the "Date of birth" date picker button has focus
         And the "Date of birth" field shows ""
+
+    @LREG-781
+    # Tab lands on the selected radio and the next Tab leaves the group. The page keeps the sex
+    # from an earlier registration and a radio can't be unselected, so Female is selected first
+    Scenario: Calf details fields are in keyboard tab order
+        When I select the "Female" radio
+        And I focus the "Animal ear tag number" field
+        Then pressing Tab moves focus through:
+            | Role     | Name          |
+            | textbox  | Date of birth |
+            | button   | Choose date   |
+            | radio    | Female        |
+            | combobox | Breed         |
+            | button   | Continue      |

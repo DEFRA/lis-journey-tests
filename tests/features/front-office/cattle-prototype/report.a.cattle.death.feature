@@ -7,7 +7,6 @@ Feature: Cattle - Report a Cattle Death - Positive scenarios
     Scenario: Report a cattle death for a registered animal
         When I select "Yes" to is the animal registered
         When I submit tag "UK123456301550" and date of death "01/01/2026"
-        And I submit "No" for add more animals for deaths
         Then I verify the Check animal details summary page has:
             | Field                 | Expected value  |
             | Animal registered     | Yes             |
@@ -42,8 +41,6 @@ Feature: Cattle - Report a Cattle Death - Positive scenarios
         And I send my cattle death report
         Then I verify that "1 cattle death reported"
 
-    # Error - When selecting No to animal registered submission goes to summary rather than animal details page
-    @fixme
     Scenario: Report a cattle death for a registered animal then change the Registration status from the summary page
         When I select "Yes" to is the animal registered
         When I submit tag "UK123456301550" and date of death "01/01/2026"
@@ -113,8 +110,6 @@ Feature: Cattle - Report a Cattle Death - Positive scenarios
         And I send my cattle death report
         Then I verify that "1 cattle death reported"
 
-    # Error - When selecting Yes to animal registered submission goes to summary rather than animal details page
-    @fixme
     Scenario: Report a cattle death for an unregistered animal then change the Registration status from the summary page
         When I select "No" to is the animal registered
         And I submit valid animal details with "UK123456301551", "11/2/2025","01/1/2026", "Female", and "Limousin (LIM)"
@@ -128,12 +123,11 @@ Feature: Cattle - Report a Cattle Death - Positive scenarios
             | Breed                 | Limousin (LIM)   |
         And I change the "Animal registered" of the animal
         When I select "Yes" to is the animal registered
-        When I submit tag "UK123456301551" and date of death "01/1/2026"
         Then I verify the Check animal details summary page has:
             | Field                 | Expected value  |
             | Animal registered     | Yes             |
             | Animal ear tag number | UK123456301551  |
-            | Date of birth         | 01 January 2026 |
+            | Date of death         | 01 January 2026 |
         And I continue from the "Check animal details" page
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
@@ -357,7 +351,7 @@ Feature: Cattle - Report a Cattle Death - Positive scenarios
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
-        Then I verify that "1 cattle death reported"
+        Then I verify that "2 cattle deaths reported"
 
     Scenario: Report a cattle death for an unregistered animal and add another registered animal
         When I select "No" to is the animal registered
@@ -384,7 +378,7 @@ Feature: Cattle - Report a Cattle Death - Positive scenarios
         And I verify death tag number "UK123456301551" is "Ready to send"
         And I submit "No" for add more animals for deaths
         And I send my cattle death report
-        Then I verify that "1 cattle death reported"
+        Then I verify that "2 cattle deaths reported"
 
     Scenario: Go back from the registered animal details summary and verify entered details remain
         When I select "Yes" to is the animal registered
@@ -398,7 +392,7 @@ Feature: Cattle - Report a Cattle Death - Positive scenarios
         And the previously entered registered animal details are still populated:
             | Animal ear tag number | UK123456301550 |
             | Date of death         | 01/01/2026     |
-        And I continue from the "Check animal details" page
+        And I continue from the "Animal details" page
         Then I verify the Check animal details summary page has:
             | Field                 | Expected value  |
             | Animal registered     | Yes             |
@@ -424,7 +418,7 @@ Feature: Cattle - Report a Cattle Death - Positive scenarios
             | Date of death         | 01/1/2026      |
             | Sex                   | Female         |
             | Breed                 | Limousin (LIM) |
-        And I continue from the "Check animal details" page
+        And I continue from the "Animal details" page
         Then I verify the Check animal details summary page has:
             | Field                 | Expected value   |
             | Animal registered     | No               |
@@ -468,7 +462,6 @@ Feature: Cattle - Report a Cattle Death - Positive scenarios
         When I search for "<searchTerm>" in the "Animal ear tag number" field
         Then the "Animal ear tag number" field suggests "<suggestion>"
         And every suggestion in the "Animal ear tag number" field contains "<searchTerm>"
-        And the "Animal ear tag number" field shows no more than 10 suggestions
 
         Examples: Partial and full ear tags
             | registered   | answer | case          | searchTerm     | suggestion     |

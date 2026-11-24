@@ -8,7 +8,7 @@ export class LisFrontOfficeSubmitCattleRegistrationPage extends BasePage {
   constructor(page: Page) {
     super(page)
     this.heading = page.getByRole('heading', {
-      name: 'Now submit your cattle registration'
+      name: 'Now send your cattle birth registration'
     })
     this.acceptAndSendButton = page.getByRole('button', {
       name: 'Accept and send'

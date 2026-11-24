@@ -12,7 +12,7 @@ Given('I log into the herokuapp mvp', async ({ page }) => {
   }
 
   await page.goto(
-    'https://livestock-traceability-4f1c92f377cb.herokuapp.com/mvp-front-office/v6/my-holdings/holding-overview?holding-id=holding-001'
+    'https://livestock-traceability-4f1c92f377cb.herokuapp.com/mvp-front-office/v7/my-holdings/holding-overview?holding-id=holding-001'
   )
   await page.getByRole('textbox', { name: 'Password' }).fill(password)
   await page.getByRole('button', { name: 'Continue' }).click()
@@ -49,13 +49,12 @@ Then(
   'I submit the dam details as {string}',
   async (
     { lisFrontOfficeDamDetailsPage },
-    damDetails: 'calf born via genetic dam' | 'calf born via surrogate dam'
+    damDetails: 'Calf born via genetic dam' | 'Calf born via surrogate dam'
   ) => {
     await expect(lisFrontOfficeDamDetailsPage.heading).toBeVisible()
     await lisFrontOfficeDamDetailsPage.submitDamDetails(damDetails)
   }
 )
-
 When(
   'I add the ear tag of the dam as {string}',
   async ({ lisFrontOfficeGeneticDamDetailsPage, page }, earTag: string) => {
@@ -82,7 +81,7 @@ When(
 
 When('I add no sire details', async ({ lisFrontOfficeSireDetailsPage }) => {
   await expect(lisFrontOfficeSireDetailsPage.heading).toBeVisible()
-  await lisFrontOfficeSireDetailsPage.submitSireDetails()
+  await lisFrontOfficeSireDetailsPage.submitNoSireDetails()
 })
 
 When(
@@ -113,6 +112,16 @@ Then(
     await lisFrontOfficeCheckCalfDetailsPage.verifySummaryDetails(
       expectedDetails
     )
+  }
+)
+
+Then(
+  'the Check calf details summary page does not show {string}',
+  async ({ page, lisFrontOfficeCheckCalfDetailsPage }, field: string) => {
+    await expect(lisFrontOfficeCheckCalfDetailsPage.heading).toBeVisible()
+    await expect(
+      page.locator('.govuk-summary-list__key').getByText(field, { exact: true })
+    ).toHaveCount(0)
   }
 )
 
@@ -178,12 +187,33 @@ When(
   'I select {string} on the cancellation confirmation page',
   async (
     { lisFrontOfficeCancelThisRegistrationPage },
-    confirmation: 'Continue' | 'Cancel'
+    confirmation: 'Yes' | 'No'
   ) => {
     await expect(lisFrontOfficeCancelThisRegistrationPage.heading).toBeVisible()
     await lisFrontOfficeCancelThisRegistrationPage.confirmCancellation(
       confirmation
     )
+  }
+)
+
+When(
+  'I select Back on the cancellation confirmation page',
+  async ({ lisFrontOfficeCancelThisRegistrationPage }) => {
+    await expect(lisFrontOfficeCancelThisRegistrationPage.heading).toBeVisible()
+    await lisFrontOfficeCancelThisRegistrationPage.backLink.click()
+  }
+)
+
+// The URL is a guess: replace it with the real cancel page URL if this fails
+When('I open the cancel registration page directly', async ({ page }) => {
+  await page.goto('/cattle/births/cancel-registration')
+})
+
+Then(
+  'birth tag number {string} is not listed',
+  async ({ lisFrontOfficeRegisterNewCattleBirthPage }, tag: string) => {
+    await expect(lisFrontOfficeRegisterNewCattleBirthPage.heading).toBeVisible()
+    await lisFrontOfficeRegisterNewCattleBirthPage.verifyTagNotListed(tag)
   }
 )
 
@@ -324,6 +354,7 @@ When(
   async ({ lisFrontOfficeRegisterCalfDetailsPage }, dataTable: DataTable) => {
     await expect(lisFrontOfficeRegisterCalfDetailsPage.heading).toBeVisible()
     const values = dataTable.rowsHash()
+    values['Date of birth'] = resolveInputDate(values['Date of birth'])
 
     await lisFrontOfficeRegisterCalfDetailsPage.verifySexSelected(values['Sex'])
 
@@ -397,6 +428,24 @@ When(
   async ({ lisFrontOfficeDamDetailsPage }, damType: string) => {
     await expect(lisFrontOfficeDamDetailsPage.heading).toBeVisible()
     await lisFrontOfficeDamDetailsPage.verifyDamTypeSelected(damType)
+  }
+)
+
+When(
+  'I select Back from the Calf details page',
+  async ({ lisFrontOfficeRegisterCalfDetailsPage }) => {
+    await expect(lisFrontOfficeRegisterCalfDetailsPage.heading).toBeVisible()
+    await lisFrontOfficeRegisterCalfDetailsPage.backLink.click()
+  }
+)
+
+// The Register a cattle birth link is how the journey was started, so it shows we're back
+Then(
+  'I am returned to the holding overview page',
+  async ({ lisFrontOfficeCattleHoldingOverviewPage }) => {
+    await expect(
+      lisFrontOfficeCattleHoldingOverviewPage.registerCattleBirthLink
+    ).toBeVisible()
   }
 )
 

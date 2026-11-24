@@ -1,7 +1,24 @@
 import { expect, Locator, Page } from '@playwright/test'
 import { runInOrder } from '../../../../utils/run.in.order'
 
-// The MOJ date picker attached to a date input, e.g. Date of birth.
+// The Heroku prototype uses the MOJ date picker and the MVP uses the LIS one.
+// They work the same, but these locators differ, so each app keeps its own
+const appLocators = {
+  prototype: {
+    wrapper: '.moj-datepicker',
+    monthYearTitle: (dialog: Locator) =>
+      dialog.locator('.moj-js-datepicker-month-year'),
+    selectedDay: /moj-datepicker__button--selected/
+  },
+  mvp: {
+    wrapper: '.lis-date-picker',
+    monthYearTitle: (dialog: Locator) =>
+      dialog.getByRole('heading', { level: 2 }),
+    selectedDay: /lis-date-picker__button--selected/
+  }
+}
+
+// The date picker attached to a date input, e.g. Date of birth.
 // Dates are d/m/yyyy, which matches the data-testid on each day button.
 export class DatePicker {
   readonly input: Locator
@@ -11,17 +28,24 @@ export class DatePicker {
   readonly previousMonthButton: Locator
   readonly nextMonthButton: Locator
   readonly closeButton: Locator
+  readonly selectedDayClass: RegExp
 
   constructor(page: Page, input: Locator) {
-    // Scope to the picker wrapping this input, so pages with several date fields work
-    const datePicker = page.locator('.moj-datepicker').filter({ has: input })
+    // Only the prototype is on herokuapp
+    const app = page.url().includes('herokuapp') ? 'prototype' : 'mvp'
+    const locators = appLocators[app]
+
+    // Scope to the picker wrapping this input, so pages with several date fields work.
+    // The wrapper has no role or label, so this is the one place a class is needed
+    const datePicker = page.locator(locators.wrapper).filter({ has: input })
 
     this.input = input
     this.chooseDateButton = datePicker.getByRole('button', {
       name: 'Choose date'
     })
     this.dialog = datePicker.getByRole('dialog')
-    this.monthYearTitle = this.dialog.locator('.moj-js-datepicker-month-year')
+    this.monthYearTitle = locators.monthYearTitle(this.dialog)
+    this.selectedDayClass = locators.selectedDay
     this.previousMonthButton = this.dialog.getByRole('button', {
       name: 'Previous month'
     })
@@ -65,6 +89,12 @@ export class DatePicker {
       monthButton.click()
     )
 
+    await this.verifyShowsMonthOf(date)
+  }
+
+  // Checks the title, e.g. "November 2026", without moving to the month
+  async verifyShowsMonthOf(date: string) {
+    const [, month, year] = date.split('/').map(Number)
     await expect(this.monthYearTitle).toHaveText(
       new Date(year, month - 1).toLocaleDateString('en-GB', {
         month: 'long',
@@ -102,9 +132,8 @@ export class DatePicker {
     await expect(this.dayButton(date)).toBeFocused()
   }
 
+  // The selected day has no aria attribute, only a class
   async verifyDateIsSelected(date: string) {
-    await expect(this.dayButton(date)).toHaveClass(
-      /moj-datepicker__button--selected/
-    )
+    await expect(this.dayButton(date)).toHaveClass(this.selectedDayClass)
   }
 }

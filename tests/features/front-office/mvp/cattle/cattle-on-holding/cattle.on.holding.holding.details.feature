@@ -24,14 +24,17 @@ Feature: Cattle on holding - View Holding Details
         Then I should see the Cattle overview page with the following details:
             | CPH         | Holding name  | Cattle on holding | In Progress | Cattle Errors |
             | 22/001/0001 | Oakfield Farm | 35                | 0           | 0             |
-        When I click the Cattle on holding link
         When I select the "Holding details" tab
         Then the "Holding details" tab should be active
-        And the holding details caption should display "Oakfield Farm"
+        And the holding details caption should display "22/001/0001"
+        Then I should see the heading "Oakfield Farm"
         And the holding details heading should display "Holding details"
         And I should see the following holding details for the CPH:
             | CPH number  | Holding name  | Address                                                    | Herd mark |
             | 22/001/0001 | Oakfield Farm | Oakfield FarmChurch LaneShrewsburyShropshireSY4 1ABEngland | UK 324537 |
+        And I should see the following correspondence details for the CPH:
+            | Address                                                                  |
+            | Oakfield Livestock Office2 Market YardShrewsburyShropshireSY1 9ZYEngland |
 
     @LREG-531
     Scenario: Cattle on holding - View Holding Details - Multiple CPH holdings - Holding details tab shows the details of the selected CPH
@@ -40,21 +43,22 @@ Feature: Cattle on holding - View Holding Details
         Then I should see the Cattle overview page with the following details:
             | CPH         | Holding name | Cattle on holding | In Progress | Cattle Errors |
             | 22/004/0004 | Hilltop Farm | 1                 | 0           | 0             |
-        When I click the Cattle on holding link
         When I select the "Holding details" tab
         Then the "Holding details" tab should be active
         And I should see the following holding details for the CPH:
             | CPH number  | Holding name | Address                                                     | Herd mark |
             | 22/004/0004 | Hilltop Farm | Hilltop FarmRidge RoadLavendonBuckinghamshireMK1 1ACEngland | UK 324789 |
+        And I should see the following correspondence details for the CPH:
+            | Address      |
+            | Not supplied |
 
     @LREG-531
     Scenario: Cattle on holding - View Holding Details - Multiple CPH holdings - CPH number is shown as the caption when the holding name is missing
         Given I am authenticated as a front office user with a multiple CPH holding
         And I click the "22/003/0003" CPH number link
-        When I click the Cattle on holding link
         When I select the "Holding details" tab
         Then the "Holding details" tab should be active
-        And the holding details caption should display "22/003/0003"
+        Then I should see the heading "22/003/0003"
 
     @LREG-531
     Scenario: Cattle on holding - View Holding Details - Single CPH holding - User cannot view a holding that is not linked to their account

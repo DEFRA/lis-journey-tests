@@ -44,13 +44,26 @@ When(
     await expect(lisFrontOfficeCheckMovementDetailsPage.heading).toBeVisible()
     await page.reload()
     await expect(lisFrontOfficeCheckMovementDetailsPage.heading).toBeVisible()
-    const expectedDetails = Object.fromEntries(
-      dataTable
-        .rows()
-        .map(([field, value]) => [field, resolveDisplayDate(value)])
-    )
+    // Animal rows, e.g. "Animal 1 ear tag number", are checked in that animal's card
+    const animalRow = /^(Animal \d+) (ear tag number|movement date)$/
+    const rows = dataTable
+      .rows()
+      .map(([field, value]) => [field, resolveDisplayDate(value)])
+    const pageRows = rows.filter(([field]) => !animalRow.test(field))
+
     await lisFrontOfficeCheckMovementDetailsPage.verifySummaryDetails(
-      expectedDetails
+      Object.fromEntries(pageRows)
+    )
+    await Promise.all(
+      rows.flatMap(([field, value]) => {
+        const match = animalRow.exec(field)
+        if (!match) return []
+        return lisFrontOfficeCheckMovementDetailsPage.verifyAnimalDetail(
+          match[1],
+          match[2] as 'ear tag number' | 'movement date',
+          value
+        )
+      })
     )
   }
 )
@@ -64,7 +77,7 @@ When(
 )
 
 Then('I confirm the Movement has been reported', async ({ page }) => {
-  await expect(page.getByText('Movement reported')).toBeVisible()
+  await expect(page.getByText('2 movements reported')).toBeVisible()
 })
 
 When(

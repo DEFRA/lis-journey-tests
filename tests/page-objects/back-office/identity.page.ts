@@ -1,6 +1,5 @@
 import { Locator, Page } from '@playwright/test'
 import { BasePage } from '../base.page'
-import { getEnv, TestEnv } from '../../../configs/env'
 import { fakeUsers } from '../../utils/fake.users'
 
 export class LisBackOfficeIdentityPage extends BasePage {
@@ -8,27 +7,27 @@ export class LisBackOfficeIdentityPage extends BasePage {
   readonly emailInput: Locator
   readonly passwordInput: Locator
   readonly nextButton: Locator
-  private readonly env: TestEnv
 
   constructor(page: Page) {
     super(page)
-    this.env = getEnv()
     this.signInButton = page.getByRole('button', { name: 'Sign in' })
     this.emailInput = page.getByRole('textbox', { name: /email/i })
     this.passwordInput = page.getByLabel(/password/i)
     this.nextButton = page.getByRole('button', { name: 'Next' })
   }
 
+  // Uses the fake login picker when the page shows it, otherwise signs in through Entra ID
   async authenticate(userRole: string, email?: string, password?: string) {
-    if (this.env === 'local') {
-      const user = fakeUsers[userRole as keyof typeof fakeUsers]
-      if (!user) {
-        throw new Error(`User role "${userRole}" not found in fakeUsers`)
-      }
+    const user = fakeUsers[userRole as keyof typeof fakeUsers]
+    if (!user) {
+      throw new Error(`User role "${userRole}" not found in fakeUsers`)
+    }
+    const userToSelectRadio = this.page.getByRole('radio', {
+      name: `${user.name} (${user.email})`
+    })
 
-      const userToSelectRadio = this.page.getByRole('radio', {
-        name: `${user.name} (${user.email})`
-      })
+    // Entra ID's first page asks for the email address
+    if (await this.showsFakeLoginPicker(userToSelectRadio, this.emailInput)) {
       await userToSelectRadio.check()
       await this.signInButton.click()
     } else {

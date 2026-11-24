@@ -3,7 +3,7 @@ import { Then, When } from '../fixtures/test.fixture'
 import { isCattleApiOnCdp } from '../features/support/api/cattle.api.client'
 
 // Generic steps for the Cattle API. Requests and responses are handled by
-// CattleApiClient (tests/features/support/api/cattle.api.client.ts)
+// CattleServiceClient (tests/features/support/api/cattle.api.client.ts)
 
 When(
   'I send a GET request to {string} on the Cattle API',

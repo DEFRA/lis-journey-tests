@@ -22,21 +22,21 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
   constructor(page: Page) {
     super(page)
     this.heading = page.getByRole('heading', {
-      name: 'Animals on holding',
+      name: 'Cattle on holding',
       exact: true
     })
-    this.searchLabel = page.getByText('Search animals on your holding', {
+    this.searchLabel = page.getByText('Search cattle on your holding', {
       exact: true
     })
     this.searchHint = page.getByText(
-      'You can use all or part of the animal ear tag number, or search by sex or breed.',
+      'Use all or part of the animal ear tag number for example the last 3 digits, or search by sex or breed.',
       { exact: true }
     )
     this.searchInput = page.getByRole('searchbox', {
-      name: 'Search animals on your holding'
+      name: 'Search cattle on your holding'
     })
     this.searchInsetInfo = page.getByText(
-      'Recent changes such as new registrations may take up to 24 hours to appear in your list.',
+      'Changes may take up to 24 hours to move from ‘In progress’ to ‘Cattle on holding’, and to flag any issues in your Animal error record.',
       { exact: true }
     )
     this.nextPaginationLink = page.getByRole('link', { name: 'Next page' })
@@ -50,13 +50,13 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
   }
 
   async verifySearchCapabilities() {
-    await expect(this.searchLabel).toHaveText('Search animals on your holding')
+    await expect(this.searchLabel).toHaveText('Search cattle on your holding')
     await expect(this.searchHint).toHaveText(
-      'You can use all or part of the animal ear tag number, or search by sex or breed.'
+      'Use all or part of the animal ear tag number for example the last 3 digits, or search by sex or breed.'
     )
     await expect(this.searchInput).toBeVisible()
     await expect(this.searchInsetInfo).toHaveText(
-      'Recent changes such as new registrations may take up to 24 hours to appear in your list.'
+      'Changes may take up to 24 hours to move from ‘In progress’ to ‘Cattle on holding’, and to flag any issues in your Animal error record.'
     )
   }
 
@@ -209,10 +209,8 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
     offSet: number,
     totalNoOfItems: number
   ) {
-    let expectedString = `Showing ${start} to ${offSet} of ${totalNoOfItems} result${totalNoOfItems > 1 ? 's' : ''}`
-    if (totalNoOfItems < 25) {
-      expectedString = `Showing ${totalNoOfItems} result${totalNoOfItems > 1 ? 's' : ''}`
-    }
+    // A single page uses the same wording, e.g. "Showing 1 to 16 of 16 results"
+    const expectedString = `Showing ${start} to ${offSet} of ${totalNoOfItems} result${totalNoOfItems > 1 ? 's' : ''}`
     const paginationInfo = this.page.getByText(expectedString)
     await paginationInfo.scrollIntoViewIfNeeded()
     await expect(paginationInfo).toBeVisible()
@@ -246,8 +244,11 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
     searchTerm: string,
     expectedSearchResults: Record<string, string>[]
   ) {
-    const expectedSearchResultHint = `${expectedSearchResults.length} result${expectedSearchResults.length > 1 ? 's' : ''} for '${searchTerm}'`
-    await expect(this.page.getByText(expectedSearchResultHint)).toBeVisible()
+    await expect(
+      this.page.getByText(
+        this.searchResultCount(expectedSearchResults.length, searchTerm)
+      )
+    ).toBeVisible()
     await expect(
       this.page.getByRole('link', { name: 'Clear search' })
     ).toBeVisible()
@@ -255,7 +256,15 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
   }
 
   async verifyNoResultsForSearchTerm(searchTerm: string) {
-    const expectedSearchResultHint = `0 results for '${searchTerm}'`
-    await expect(this.page.getByText(expectedSearchResultHint)).toBeVisible()
+    await expect(
+      this.page.getByText(this.searchResultCount(0, searchTerm))
+    ).toBeVisible()
+  }
+
+  // e.g. "16 registered cattle records match ‘male’". The page uses curly quotes.
+  // The singular "1 registered cattle record matches" is assumed: no scenario has shown it yet
+  private searchResultCount(count: number, searchTerm: string) {
+    const records = count === 1 ? 'record matches' : 'records match'
+    return `${count} registered cattle ${records} ‘${searchTerm}’`
   }
 }

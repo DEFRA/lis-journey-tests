@@ -57,6 +57,14 @@ export class BasePage {
     return await this.page.title()
   }
 
+  // Sign-in shows either the fake login picker (local, and dev/test while Defra ID and Entra ID
+  // are switched off there) or the real login. Waits for whichever appears first:
+  // true when it is the picker with this user's radio, false when it is the real login
+  async showsFakeLoginPicker(userRadio: Locator, realLoginElement: Locator) {
+    await userRadio.or(realLoginElement).first().waitFor()
+    return await userRadio.isVisible()
+  }
+
   // Autocomplete lookups, e.g. ear tag and breed: types the value and picks the matching suggestion
   async selectAutocompleteOption(input: Locator, option: string) {
     await this.searchAutocomplete(input, option)

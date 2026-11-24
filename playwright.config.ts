@@ -109,7 +109,17 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] }
+      use: { ...devices['Desktop Chrome'] },
+      grepInvert: /@cattlebirth/
+    },
+    // The register a cattle birth scenarios all share one draft on the same holding, which
+    // a hook clears before each scenario (cattle.register.a.cattle.birth.hooks.ts).
+    // One worker runs them one at a time, while everything else still runs in parallel
+    {
+      name: 'chromium-cattle-birth',
+      use: { ...devices['Desktop Chrome'] },
+      grep: /@cattlebirth/,
+      workers: 1
     }
 
     /* Test against mobile viewports. */

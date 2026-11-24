@@ -33,4 +33,10 @@ export class LisFrontOfficeSurrogateDamDetailsPage extends BasePage {
     )
     await this.continueButton.click()
   }
+
+  // The page keeps the dam ear tags from an earlier registration, so they are cleared
+  async clearSurrogateDamDetails() {
+    await this.geneticDamEarTagInput.clear()
+    await this.surrogateDamEarTagInput.clear()
+  }
 }

@@ -29,14 +29,14 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
       exact: true
     })
     this.searchHint = page.getByText(
-      'You can use all or part of the animal ear tag number, or search by sex or breed.',
+      'Use all or part of the animal ear tag number for example the last 3 digits, or search by sex or breed.',
       { exact: true }
     )
     this.searchInput = page.getByRole('searchbox', {
       name: 'Search cattle on your holding'
     })
     this.searchInsetInfo = page.getByText(
-      'Recent changes such as new registrations may take up to 24 hours to appear in your list.',
+      'Changes may take up to 24 hours to move from ‘In progress’ to ‘Cattle on holding’, and to flag any issues in your Animal error record.',
       { exact: true }
     )
     this.nextPaginationLink = page.getByRole('link', { name: 'Next page' })
@@ -50,13 +50,13 @@ export class LisFrontOfficeAnimalsOnHoldingPage extends BasePage {
   }
 
   async verifySearchCapabilities() {
-    await expect(this.searchLabel).toHaveText('Search animals on your holding')
+    await expect(this.searchLabel).toHaveText('Search cattle on your holding')
     await expect(this.searchHint).toHaveText(
-      'You can use all or part of the animal ear tag number, or search by sex or breed.'
+      'Use all or part of the animal ear tag number for example the last 3 digits, or search by sex or breed.'
     )
     await expect(this.searchInput).toBeVisible()
     await expect(this.searchInsetInfo).toHaveText(
-      'Recent changes such as new registrations may take up to 24 hours to appear in your list.'
+      'Changes may take up to 24 hours to move from ‘In progress’ to ‘Cattle on holding’, and to flag any issues in your Animal error record.'
     )
   }
 

@@ -34,7 +34,7 @@ Feature: Cattle - In Progress - Positive scenarios
 
     Scenario: Verify the Deaths tab shows a message when no deaths are pending validation
         When I click the "Deaths" tab
-        Then I should see the message "There are no deaths pending validation"
+        Then I should see the message "There are no death reports in progress."
 
     # No deaths records in prototype
     @fixme

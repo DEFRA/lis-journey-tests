@@ -48,16 +48,25 @@ export class LisFrontOfficeHoldingsPage extends BasePage {
     await cphNumberLink.click()
   }
 
-  async verifyHoldingDetails(expectedDetails: Record<string, string>[]) {
+  // Rows are looked up under the section heading, as both sections have an "Address" row
+  async verifyHoldingDetails(
+    expectedDetails: Record<string, string>[],
+    section = 'Holding details'
+  ) {
     const assertions: Promise<void>[] = []
+    const summaryList = this.page
+      .getByRole('heading', { name: section, exact: true })
+      .locator('xpath=following::dl[1]')
 
     for (const detail of expectedDetails) {
       for (const [key, value] of Object.entries(detail)) {
-        const detailRow = this.page.locator('.govuk-summary-list__row').filter({
-          has: this.page
-            .locator('.govuk-summary-list__key')
-            .getByText(key, { exact: true })
-        })
+        const detailRow = summaryList
+          .locator('.govuk-summary-list__row')
+          .filter({
+            has: this.page
+              .locator('.govuk-summary-list__key')
+              .getByText(key, { exact: true })
+          })
         const detailLocator = detailRow.locator('.govuk-summary-list__value')
         assertions.push(expect(detailLocator).toHaveText(value))
       }

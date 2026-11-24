@@ -28,16 +28,17 @@ function keywordToDate(value: string) {
   return date
 }
 
-// Replaces the word "today" with today's date as shown on summary pages, e.g. "Moved today" -> "Moved 30 October 2026"
+// Turns a date keyword into the date as shown on summary pages, e.g. "27 days ago" -> "20 October 2026",
+// and replaces the word "today" inside text, e.g. "Moved today" -> "Moved 30 October 2026"
 // Use day '2-digit' for pages that show a leading zero, e.g. "01 January 2026"
 export function resolveDisplayDate(
   value: string,
   day: 'numeric' | '2-digit' = 'numeric'
 ) {
-  const today = new Date().toLocaleDateString('en-GB', {
-    day,
-    month: 'long',
-    year: 'numeric'
-  })
-  return value.replace(/\btoday\b/, today)
+  const format = (date: Date) =>
+    date.toLocaleDateString('en-GB', { day, month: 'long', year: 'numeric' })
+
+  const date = keywordToDate(value)
+  if (date) return format(date)
+  return value.replace(/\btoday\b/, format(new Date()))
 }

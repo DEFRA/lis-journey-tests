@@ -1,5 +1,7 @@
 import { expect, Page } from '@playwright/test'
 import { faker } from '@faker-js/faker'
+import { DataTable } from 'playwright-bdd'
+import { runInOrder } from '../../utils/run.in.order'
 import { Then, When } from '../../fixtures/test.fixture'
 
 // These steps work on any cattle form page.
@@ -100,11 +102,9 @@ Then(
 )
 
 Then(
-  'the {string} field shows no more than {int} suggestions',
-  async ({ page }, label: string, maximum: number) => {
-    const suggestions = suggestionsFor(page, label)
-    await expect(suggestions.first()).toBeVisible()
-    expect(await suggestions.count()).toBeLessThanOrEqual(maximum)
+  'the {string} field has the value {string}',
+  async ({ page }, label: string, value: string) => {
+    await expect(fieldByLabel(page, label)).toHaveValue(value)
   }
 )
 
@@ -115,5 +115,67 @@ Then(
     await expect(
       formGroupFor(page, label).locator('.govuk-error-message')
     ).toContainText(error)
+  }
+)
+
+// The page is its heading, e.g. "Dam details". Same caption locator as BasePage.headingCaption
+Then(
+  'the {string} page caption shows {string}',
+  async ({ page }, heading: string, caption: string) => {
+    await expect(
+      page.getByRole('heading', { name: heading, exact: true })
+    ).toBeVisible()
+    await expect(page.locator('.govuk-caption-l')).toHaveText(caption)
+  }
+)
+
+// Searches the short term then the longer one, and checks the longer one suggests fewer.
+// Waits until every suggestion matches the longer term, so the old list isn't counted
+Then(
+  'searching {string} then {string} in the {string} field suggests fewer matches',
+  async ({ page }, shortTerm: string, longTerm: string, label: string) => {
+    const field = fieldByLabel(page, label)
+    const suggestions = suggestionsFor(page, label)
+
+    await field.fill(shortTerm)
+    await expect(suggestions.first()).toBeVisible()
+    const shortTermCount = await suggestions.count()
+
+    await field.fill(longTerm)
+    await expect
+      .poll(async () =>
+        (await suggestions.allInnerTexts()).every((suggestion) =>
+          normalise(suggestion).includes(normalise(longTerm))
+        )
+      )
+      .toBe(true)
+    expect(await suggestions.count()).toBeLessThan(shortTermCount)
+  }
+)
+
+When('I select the {string} radio', async ({ page }, option: string) => {
+  await page.getByRole('radio', { name: option, exact: true }).check()
+})
+
+When('I focus the {string} field', async ({ page }, label: string) => {
+  await fieldByLabel(page, label).focus()
+})
+
+// Presses Tab once per row and checks the row's element has focus, e.g. | button | Continue |.
+// Names are exact so "Male" doesn't also match "Female"
+Then(
+  'pressing Tab moves focus through:',
+  async ({ page }, dataTable: DataTable) => {
+    await runInOrder(dataTable.hashes(), async ({ Role, Name }) => {
+      await page.keyboard.press('Tab')
+      await expect(
+        page
+          .getByRole(Role as Parameters<Page['getByRole']>[0], {
+            name: Name,
+            exact: true
+          })
+          .filter({ visible: true })
+      ).toBeFocused()
+    })
   }
 )
