@@ -24,13 +24,18 @@ Before({ tags: '@cattlebirth' }, async ({ cattleRegisterBffClient: bff }) => {
   bff.saveField('submission-id', 'submissionId')
 
   const animals = (bff.field('animals') ?? []) as { 'animal-id': string }[]
-  for (const animal of animals) {
+
+  // One at a time, because each check reads the status of the latest response
+  const removeAnimal = async (animalId: string) => {
     await bff.send(
       'DELETE',
-      `/submission/${birthHolding}/{submissionId}/${animal['animal-id']}`
+      `/submission/${birthHolding}/{submissionId}/${animalId}`
     )
-    expect(bff.status, `Removing ${animal['animal-id']} from the draft`).toBe(
-      200
-    )
+    expect(bff.status, `Removing ${animalId} from the draft`).toBe(200)
   }
+  let removals = Promise.resolve()
+  for (const animal of animals) {
+    removals = removals.then(() => removeAnimal(animal['animal-id']))
+  }
+  await removals
 })

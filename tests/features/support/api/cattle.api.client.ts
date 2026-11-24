@@ -152,18 +152,31 @@ export class CattleServiceClient {
     if (value === undefined || value === null) {
       throw new Error(`The response has no "${fieldPath}" to save`)
     }
-    this.saved[name] = String(value)
+    if (typeof value === 'object') {
+      throw new Error(
+        `"${fieldPath}" is a list or object, so it can't be saved as text`
+      )
+    }
+    this.saved[name] = String(value as string | number | boolean)
   }
 
   // Called when the test ends. Failures are logged rather than thrown,
-  // so a clean-up problem doesn't hide the test's own result
+  // so a clean-up problem doesn't hide the test's own result.
+  // Deletes run one at a time, newest first, so anything created
+  // inside an earlier record is removed before that record
   async deleteCreatedData() {
+    let deletes = Promise.resolve()
     for (const path of [...this.pathsToDelete].reverse()) {
-      try {
-        await this.send('DELETE', path)
-      } catch (error) {
-        console.log(`Clean-up of ${path} failed`, error)
-      }
+      deletes = deletes.then(() => this.deleteQuietly(path))
+    }
+    await deletes
+  }
+
+  private async deleteQuietly(path: string) {
+    try {
+      await this.send('DELETE', path)
+    } catch (error) {
+      console.log(`Clean-up of ${path} failed`, error)
     }
   }
 
