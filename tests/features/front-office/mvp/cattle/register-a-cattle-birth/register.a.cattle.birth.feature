@@ -453,8 +453,6 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
             | Errors          | ascending  | descending  |
 
     # Cancelling the only calf is the one way to see the tracker with no calves in it.
-    # The message is the LREG-787 wording: the app shows "You have not added any animals to this registration."
-    # so this fails until the dev changes the text or the BA updates the story
     @LREG-781 @LREG-782 @LREG-783 @LREG-785 @LREG-787
     Scenario: Register a cattle birth via genetic dam with sire details and then cancel the registration
         And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
@@ -464,7 +462,7 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I cancel the cattle birth registration
         And I select "Yes" on the cancellation confirmation page
         Then I am returned to Register new cattle births page
-        And I should see the message "No calves have been added."
+        And I should see the message "You have not added any animals to this registration."
         And the Add more animals question has the options Yes and No
 
     @LREG-781 @LREG-782 @LREG-783 @LREG-785
