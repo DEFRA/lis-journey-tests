@@ -5,7 +5,7 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         Given I am authenticated as a front office user with a single CPH holding
         And I select Register a cattle birth
 
-    @LREG-781 @LREG-782 @LREG-783 @LREG-785
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785 @LREG-787
     Scenario: Register a cattle birth via genetic dam with sire details
         And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
         And I submit the dam details as "Calf born via genetic dam"
@@ -314,7 +314,7 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
     # Sending the report is not on the MVP until next sprint: uncomment these two steps then
     # Then I verify that "1 cattle birth registered"
 
-    @LREG-781 @LREG-782 @LREG-783 @LREG-785
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785 @LREG-787
     Scenario: Register a cattle birth via genetic dam with sire details and add another animal
         And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
         And I submit the dam details as "Calf born via genetic dam"
@@ -353,6 +353,28 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I send my cattle birth report
     # Sending the report is not on the MVP until next sprint: uncomment these two steps then
     # Then I verify that "2 cattle births registered"
+
+    # Back on the tracker goes to the last calf added, and the calves already added are kept
+    @LREG-787
+    Scenario: Register new cattle births - Go back from the progress tracker - the calves added are kept
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
+        And I add the ear tag of the dam as "UK200000000007"
+        And I add no sire details
+        And I continue from the "Check calf details" page
+        And I submit "Yes" for add more animals for births
+        And I submit valid calf details with "UK324537100002", "27 days ago", "Male", and "Charolais (CH)"
+        And I submit the dam details as "Calf born via genetic dam"
+        And I add the ear tag of the dam as "UK200000000007"
+        And I add no sire details
+        And I continue from the "Check calf details" page
+        When I select Back from the Register new cattle births page
+        Then I verify the Check calf details summary page has:
+            | Field                 | Expected value   |
+            | Animal ear tag number | UK 324537 100002 |
+        And I continue from the "Check calf details" page
+        And I verify birth tag number "UK 324537 100001" is "Ready to send"
+        And I verify birth tag number "UK 324537 100002" is "Ready to send"
 
     # Cancel draft button not functional
     @fixme
@@ -430,7 +452,8 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
             | Breed           | ascending  | descending  |
             | Errors          | ascending  | descending  |
 
-    @LREG-781 @LREG-782 @LREG-783 @LREG-785
+    # Cancelling the only calf is the one way to see the tracker with no calves in it.
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785 @LREG-787
     Scenario: Register a cattle birth via genetic dam with sire details and then cancel the registration
         And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
         And I submit the dam details as "Calf born via genetic dam"
@@ -440,6 +463,7 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         And I select "Yes" on the cancellation confirmation page
         Then I am returned to Register new cattle births page
         And I should see the message "You have not added any animals to this registration."
+        And the Add more animals question has the options Yes and No
 
     @LREG-781 @LREG-782 @LREG-783 @LREG-785
     Scenario: Register a cattle birth via genetic dam with sire details, cancel and then abort the cancellation
@@ -748,9 +772,7 @@ Feature: Cattle - Register a Cattle Birth - Positive scenarios
         When I select Back from the Calf details page
         Then I am returned to the holding overview page
 
-    @LREG-781 @LREG-782 @LREG-785
-    @fixme
-    # Submitting calf details adds the calf to the registration, so going back shows it as Incomplete
+    @LREG-781 @LREG-782 @LREG-785 @LREG-787
     Scenario: Go back from Calf details after submitting it - the calf is shown as Incomplete
         And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
         When I select Back from the Dam type page

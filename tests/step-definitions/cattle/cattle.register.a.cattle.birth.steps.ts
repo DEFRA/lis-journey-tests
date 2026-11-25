@@ -225,6 +225,24 @@ Then(
 )
 
 Then(
+  'the Add more animals question has the options Yes and No',
+  async ({ lisFrontOfficeRegisterNewCattleBirthPage }) => {
+    await expect(
+      lisFrontOfficeRegisterNewCattleBirthPage.yesRadio
+    ).toBeVisible()
+    await expect(lisFrontOfficeRegisterNewCattleBirthPage.noRadio).toBeVisible()
+  }
+)
+
+When(
+  'I select Back from the Register new cattle births page',
+  async ({ lisFrontOfficeRegisterNewCattleBirthPage }) => {
+    await expect(lisFrontOfficeRegisterNewCattleBirthPage.heading).toBeVisible()
+    await lisFrontOfficeRegisterNewCattleBirthPage.backLink.click()
+  }
+)
+
+Then(
   'I am returned to Check calf details summary page',
   async ({ lisFrontOfficeCheckCalfDetailsPage }) => {
     await expect(lisFrontOfficeCheckCalfDetailsPage.heading).toBeVisible()
