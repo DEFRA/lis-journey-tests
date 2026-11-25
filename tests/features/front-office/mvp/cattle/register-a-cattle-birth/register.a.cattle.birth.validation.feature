@@ -222,7 +222,7 @@ Feature: Cattle - Register a Cattle Birth - Validation
     #         | too short          | UK123            |
     #         | too long           | UK12345612345678 |
 
-    @LREG-781 @LREG-782 @LREG-783 @LREG-785
+    @LREG-781 @LREG-782 @LREG-783 @LREG-785 @LREG-787
     Scenario: Register new cattle birth - Empty field error
         And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
         And I submit the dam details as "Calf born via genetic dam"
@@ -231,3 +231,18 @@ Feature: Cattle - Register a Cattle Birth - Validation
         And I continue from the "Check calf details" page
         And I continue from the "Register new cattle births" page
         Then I should see the error "Select yes to add additional animals or no to continue"
+        And the error summary has focus
+
+    # Cancelling the only calf is the one way to reach the tracker with no calves in it
+    @LREG-787
+    Scenario: Register new cattle births - No with no calves added - error
+        And I submit valid calf details with "UK324537100001", "27 days ago", "Female", and "Baltata Romaneasca (BRO)"
+        And I submit the dam details as "Calf born via genetic dam"
+        And I add the ear tag of the dam as "UK200000000007"
+        And I add no sire details
+        And I cancel the cattle birth registration
+        And I select "Yes" on the cancellation confirmation page
+        When I submit "No" for add more animals for births
+        Then I am returned to Register new cattle births page
+        And I should see the error "Add at least one animal before continuing"
+        And the error summary has focus
